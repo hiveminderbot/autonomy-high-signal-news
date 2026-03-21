@@ -19,7 +19,7 @@
       "deliverables_total": 5
     },
     "summarization_engine": {
-      "status": "pending",
+      "status": "in_progress",
       "description": "Implement content clustering and summarization"
     },
     "briefing_generation": {
@@ -51,7 +51,13 @@
     },
     "summarization_module": {
       "path": "scripts/summarizer/",
-      "status": "pending"
+      "status": "in_progress",
+      "deliverables": [
+        "story_clusterer.py - TF-IDF based story clustering with cross-domain detection",
+        "entity_extractor.py - Named entity and keyword extraction",
+        "content_summarizer.py - Extractive summarization with compression metrics",
+        "relevance_scorer.py - Multi-signal relevance scoring for briefing prioritization"
+      ]
     },
     "briefing_generator": {
       "path": "scripts/briefing/",

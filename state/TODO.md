@@ -39,11 +39,13 @@
 
 ## Phase 3: Summarization Engine
 
-- [ ] Research story clustering algorithms
-- [ ] Implement content summarization
-- [ ] Build entity extraction
-- [ ] Create relevance scoring
-- [ ] Design cross-domain connection detection
+- [x] Research story clustering algorithms → `scripts/summarizer/story_clusterer.py`
+- [x] Implement content summarization → `scripts/summarizer/content_summarizer.py`
+- [x] Build entity extraction → `scripts/summarizer/entity_extractor.py`
+- [x] Create relevance scoring → `scripts/summarizer/relevance_scorer.py`
+- [x] Design cross-domain connection detection → `story_clusterer.find_cross_domain_clusters()`
+- [ ] Add tests for summarization modules
+- [ ] Integrate summarization into aggregation pipeline
 
 ## Phase 4: Briefing Generation
 
