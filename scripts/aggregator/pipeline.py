@@ -18,6 +18,7 @@ from typing import Optional
 from aggregator.feed_fetcher import FeedCache, FeedFetcher, FeedSource, FeedEntry, load_sources_from_catalog
 from aggregator.content_extractor import ContentExtractor, ExtractedContent
 from aggregator.deduplicator import Deduplicator, DuplicateResult
+from aggregator.blog_scraper import BlogScraper, BlogEntry, load_blog_sources_from_catalog
 
 
 @dataclass
@@ -58,14 +59,20 @@ class AggregationPipeline:
         fetcher: Optional[FeedFetcher] = None,
         extractor: Optional[ContentExtractor] = None,
         deduplicator: Optional[Deduplicator] = None,
+        blog_scraper: Optional[BlogScraper] = None,
+        blog_catalog_path: Optional[Path] = None,
         extract_content: bool = True,
         dedup_threshold: float = 0.85,
+        enable_blog_scraping: bool = True,
     ):
         self.cache = cache
         self.fetcher = fetcher or FeedFetcher(cache)
         self.extractor = extractor or ContentExtractor() if extract_content else None
         self.deduplicator = deduplicator or Deduplicator(simhash_threshold=dedup_threshold)
+        self.blog_scraper = blog_scraper or BlogScraper() if enable_blog_scraping else None
+        self.blog_catalog_path = blog_catalog_path
         self.extract_content = extract_content
+        self.enable_blog_scraping = enable_blog_scraping
         self.errors: list[str] = []
     
     def run(
@@ -165,6 +172,20 @@ class AggregationPipeline:
                 if verbose:
                     print(f"  ✗ {err_msg}")
         
+        # Step 4: Scrape blog sources (after RSS feeds)
+        if self.enable_blog_scraping and self.blog_scraper and self.blog_catalog_path:
+            try:
+                blog_result = self._scrape_blog_sources(domain_filter, limit_sources, verbose)
+                entries_fetched += blog_result['entries_fetched']
+                entries_extracted += blog_result['entries_extracted']
+                entries_deduplicated += blog_result['entries_deduplicated']
+                entries_stored += blog_result['entries_stored']
+            except Exception as e:
+                err_msg = f"Error scraping blog sources: {e}"
+                self.errors.append(err_msg)
+                if verbose:
+                    print(f"  ✗ {err_msg}")
+        
         completed_at = datetime.now()
         
         return PipelineResult(
@@ -233,6 +254,113 @@ class AggregationPipeline:
         
         return entry
     
+    def _blog_entry_to_feed_entry(self, blog_entry: BlogEntry) -> FeedEntry:
+        """Convert a BlogEntry to FeedEntry format."""
+        return FeedEntry(
+            id=blog_entry.id,
+            title=blog_entry.title,
+            url=blog_entry.url,
+            source_id=blog_entry.source_id,
+            published_at=blog_entry.published_at,
+            summary=blog_entry.summary,
+            author=blog_entry.author,
+            content=blog_entry.content,
+            fetched_at=blog_entry.scraped_at
+        )
+    
+    def _scrape_blog_sources(
+        self,
+        domain_filter: Optional[str] = None,
+        limit_sources: Optional[int] = None,
+        verbose: bool = False
+    ) -> dict:
+        """Scrape blog sources and process them through the pipeline."""
+        if not self.blog_scraper or not self.blog_catalog_path:
+            return {'entries_fetched': 0, 'entries_extracted': 0, 'entries_deduplicated': 0, 'entries_stored': 0}
+        
+        # Load blog sources from catalog
+        blog_sources = load_blog_sources_from_catalog(self.blog_catalog_path)
+        
+        if domain_filter:
+            blog_sources = [s for s in blog_sources if s.domain == domain_filter]
+        
+        if limit_sources:
+            blog_sources = blog_sources[:limit_sources]
+        
+        if verbose:
+            print(f"Blog scraping: {len(blog_sources)} sources to scrape")
+        
+        entries_fetched = 0
+        entries_extracted = 0
+        entries_deduplicated = 0
+        entries_stored = 0
+        
+        for source in blog_sources:
+            if not source.active:
+                continue
+            
+            try:
+                if verbose:
+                    print(f"  Scraping: {source.name} ({source.id})")
+                
+                # Scrape entries from source (with content extraction)
+                blog_entries = self.blog_scraper.scrape_source(source, extract_content=self.extract_content)
+                entries_fetched += len(blog_entries)
+                
+                # Process each entry (dedup + store)
+                processed_entries = []
+                for blog_entry in blog_entries:
+                    try:
+                        # Check for duplicates using URL and title
+                        dup_check = self.deduplicator.check_duplicate(
+                            blog_entry.id, blog_entry.url, blog_entry.title, blog_entry.summary or blog_entry.title
+                        )
+                        
+                        if dup_check.is_duplicate:
+                            entries_deduplicated += 1
+                            if verbose:
+                                print(f"    ⚠ Duplicate skipped: {blog_entry.title[:50]}...")
+                            continue
+                        
+                        # Track content extraction
+                        if blog_entry.content:
+                            entries_extracted += 1
+                        
+                        # Mark as tracked in deduplicator
+                        self.deduplicator.add(
+                            blog_entry.id, blog_entry.url, blog_entry.title, blog_entry.summary or blog_entry.title
+                        )
+                        
+                        # Convert to FeedEntry and add to processed list
+                        feed_entry = self._blog_entry_to_feed_entry(blog_entry)
+                        processed_entries.append(feed_entry)
+                        
+                    except Exception as e:
+                        err_msg = f"Error processing blog entry {blog_entry.id}: {e}"
+                        self.errors.append(err_msg)
+                        if verbose:
+                            print(f"    ✗ {err_msg}")
+                
+                # Store processed entries
+                if processed_entries:
+                    self.cache.save_entries(processed_entries)
+                    entries_stored += len(processed_entries)
+                    if verbose:
+                        print(f"    ✓ Stored {len(processed_entries)} entries")
+                
+            except Exception as e:
+                err_msg = f"Error scraping blog source {source.id}: {e}"
+                self.errors.append(err_msg)
+                if verbose:
+                    print(f"  ✗ {err_msg}")
+        
+        return {
+            'entries_fetched': entries_fetched,
+            'entries_extracted': entries_extracted,
+            'entries_deduplicated': entries_deduplicated,
+            'entries_stored': entries_stored
+        }
+    
     def get_stats(self) -> dict:
         """Get pipeline statistics."""
         return {
@@ -249,6 +377,8 @@ def run_pipeline_command(
     limit: Optional[int] = None,
     extract: bool = True,
     verbose: bool = False,
+    blog_catalog_path: Optional[Path] = None,
+    enable_blog_scraping: bool = True,
 ) -> PipelineResult:
     """
     Command-line interface to run the pipeline.
@@ -260,6 +390,8 @@ def run_pipeline_command(
         limit: Maximum sources to process
         extract: Whether to extract full content
         verbose: Print progress
+        blog_catalog_path: Path to blog scraper catalog JSON
+        enable_blog_scraping: Whether to enable blog scraping
         
     Returns:
         PipelineResult
@@ -267,18 +399,20 @@ def run_pipeline_command(
     # Initialize components
     cache = FeedCache(db_path)
     
-    # Load sources from catalog into cache
+    # Load RSS sources from catalog into cache
     if catalog_path.exists():
         sources = load_sources_from_catalog(catalog_path)
         for source in sources:
             cache.save_source(source)
         if verbose:
-            print(f"Loaded {len(sources)} sources from catalog")
+            print(f"Loaded {len(sources)} RSS sources from catalog")
     
     # Create and run pipeline
     pipeline = AggregationPipeline(
         cache=cache,
         extract_content=extract,
+        blog_catalog_path=blog_catalog_path,
+        enable_blog_scraping=enable_blog_scraping,
     )
     
     result = pipeline.run(
@@ -333,6 +467,17 @@ def main():
         action='store_true',
         help='Output results as JSON'
     )
+    parser.add_argument(
+        '--blog-catalog',
+        type=Path,
+        default=Path('sources/blog_scraper_catalog.json'),
+        help='Path to blog scraper catalog JSON'
+    )
+    parser.add_argument(
+        '--no-blog-scraping',
+        action='store_true',
+        help='Skip blog scraping (RSS only)'
+    )
     
     args = parser.parse_args()
     
@@ -346,6 +491,8 @@ def main():
         limit=args.limit,
         extract=not args.no_extract,
         verbose=args.verbose,
+        blog_catalog_path=args.blog_catalog,
+        enable_blog_scraping=not args.no_blog_scraping,
     )
     
     if args.json:
