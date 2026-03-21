@@ -42,6 +42,12 @@ class FeedEntry:
     author: Optional[str]
     content: Optional[str]
     fetched_at: datetime
+    # Summarization fields (Phase 3)
+    cluster_id: Optional[str] = None
+    relevance_score: Optional[float] = None
+    relevance_tier: Optional[str] = None  # 'must_read', 'important', 'contextual', 'skip'
+    entities: Optional[str] = None  # JSON-encoded list of entities
+    generated_summary: Optional[str] = None  # AI-generated summary
 
 
 @dataclass
@@ -80,6 +86,11 @@ class FeedCache:
                     author TEXT,
                     content TEXT,
                     fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    cluster_id TEXT,
+                    relevance_score REAL,
+                    relevance_tier TEXT,
+                    entities TEXT,
+                    generated_summary TEXT,
                     UNIQUE(url, source_id)
                 );
                 
@@ -89,6 +100,10 @@ class FeedCache:
                     ON feed_entries(published_at DESC);
                 CREATE INDEX IF NOT EXISTS idx_entries_fetched 
                     ON feed_entries(fetched_at DESC);
+                CREATE INDEX IF NOT EXISTS idx_entries_cluster 
+                    ON feed_entries(cluster_id);
+                CREATE INDEX IF NOT EXISTS idx_entries_relevance 
+                    ON feed_entries(relevance_score DESC);
                 
                 CREATE VIRTUAL TABLE IF NOT EXISTS feed_entries_fts USING fts5(
                     title, summary, content,
@@ -187,14 +202,17 @@ class FeedCache:
             for entry in entries:
                 try:
                     conn.execute("""
-                        INSERT OR IGNORE INTO feed_entries 
-                        (id, title, url, source_id, published_at, summary, author, content, fetched_at)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        INSERT OR REPLACE INTO feed_entries 
+                        (id, title, url, source_id, published_at, summary, author, content, fetched_at,
+                         cluster_id, relevance_score, relevance_tier, entities, generated_summary)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """, (
                         entry.id, entry.title, entry.url, entry.source_id,
                         entry.published_at.isoformat() if entry.published_at else None,
                         entry.summary, entry.author, entry.content,
-                        entry.fetched_at.isoformat()
+                        entry.fetched_at.isoformat(),
+                        entry.cluster_id, entry.relevance_score, entry.relevance_tier,
+                        entry.entities, entry.generated_summary
                     ))
                 except sqlite3.IntegrityError:
                     pass  # Duplicate entry, ignore
