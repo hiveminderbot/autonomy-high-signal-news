@@ -1,0 +1,101 @@
+{
+  "created_at": "2026-03-21T09:28:14.168096",
+  "updated_at": "2026-03-21T09:28:27.824265",
+  "claims": {
+    "source-80093": {
+      "claim_id": "source-80093",
+      "claim_text": "Title: Ask HN: What other news feeds do you read besides Hacker News? is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Ask HN: What other news feeds do you read besides Hacker News?",
+          "source_url": "https://news.ycombinator.com/item?id=36175315",
+          "source_tier": "expert",
+          "evidence_text": "Title: Ask HN: What other news feeds do you read besides Hacker News?\n\nURL Source: https://news.ycombinator.com/item?id=36175315\n\nMarkdown Content:\n# Ask HN: What other news feeds do you read besides Hacker News? | Hacker News\n\n[![Image 68](https://news.ycombinator.com/y18.svg)](https://news.ycombinator.com/)**[Hacker News](https://news.ycombinator.com/news)**[new](https://news.ycombinator.com/newest) | [past](https://news.ycombinator.com/front) | [comments](https://news.ycombinator.\n\n[... Content truncated, total length: 112052 chars]",
+          "accessed_at": "2026-03-21T09:28:27.823505"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:27.823469"
+    },
+    "source-48778": {
+      "claim_id": "source-48778",
+      "claim_text": "README - frontend-feeds is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "README - frontend-feeds",
+          "source_url": "https://github.com/impressivewebs/frontend-feeds",
+          "source_tier": "expert",
+          "evidence_text": "# Frontend Feeds\n\nAn up-to-date list of RSS feeds for front-end developers (overhauled as of March 2020). [See 2020 blog post](https://www.impressivewebs.com/frontend-rss-feeds-2020/).\n\nDespite the death of Google Reader, I still use RSS regularly, and I think lots of others in the industry do too &mdash; but probably not as frequently as we used to.\n\nThis list was originally inspired by Paul Irish's list of front-end feeds [from 2011](https://www.paulirish.\n\n[... Content truncated, total length: 35129 chars]",
+          "accessed_at": "2026-03-21T09:28:27.823543"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:27.823535"
+    },
+    "source-21666": {
+      "claim_id": "source-21666",
+      "claim_text": "Title: is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title:",
+          "source_url": "https://www.reddit.com/r/ExperiencedDevs/comments/1i7ei1g/what_are_your_go_to_programming_rss_feeds/",
+          "source_tier": "expert",
+          "evidence_text": "Title: \n\nURL Source: https://www.reddit.com/r/ExperiencedDevs/comments/1i7ei1g/what_are_your_go_to_programming_rss_feeds/\n\nWarning: Target URL returned error 403: Forbidden\n\nMarkdown Content:\nYou've been blocked by network security.\n\nTo continue, log in to your Reddit account or use your developer token\n\nIf you think you've been blocked by mistake, file a ticket below and we'll look into it.\n\n[Log in](https://www.reddit.com/login/)[File a ticket](https://support.reddithelp.\n\n[... Content truncated, total length: 534 chars]",
+          "accessed_at": "2026-03-21T09:28:27.823555"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:27.823550"
+    },
+    "source-42772": {
+      "claim_id": "source-42772",
+      "claim_text": "Title: Guide to Best RSS Feeds for Developers in 2024 is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Guide to Best RSS Feeds for Developers in 2024",
+          "source_url": "https://www.devzery.com/post/best-rss-feeds",
+          "source_tier": "expert",
+          "evidence_text": "Title: Guide to Best RSS Feeds for Developers in 2024\n\nURL Source: https://www.devzery.com/post/best-rss-feeds\n\nPublished Time: 2024-08-07T15:03:07.579Z\n\nMarkdown Content:\n## **Introduction**\n\nKeeping up with the latest trends and technologies in QA engineering, DevOps, and front-end development can be a daunting task. The sheer volume of information available can often be overwhelming and distracting. However, RSS feeds offer a streamlined way to stay updated with relevant and curated content.\n\n[... Content truncated, total length: 9672 chars]",
+          "accessed_at": "2026-03-21T09:28:27.823567"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:27.823562"
+    },
+    "source-9446": {
+      "claim_id": "source-9446",
+      "claim_text": "Title: Top 30 Developers RSS Feeds is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Top 30 Developers RSS Feeds",
+          "source_url": "https://rss.feedspot.com/developers_rss_feeds/",
+          "source_tier": "expert",
+          "evidence_text": "Title: Top 30 Developers RSS Feeds\n\nURL Source: https://rss.feedspot.com/developers_rss_feeds/\n\nPublished Time: 2022-07-18T14:02:04-07:00\n\nMarkdown Content:\n### 1. [Stack Overflow RSS Feed](https://www.feedspot.com/infiniterss.php?_src=feed_title&followfeedid=4744989&q=site:https%3A%2F%2Fstackoverflow.blog%2Ffeed%2F)\n\n![Image 1: Stack Overflow](https://i1.feedspot.com/4744989.jpg?t=1760435691)[](https://rss.feedspot.com/developers_rss_feeds/#h4744989)**RSS Feed**[stackoverflow.\n\n[... Content truncated, total length: 25649 chars]",
+          "accessed_at": "2026-03-21T09:28:27.823578"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:27.823573"
+    }
+  }
+}

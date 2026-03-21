@@ -1,0 +1,84 @@
+{
+  "query": "best software development news RSS feeds Hacker News alternatives 2024",
+  "session_id": "2026-03-21T09:28:14.168050",
+  "status": "completed",
+  "created_at": "2026-03-21T09:28:27.823639",
+  "findings": {
+    "awesome_lists": [
+      {
+        "name": "awesome",
+        "url": "https://github.com/sindresorhus/awesome",
+        "stars": 447458
+      },
+      {
+        "name": "awesome-python",
+        "url": "https://github.com/vinta/awesome-python",
+        "stars": 288242
+      },
+      {
+        "name": "awesome-selfhosted",
+        "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+        "stars": 281230
+      },
+      {
+        "name": "awesome-go",
+        "url": "https://github.com/avelino/awesome-go",
+        "stars": 167874
+      }
+    ],
+    "academic_sources": []
+  },
+  "sources": [
+    {
+      "title": "Ask HN: What other news feeds do you read besides Hacker News? | Hacker News",
+      "url": "https://news.ycombinator.com/item?id=36175315",
+      "description": "Plus about 100 personal blogs (3/day) and update feeds of e.g. software releases, OSM activity in my neighborhood, etc. (6/day) \u00b7 What RSS reader do you use to keep up with all this"
+    },
+    {
+      "title": "GitHub - impressivewebs/frontend-feeds: An up to date list of RSS feeds for front-end developers. \u00b7 GitHub",
+      "url": "https://github.com/impressivewebs/frontend-feeds",
+      "description": "An up-to-date list of RSS feeds for front-end developers (overhauled as of March 2020)."
+    },
+    {
+      "title": "r/ExperiencedDevs on Reddit: What are your go to programming RSS feeds?",
+      "url": "https://www.reddit.com/r/ExperiencedDevs/comments/1i7ei1g/what_are_your_go_to_programming_rss_feeds/",
+      "description": "<strong>Reddit</strong>. It&#x27;s basically that, a feed with different moderated sources that you can choose!"
+    },
+    {
+      "title": "Guide to Best RSS Feeds for Developers in 2024",
+      "url": "https://www.devzery.com/post/best-rss-feeds",
+      "description": "Find top RSS feeds for QA engineering, DevOps, and front-end development. This guide lists the best feeds and tools to stay updated in tech."
+    },
+    {
+      "title": "Top 30 Developers RSS Feeds",
+      "url": "https://rss.feedspot.com/developers_rss_feeds/",
+      "description": "Best Developers RSS Feeds list. Developers&#x27; RSS Feeds cover web development, data science, DevOps, security, developer career advice, and much more"
+    },
+    {
+      "title": "Programming RSS feeds | Feeder \u2013 RSS Feed Reader",
+      "url": "https://feeder.co/discover/programming",
+      "description": "Follow Programming RSS feeds with Feeder. Get the latest updates and notifications"
+    },
+    {
+      "title": "Top 100 Software Development RSS Feeds",
+      "url": "https://rss.feedspot.com/software_development_rss_feeds/",
+      "description": "RSS Feed <strong>alistapart.com/main/feed</strong> Follow RSS Website alistapart.com Articles on Design, Process, User Experience, Responsive Design, Career, Creativity, Content Strategy, Usability, Code, JavaScript and more."
+    },
+    {
+      "title": "What are some RSS feed alternatives for developers? | MoldStud",
+      "url": "https://moldstud.com/articles/p-what-are-some-rss-feed-alternatives-for-developers",
+      "description": "By choosing email subscriptions from reputable sources like <strong>Dev.to, Smashing Magazine, and Hacker Noon</strong>, developers can stay informed about the latest trends and updates in the tech industry."
+    },
+    {
+      "title": "Top 60 Software Engineering RSS Feeds",
+      "url": "https://rss.feedspot.com/software_engineering_rss_feeds/",
+      "description": "<strong>Hacker Noon</strong> publishes stories and expertise from 15k+ technologists and serves 3M+ curious and insightful monthly readers.MORE Facebook Followers 42.3KTwitter Followers 89KInstagram Followers 21.6K \u00b7 RSS Feed feeds.feedburner.com/se-radio Follow ..."
+    },
+    {
+      "title": "Best RSS Readers for Tech News Junkies in 2026 | VPN Tier Lists",
+      "url": "https://vpntierlists.com/blog/best-rss-readers-tech-news-junkies-2025",
+      "description": "Discover the top tech RSS feeds and best tech news aggregators. Compare privacy-focused readers like Spark vs Feedly for hacker news RSS and more."
+    }
+  ],
+  "evidence_table_path": "/home/exedev/autonomy/labs/high-signal-news/research/evidence-2026-03-21T09:28:14.168050.json"
+}

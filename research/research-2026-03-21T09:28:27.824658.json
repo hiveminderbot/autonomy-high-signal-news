@@ -1,0 +1,84 @@
+{
+  "query": "best tech investment news sources venture capital startup funding",
+  "session_id": "2026-03-21T09:28:27.824658",
+  "status": "completed",
+  "created_at": "2026-03-21T09:28:44.887354",
+  "findings": {
+    "awesome_lists": [
+      {
+        "name": "awesome",
+        "url": "https://github.com/sindresorhus/awesome",
+        "stars": 447458
+      },
+      {
+        "name": "awesome-go",
+        "url": "https://github.com/avelino/awesome-go",
+        "stars": 167874
+      },
+      {
+        "name": "awesome-mcp-servers",
+        "url": "https://github.com/punkpeye/awesome-mcp-servers",
+        "stars": 83721
+      },
+      {
+        "name": "awesome-interview-questions",
+        "url": "https://github.com/DopplerHQ/awesome-interview-questions",
+        "stars": 81536
+      }
+    ],
+    "academic_sources": []
+  },
+  "sources": [
+    {
+      "title": "Venture Capital Financings and Technology Startups - VC News Daily",
+      "url": "https://vcnewsdaily.com/",
+      "description": "DENVER, CO, In-app communication platform CometChat has announced raising a funding of $6.5 million from its existing investor Run VC. Read More... ... NEW YORK, NY, Obin AI, an enterprise AI company building an agentic workforce for financial institutions, announced it has raised $7 million in seed funding led by Motive Partners. Read More... ... NEW YORK, NY, BusRight, the student transportation technology platform, announced it has raised more than $30 million in the company&#x27;s latest funding round, led by Volition Capital."
+    },
+    {
+      "title": "Venture Capital News | TechCrunch",
+      "url": "https://techcrunch.com/category/venture/",
+      "description": "Our venture capital news features interviews and analysis on all the VCs, the VC-backed startups, and the investment trends that founders, investors, students, academics \u2013 and anyone else interested in the way that tech is transforming the world \u2013 should be tracking. ... Actively scaling? Fundraising?"
+    },
+    {
+      "title": "Tech Funding News | Global technology startup funding news",
+      "url": "https://techfundingnews.com/",
+      "description": "Get latest updates on the best funding news from technology startups across the globe. Covering AI, fintech, crypto, VC funding and more."
+    },
+    {
+      "title": "All Venture Capital News and Press Releases from PR Newswire",
+      "url": "https://www.prnewswire.com/news-releases/financial-services-latest-news/venture-capital-list/",
+      "description": "<strong>Mantis Space</strong>, a space and advanced energy startup, today announced it has emerged from stealth with an oversubscribed seed round of more than $10... Wonderful, the enterprise AI agent platform, today announced it has raised $150 million in a ..."
+    },
+    {
+      "title": "Funding Breaking News and Press Releases from Business Wire",
+      "url": "https://www.businesswire.com/newsroom/subject/funding",
+      "description": "Get the latest news on funding. Read press releases covering funding rounds, venture capital investments, grants, and financial updates for startups."
+    },
+    {
+      "title": "Global Venture Capital News & Trends - PitchBook",
+      "url": "https://pitchbook.com/news/venture-capital",
+      "description": "Beyond fintech and crypto startups, Tether has now backed a mattress-maker and a humanoid robotics specialist. ... A new PitchBook analysis finds that valuations aren\u2019t always backed by solid business fundamentals among the top private AI companies. ... The company\u2019s new rocket and its satellite internet business will be key to its growth and could justify its $1.5 trillion valuation. ... The Q3 2025 PitchBook-NVCA Venture Monitor presents a data-driven overview of the key trends defining the US venture capital landscape."
+    },
+    {
+      "title": "Venture Capital News",
+      "url": "https://www.cnbc.com/venture-capital/",
+      "description": "Latest headlines on venture capital, startups, and crowdfunding from CNBC.com."
+    },
+    {
+      "title": "Venture Capital",
+      "url": "https://www.forbes.com/venture-capital/",
+      "description": "VC covers the intersection of software, cloud and venture capital, as well as high growth startups in between. It offers readers the inside track on the boom of consumerized business software and apps (think Dropbox and Slack), venture capital&#x27;s diversity problem and progress and companies and funds that are taking non-traditional approaches to success."
+    },
+    {
+      "title": "Massive AI Deals Drive $189B Startup Funding Record In February While Public Software Stocks Reel",
+      "url": "https://news.crunchbase.com/venture/record-setting-global-funding-february-2026-openai-anthropic/",
+      "description": "All told, <strong>venture investment was up close to 780% year over year from the $21.5 billion raised by startups in February 2025</strong>. OpenAI was not the only company to raise tens of billions of dollars last month."
+    },
+    {
+      "title": "Venture Capital - Business Insider",
+      "url": "https://www.businessinsider.com/category/venture-capital",
+      "description": "The NFL star has become quite a prolific investor in tech, AI and venture capital. He often interviews founders before backing them. ... Redwood Materials raises $350 million from investors including Eclipse Ventures and Nvidia. The money will help fund a new energy storage business."
+    }
+  ],
+  "evidence_table_path": "/home/exedev/autonomy/labs/high-signal-news/research/evidence-2026-03-21T09:28:27.824658.json"
+}

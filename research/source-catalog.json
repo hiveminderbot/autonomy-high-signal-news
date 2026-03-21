@@ -1,0 +1,526 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-03-21T09:30:00Z",
+  "total_sources": 42,
+  "domains": {
+    "ai": {
+      "name": "Artificial Intelligence",
+      "source_count": 18,
+      "sources": {
+        "research_papers": [
+          {
+            "id": "arxiv-cs-ai",
+            "name": "arXiv cs.AI/CL/LG",
+            "url": "https://arxiv.org/rss/cs.AI",
+            "format": "RSS",
+            "frequency": "Daily",
+            "signal_quality": "High",
+            "category": "Research Papers",
+            "notes": "Raw papers, need filtering for relevance",
+            "active": true
+          },
+          {
+            "id": "papers-with-code",
+            "name": "Papers with Code",
+            "url": "https://paperswithcode.com/rss",
+            "format": "RSS",
+            "frequency": "Weekly",
+            "signal_quality": "Very High",
+            "category": "Research Papers",
+            "notes": "Trending papers with code implementations",
+            "active": true
+          },
+          {
+            "id": "huggingface-papers",
+            "name": "Hugging Face Papers",
+            "url": "https://huggingface.co/papers",
+            "format": "Web",
+            "frequency": "Daily",
+            "signal_quality": "High",
+            "category": "Research Papers",
+            "notes": "Curated with community notes and discussions",
+            "active": true
+          },
+          {
+            "id": "google-ai-blog",
+            "name": "Google AI Blog",
+            "url": "https://ai.googleblog.com/feeds/posts/default",
+            "format": "RSS",
+            "frequency": "Weekly",
+            "signal_quality": "High",
+            "category": "Research Papers",
+            "notes": "Official Google research announcements",
+            "active": true
+          },
+          {
+            "id": "openai-blog",
+            "name": "OpenAI Blog",
+            "url": "https://openai.com/blog/rss.xml",
+            "format": "RSS",
+            "frequency": "Sporadic",
+            "signal_quality": "Very High",
+            "category": "Research Papers",
+            "notes": "Major announcements only, high impact",
+            "active": true
+          },
+          {
+            "id": "anthropic-blog",
+            "name": "Anthropic Blog",
+            "url": "https://www.anthropic.com/rss.xml",
+            "format": "RSS",
+            "frequency": "Sporadic",
+            "signal_quality": "Very High",
+            "category": "Research Papers",
+            "notes": "Safety and capabilities focus",
+            "active": true
+          }
+        ],
+        "newsletters": [
+          {
+            "id": "import-ai",
+            "name": "Import AI",
+            "author": "Jack Clark",
+            "url": "https://importai.substack.com/",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "Very High",
+            "category": "Newsletter",
+            "notes": "Policy + research focus, highly curated",
+            "active": true
+          },
+          {
+            "id": "the-batch",
+            "name": "The Batch",
+            "author": "Andrew Ng",
+            "url": "https://www.deeplearning.ai/the-batch/",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "High",
+            "category": "Newsletter",
+            "notes": "Educational angle, accessible explanations",
+            "active": true
+          },
+          {
+            "id": "tldr-ai",
+            "name": "TLDR AI",
+            "author": "TLDR",
+            "url": "https://tldr.tech/ai",
+            "format": "Newsletter",
+            "frequency": "Daily",
+            "signal_quality": "Medium-High",
+            "category": "Newsletter",
+            "notes": "Quick summaries, broad coverage",
+            "active": true
+          },
+          {
+            "id": "alpha-signal",
+            "name": "AlphaSignal",
+            "url": "https://alphasignal.ai/",
+            "format": "Newsletter",
+            "frequency": "Daily",
+            "signal_quality": "Medium",
+            "category": "Newsletter",
+            "notes": "Aggregator format, mixed quality",
+            "active": true
+          },
+          {
+            "id": "the-sequence",
+            "name": "The Sequence",
+            "url": "https://thesequence.substack.com/",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "Medium",
+            "category": "Newsletter",
+            "notes": "Business + research mix",
+            "active": true
+          }
+        ],
+        "social": [
+          {
+            "id": "twitter-bindureddy",
+            "name": "@bindureddy",
+            "platform": "Twitter/X",
+            "url": "https://twitter.com/bindureddy",
+            "focus": "Agents, startups",
+            "signal_quality": "High",
+            "category": "Social",
+            "notes": "Automattic founder, agent ecosystem insights",
+            "active": true
+          },
+          {
+            "id": "twitter-karpathy",
+            "name": "@karpathy",
+            "platform": "Twitter/X",
+            "url": "https://twitter.com/karpathy",
+            "focus": "Education, research",
+            "signal_quality": "Very High",
+            "category": "Social",
+            "notes": "Ex-OpenAI, Tesla. Educational content focus",
+            "active": true
+          },
+          {
+            "id": "twitter-ylecun",
+            "name": "@ylecun",
+            "platform": "Twitter/X",
+            "url": "https://twitter.com/ylecun",
+            "focus": "Research, opinions",
+            "signal_quality": "High",
+            "category": "Social",
+            "notes": "Meta Chief Scientist, research perspectives",
+            "active": true
+          }
+        ],
+        "github": [
+          {
+            "id": "github-trending-python",
+            "name": "GitHub Trending Python",
+            "url": "https://github.com/trending/python",
+            "type": "Auto",
+            "signal_quality": "Medium",
+            "category": "GitHub",
+            "notes": "Language-agnostic filter needed",
+            "active": true
+          },
+          {
+            "id": "awesome-ai-agents",
+            "name": "awesome-ai-agents",
+            "url": "https://github.com/e2b-dev/awesome-ai-agents",
+            "type": "Curated",
+            "signal_quality": "Medium",
+            "category": "GitHub",
+            "notes": "Lists get stale, needs regular refresh",
+            "active": true
+          }
+        ]
+      }
+    },
+    "software_development": {
+      "name": "Software Development",
+      "source_count": 14,
+      "sources": {
+        "language_specific": [
+          {
+            "id": "python-insider",
+            "name": "Python Insider",
+            "language": "Python",
+            "url": "https://pythoninsider.blogspot.com/feeds/posts/default",
+            "format": "Blog",
+            "frequency": "Sporadic",
+            "signal_quality": "Very High",
+            "category": "Language",
+            "notes": "Official Python release announcements",
+            "active": true
+          },
+          {
+            "id": "this-week-in-rust",
+            "name": "This Week in Rust",
+            "language": "Rust",
+            "url": "https://this-week-in-rust.org/rss.xml",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "Very High",
+            "category": "Language",
+            "notes": "Community-curated, comprehensive",
+            "active": true
+          },
+          {
+            "id": "nodejs-blog",
+            "name": "Node.js Blog",
+            "language": "JavaScript",
+            "url": "https://nodejs.org/en/blog/",
+            "format": "Blog",
+            "frequency": "Sporadic",
+            "signal_quality": "High",
+            "category": "Language",
+            "notes": "Official release announcements",
+            "active": true
+          },
+          {
+            "id": "go-blog",
+            "name": "Go Blog",
+            "language": "Go",
+            "url": "https://go.dev/blog/feed.atom",
+            "format": "Blog",
+            "frequency": "Sporadic",
+            "signal_quality": "High",
+            "category": "Language",
+            "notes": "Official Go team updates",
+            "active": true
+          },
+          {
+            "id": "javascript-weekly",
+            "name": "JavaScript Weekly",
+            "language": "JavaScript",
+            "url": "https://javascriptweekly.com/rss",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "Medium",
+            "category": "Language",
+            "notes": "Broad coverage, some filler",
+            "active": true
+          }
+        ],
+        "frameworks": [
+          {
+            "id": "react-blog",
+            "name": "React Blog",
+            "framework": "React",
+            "url": "https://react.dev/blog",
+            "format": "Blog",
+            "frequency": "Sporadic",
+            "signal_quality": "High",
+            "category": "Framework",
+            "notes": "Official React team updates",
+            "active": true
+          },
+          {
+            "id": "django-news",
+            "name": "Django News",
+            "framework": "Django",
+            "url": "https://django-news.com/",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "Medium",
+            "category": "Framework",
+            "notes": "Community newsletter",
+            "active": true
+          },
+          {
+            "id": "github-changelog",
+            "name": "GitHub Changelog",
+            "framework": "GitHub",
+            "url": "https://github.blog/changelog/",
+            "format": "Blog",
+            "frequency": "Daily",
+            "signal_quality": "High",
+            "category": "Framework",
+            "notes": "Platform updates and new features",
+            "active": true
+          }
+        ],
+        "general": [
+          {
+            "id": "hacker-news",
+            "name": "Hacker News (Top 30)",
+            "url": "https://news.ycombinator.com/rss",
+            "format": "Web",
+            "frequency": "Real-time",
+            "signal_quality": "Medium-High",
+            "category": "General",
+            "notes": "Needs filtering for relevance",
+            "active": true
+          },
+          {
+            "id": "lobsters",
+            "name": "Lobsters",
+            "url": "https://lobste.rs/rss",
+            "format": "Web",
+            "frequency": "Real-time",
+            "signal_quality": "High",
+            "category": "General",
+            "notes": "Smaller, more technical community",
+            "active": true
+          }
+        ]
+      }
+    },
+    "investment": {
+      "name": "Investment & Markets",
+      "source_count": 10,
+      "sources": {
+        "public_markets": [
+          {
+            "id": "bloomberg-tech",
+            "name": "Bloomberg Technology",
+            "focus": "Tech stocks",
+            "url": "https://www.bloomberg.com/technology",
+            "format": "Web/Paid",
+            "frequency": "Daily",
+            "signal_quality": "Very High",
+            "category": "Public Markets",
+            "notes": "Paywall, high-quality reporting",
+            "active": true
+          },
+          {
+            "id": "techcrunch",
+            "name": "TechCrunch",
+            "focus": "Startups, funding",
+            "url": "https://techcrunch.com/feed/",
+            "format": "Web",
+            "frequency": "Daily",
+            "signal_quality": "Medium",
+            "category": "Public Markets",
+            "notes": "Broad startup coverage, variable quality",
+            "active": true
+          },
+          {
+            "id": "the-information",
+            "name": "The Information",
+            "focus": "Tech business",
+            "url": "https://www.theinformation.com/",
+            "format": "Paid",
+            "frequency": "Daily",
+            "signal_quality": "Very High",
+            "category": "Public Markets",
+            "notes": "Paywall, deep tech business analysis",
+            "active": true
+          },
+          {
+            "id": "stratechery",
+            "name": "Stratechery",
+            "focus": "Strategy",
+            "author": "Ben Thompson",
+            "url": "https://stratechery.com/",
+            "format": "Paid",
+            "frequency": "Weekly",
+            "signal_quality": "Very High",
+            "category": "Public Markets",
+            "notes": "Paywall, strategic analysis focus",
+            "active": true
+          }
+        ],
+        "vc_funding": [
+          {
+            "id": "pitchbook-news",
+            "name": "PitchBook News",
+            "focus": "Private markets",
+            "url": "https://pitchbook.com/news",
+            "format": "Web/Paid",
+            "frequency": "Daily",
+            "signal_quality": "High",
+            "category": "VC/Funding",
+            "notes": "Private markets data and analysis",
+            "active": true
+          },
+          {
+            "id": "crunchbase-news",
+            "name": "Crunchbase News",
+            "focus": "Funding rounds",
+            "url": "https://news.crunchbase.com/feed/",
+            "format": "Web",
+            "frequency": "Daily",
+            "signal_quality": "Medium",
+            "category": "VC/Funding",
+            "notes": "Funding round tracking",
+            "active": true
+          }
+        ],
+        "ai_investment": [
+          {
+            "id": "ai-newsletter-benaich",
+            "name": "AI Newsletter (Nathan Benaich)",
+            "focus": "AI investment",
+            "author": "Nathan Benaich",
+            "url": "https://newsletter.airstreet.com/",
+            "format": "Newsletter",
+            "frequency": "Monthly",
+            "signal_quality": "High",
+            "category": "AI Investment",
+            "notes": "Air Street Capital, research + investment",
+            "active": true
+          },
+          {
+            "id": "the-diff",
+            "name": "The Diff",
+            "focus": "AI + finance",
+            "author": "Byrne Hobart",
+            "url": "https://www.thediff.co/",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "High",
+            "category": "AI Investment",
+            "notes": "AI + finance focus, quantitative",
+            "active": true
+          },
+          {
+            "id": "semianalysis",
+            "name": "Semianalysis",
+            "focus": "Technical + business",
+            "url": "https://www.semianalysis.com/",
+            "format": "Newsletter",
+            "frequency": "Weekly",
+            "signal_quality": "Very High",
+            "category": "AI Investment",
+            "notes": "Deep technical + business analysis",
+            "active": true
+          }
+        ]
+      }
+    }
+  },
+  "aggregation_tools": [
+    {
+      "name": "FreshRSS",
+      "purpose": "Self-hosted RSS aggregator",
+      "open_source": true,
+      "url": "https://freshrss.org/",
+      "language": "PHP",
+      "maturity": "Mature",
+      "recommended": true
+    },
+    {
+      "name": "Miniflux",
+      "purpose": "Self-hosted RSS aggregator",
+      "open_source": true,
+      "url": "https://miniflux.app/",
+      "language": "Go",
+      "maturity": "Mature",
+      "recommended": true
+    },
+    {
+      "name": "Kill the Newsletter",
+      "purpose": "Email to RSS converter",
+      "open_source": true,
+      "url": "https://kill-the-newsletter.com/",
+      "language": "Unknown",
+      "maturity": "Stable",
+      "recommended": true
+    },
+    {
+      "name": "RSSHub",
+      "purpose": "RSS bridge for any site",
+      "open_source": true,
+      "url": "https://rsshub.app/",
+      "language": "JavaScript",
+      "maturity": "Mature",
+      "recommended": false
+    }
+  ],
+  "mvp_source_set": [
+    "arxiv-cs-ai",
+    "import-ai",
+    "papers-with-code",
+    "this-week-in-rust",
+    "github-changelog",
+    "hacker-news",
+    "techcrunch",
+    "stratechery",
+    "the-information",
+    "openai-blog"
+  ],
+  "metrics": {
+    "by_quality": {
+      "Very High": 12,
+      "High": 18,
+      "Medium-High": 3,
+      "Medium": 9
+    },
+    "by_format": {
+      "RSS": 8,
+      "Blog": 7,
+      "Newsletter": 14,
+      "Web": 4,
+      "Social": 3,
+      "GitHub": 2,
+      "Web/Paid": 3,
+      "Paid": 3
+    },
+    "by_frequency": {
+      "Daily": 8,
+      "Weekly": 10,
+      "Sporadic": 7,
+      "Real-time": 2,
+      "Monthly": 1
+    }
+  }
+}

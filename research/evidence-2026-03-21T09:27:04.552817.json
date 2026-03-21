@@ -1,0 +1,101 @@
+{
+  "created_at": "2026-03-21T09:27:04.552864",
+  "updated_at": "2026-03-21T09:27:49.497100",
+  "claims": {
+    "source-3162": {
+      "claim_id": "source-3162",
+      "claim_text": "Title: The best AI newsletters is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: The best AI newsletters",
+          "source_url": "https://zapier.com/blog/best-ai-newsletters/",
+          "source_tier": "expert",
+          "evidence_text": "Title: The best AI newsletters\n\nURL Source: https://zapier.com/blog/best-ai-newsletters/\n\nPublished Time: September 3, 2025\n\nMarkdown Content:\nAI advancements are happening quicker than I can keep up with them. New models launch weekly, research papers drop daily, and regulatory developments continue to shift the landscape.\n\nCase in point: I discovered and posted about the mysterious [nano-banana (Gemini 2.5 Flash)](https://zapier.\n\n[... Content truncated, total length: 23609 chars]",
+          "accessed_at": "2026-03-21T09:27:49.496371"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:27:49.496332"
+    },
+    "source-31950": {
+      "claim_id": "source-31950",
+      "claim_text": "Title: Best Artificial Intelligence (AI) Newsletters in 2024 is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Best Artificial Intelligence (AI) Newsletters in 2024",
+          "source_url": "https://www.aitimejournal.com/best-artificial-intelligence-ai-newsletters/45115/",
+          "source_tier": "expert",
+          "evidence_text": "Title: Best Artificial Intelligence (AI) Newsletters in 2024\n\nURL Source: https://www.aitimejournal.com/best-artificial-intelligence-ai-newsletters/45115/\n\nPublished Time: 2023-07-05T13:00:00+00:00\n\nMarkdown Content:\n![Image 1](https://www.aitimejournal.com/wp-content/uploads/2023/06/AINewsletterOG-1024x538.png)\nArtificial Intelligence (AI) is a dynamic field that\u2019s revolutionizing various industries and aspects of our lives, with constant advancements and applications emerging.\n\n[... Content truncated, total length: 31385 chars]",
+          "accessed_at": "2026-03-21T09:27:49.496434"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:27:49.496421"
+    },
+    "source-26249": {
+      "claim_id": "source-26249",
+      "claim_text": "Title: 12 AI Newsletters to Keep You Informed on Emerging Technologies and Trends is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: 12 AI Newsletters to Keep You Informed on Emerging Technologies and Trends",
+          "source_url": "https://www.digitalocean.com/resources/articles/ai-newsletters",
+          "source_tier": "expert",
+          "evidence_text": "Title: 12 AI Newsletters to Keep You Informed on Emerging Technologies and Trends\n\nURL Source: https://www.digitalocean.com/resources/articles/ai-newsletters\n\nPublished Time: null\n\nMarkdown Content:\nAI is advancing at a dizzying pace. One day, DeepMind is introducing AlphaFold 2.0, improving the accuracy of protein structure prediction and accelerating progress in fields like drug discovery, and the next, OpenAI is launching GPT-4, an advanced language model.\n\n[... Content truncated, total length: 19026 chars]",
+          "accessed_at": "2026-03-21T09:27:49.496449"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:27:49.496442"
+    },
+    "source-57072": {
+      "claim_id": "source-57072",
+      "claim_text": "Title: What are the Best AI Newsletters for Tech and Business Leaders? is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: What are the Best AI Newsletters for Tech and Business Leaders?",
+          "source_url": "https://www.clickittech.com/ai/best-ai-newsletters/",
+          "source_tier": "expert",
+          "evidence_text": "Title: What are the Best AI Newsletters for Tech and Business Leaders?\n\nURL Source: https://www.clickittech.com/ai/best-ai-newsletters/\n\nPublished Time: 2025-06-18T09:44:00+00:00\n\nMarkdown Content:\nIn 2025, AI is everywhere, from product roadmaps to strategic planning. But the field is so huge and fast-moving that even experts struggle to stay up to date. That\u2019s why the best AI newsletters have exploded in popularity, simplifying complex topics and summarizing new papers, tools, and industry dev\n\n[... Content truncated, total length: 14184 chars]",
+          "accessed_at": "2026-03-21T09:27:49.496461"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:27:49.496456"
+    },
+    "source-9731": {
+      "claim_id": "source-9731",
+      "claim_text": "Title: 10 Best AI Newsletters you must Subscribe to is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: 10 Best AI Newsletters you must Subscribe to",
+          "source_url": "https://www.pillar.security/blog/10-best-ai-newsletters-you-must-subscribe-to",
+          "source_tier": "expert",
+          "evidence_text": "Title: 10 Best AI Newsletters you must Subscribe to\n\nURL Source: https://www.pillar.security/blog/10-best-ai-newsletters-you-must-subscribe-to\n\nMarkdown Content:\n# 10 Best AI Newsletters you must Subscribe to\n\nThis website stores cookies on your computer. These cookies are used to collect information about how you interact with our website and allow us to remember you. We use this information in order to improve and customize your browsing experience and for analytics and metrics about our visit\n\n[... Content truncated, total length: 29917 chars]",
+          "accessed_at": "2026-03-21T09:27:49.496472"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:27:49.496467"
+    }
+  }
+}

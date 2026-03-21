@@ -1,0 +1,101 @@
+{
+  "created_at": "2026-03-21T09:28:27.824674",
+  "updated_at": "2026-03-21T09:28:44.887781",
+  "claims": {
+    "source-91396": {
+      "claim_id": "source-91396",
+      "claim_text": "Title: Venture Capital Financings and Technology Startups is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Venture Capital Financings and Technology Startups",
+          "source_url": "https://vcnewsdaily.com/",
+          "source_tier": "expert",
+          "evidence_text": "Title: Venture Capital Financings and Technology Startups\n\nURL Source: https://vcnewsdaily.com/\n\nMarkdown Content:\n# Venture Capital Financings and Technology Startups - VC News Daily\n\n[![Image 1: Venture Capital News Daily](https://vcnewsdaily.com/images/vcnewslogo3.png)](https://vcnewsdaily.com/)\n\n*   [VC DATABASE](https://vcnewsdaily.com/marketing.php)\n*   [MOBILE APP](https://vcnewsdaily.com/mobile.htm)\n*   [VENTURE SEARCH](https://vcnewsdaily.com/venture-capital-funding/venturetrackr.\n\n[... Content truncated, total length: 16648 chars]",
+          "accessed_at": "2026-03-21T09:28:44.887230"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:44.887199"
+    },
+    "source-71870": {
+      "claim_id": "source-71870",
+      "claim_text": "Title: Venture Capital News | TechCrunch is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Venture Capital News | TechCrunch",
+          "source_url": "https://techcrunch.com/category/venture/",
+          "source_tier": "expert",
+          "evidence_text": "Title: Venture Capital News | TechCrunch\n\nURL Source: https://techcrunch.com/category/venture/\n\nMarkdown Content:\n# Venture Capital News | TechCrunch\n[Skip to content](https://techcrunch.com/category/venture/#wp--skip-link--target)\n\n[![Image 1](https://techcrunch.com/wp-content/uploads/2024/09/tc-lockup.svg)TechCrunch Desktop Logo](https://techcrunch.com/)[![Image 2](https://techcrunch.com/wp-content/uploads/2024/09/tc-logo-mobile.svg)TechCrunch Mobile Logo](https://techcrunch.\n\n[... Content truncated, total length: 23074 chars]",
+          "accessed_at": "2026-03-21T09:28:44.887261"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:44.887254"
+    },
+    "source-47246": {
+      "claim_id": "source-47246",
+      "claim_text": "Title: Tech Funding News | Global technology startup funding news is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Tech Funding News | Global technology startup funding news",
+          "source_url": "https://techfundingnews.com/",
+          "source_tier": "expert",
+          "evidence_text": "Title: Tech Funding News | Global technology startup funding news\n\nURL Source: https://techfundingnews.com/\n\nMarkdown Content:\n# Tech Funding News | Global technology startup funding news\n\nWe value your privacy\n\nWe and our 1581 partners use cookies and other tracking technologies to improve your experience on our website. We may store and/or access information on a device and process personal data, such as your IP address and browsing data, for personalised advertising and content, advertising a\n\n[... Content truncated, total length: 76108 chars]",
+          "accessed_at": "2026-03-21T09:28:44.887280"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:44.887271"
+    },
+    "source-81793": {
+      "claim_id": "source-81793",
+      "claim_text": "Title: All Venture Capital News and Press Releases from PR Newswire is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: All Venture Capital News and Press Releases from PR Newswire",
+          "source_url": "https://www.prnewswire.com/news-releases/financial-services-latest-news/venture-capital-list/",
+          "source_tier": "expert",
+          "evidence_text": "Title: All Venture Capital News and Press Releases from PR Newswire\n\nURL Source: https://www.prnewswire.com/news-releases/financial-services-latest-news/venture-capital-list/\n\nMarkdown Content:\n# All Venture Capital News and Press Releases from PR Newswire\n\n[Close menu](https://www.prnewswire.com/news-releases/financial-services-latest-news/venture-capital-list/#mm-0)\n\n*   [News](https://www.prnewswire.\n\n[... Content truncated, total length: 79602 chars]",
+          "accessed_at": "2026-03-21T09:28:44.887297"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:44.887290"
+    },
+    "source-93725": {
+      "claim_id": "source-93725",
+      "claim_text": "Title: Funding Breaking News and Press Releases from Business Wire is a relevant source",
+      "supporting_evidence": [
+        {
+          "source_name": "Title: Funding Breaking News and Press Releases from Business Wire",
+          "source_url": "https://www.businesswire.com/newsroom/subject/funding",
+          "source_tier": "expert",
+          "evidence_text": "Title: Funding Breaking News and Press Releases from Business Wire\n\nURL Source: https://www.businesswire.com/newsroom/subject/funding\n\nMarkdown Content:\n# Funding Breaking News and Press Releases from Business Wire\n\n[](https://www.businesswire.com/)[Contact Us](https://www.businesswire.com/contact-us)\n\n[Contact Us](https://www.businesswire.com/contact-us)\n\n[](https://www.businesswire.com/)\n\n[Newsroom](https://www.businesswire.\n\n[... Content truncated, total length: 14936 chars]",
+          "accessed_at": "2026-03-21T09:28:44.887308"
+        }
+      ],
+      "refuting_evidence": [],
+      "confidence": "HIGH",
+      "unresolved_uncertainty": "",
+      "notes": "",
+      "sub_claims": [],
+      "created_at": "2026-03-21T09:28:44.887303"
+    }
+  }
+}
