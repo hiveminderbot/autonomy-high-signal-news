@@ -20,6 +20,9 @@ output/*.md
 output/*.json
 artifacts/*.md
 
+# Logs
+logs/*.log
+
 # IDE
 .vscode/
 .idea/
