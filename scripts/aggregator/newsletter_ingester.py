@@ -320,14 +320,91 @@ class NewsletterIngester:
     
     def _ingest_substack_rss(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """Ingest from Substack RSS feed."""
-        # This would use feedparser - for now, return empty
-        # Integration point: can call FeedFetcher for RSS-based newsletters
-        return []
+        return self._ingest_rss_feed(source)
     
     def _ingest_buttondown_rss(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """Ingest from Buttondown RSS feed."""
-        # Buttondown provides RSS feeds similar to Substack
-        return []
+        return self._ingest_rss_feed(source)
+    
+    def _ingest_rss_feed(self, source: NewsletterSource) -> list[NewsletterEntry]:
+        """
+        Ingest from any RSS feed URL.
+        
+        Uses FeedFetcher to fetch and parse the RSS feed, then converts
+        FeedEntry objects to NewsletterEntry objects.
+        
+        Args:
+            source: NewsletterSource with RSS feed URL
+            
+        Returns:
+            List of NewsletterEntry objects
+        """
+        try:
+            # Import here to avoid circular dependencies
+            from aggregator.feed_fetcher import FeedSource, FeedFetcher, FeedCache
+            
+            # Create a FeedSource from the NewsletterSource
+            feed_source = FeedSource(
+                id=source.id,
+                name=source.name,
+                url=source.source_url,
+                format='RSS',
+                category=source.category,
+                domain=source.domain,
+                signal_quality=source.signal_quality,
+                active=source.active
+            )
+            
+            # Use the newsletter cache's db_path for FeedCache
+            feed_cache = FeedCache(self.cache.db_path)
+            feed_cache.save_source(feed_source)
+            
+            # Fetch the RSS feed
+            fetcher = FeedFetcher(feed_cache, min_fetch_interval_seconds=1)
+            feed_entries = fetcher.fetch_rss(feed_source)
+            
+            # Convert FeedEntry objects to NewsletterEntry objects
+            newsletter_entries = []
+            for feed_entry in feed_entries:
+                # Extract links from content if available
+                links = []
+                if feed_entry.content:
+                    links = self.parser.extract_links_from_html(feed_entry.content)
+                
+                # Create NewsletterEntry
+                entry = NewsletterEntry(
+                    id=f"{source.id}-{feed_entry.id}",
+                    title=feed_entry.title,
+                    url=feed_entry.url,
+                    newsletter_id=source.id,
+                    published_at=feed_entry.published_at,
+                    author=feed_entry.author or self._get_author_from_config(source),
+                    content_html=feed_entry.content,
+                    content_text=feed_entry.content or feed_entry.summary,
+                    links=links,
+                    fetched_at=feed_entry.fetched_at
+                )
+                newsletter_entries.append(entry)
+            
+            return newsletter_entries
+            
+        except ImportError as e:
+            # FeedFetcher not available
+            raise RuntimeError(f"RSS ingestion requires feed_fetcher module: {e}")
+        except Exception as e:
+            # Log error and return empty list
+            self.cache.log_ingestion(source.id, 0, False, str(e))
+            raise
+    
+    def _get_author_from_config(self, source: NewsletterSource) -> Optional[str]:
+        """Extract author name from source config if available."""
+        if source.config:
+            try:
+                config = json.loads(source.config)
+                return config.get('author')
+            except json.JSONDecodeError:
+                pass
+        return None
     
     def convert_to_feed_entries(self, newsletter_entries: list[NewsletterEntry]) -> list:
         """

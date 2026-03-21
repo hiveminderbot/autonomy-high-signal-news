@@ -370,6 +370,60 @@ def test_convert_uses_newsletter_url_when_no_links():
         print("✅ test_convert_uses_newsletter_url_when_no_links passed")
 
 
+def test_get_author_from_config():
+    """Test extracting author from source config."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        db_path = Path(tmpdir) / 'test.db'
+        cache = NewsletterCache(db_path)
+        ingester = NewsletterIngester(cache)
+        
+        # Source with author in config
+        source_with_author = NewsletterSource(
+            id='test-newsletter',
+            name='Test Newsletter',
+            provider='substack_rss',
+            source_url='https://test.substack.com/feed',
+            category='Technology',
+            domain='ai',
+            signal_quality='High',
+            config='{"author": "Test Author", "notes": "Test notes"}'
+        )
+        
+        author = ingester._get_author_from_config(source_with_author)
+        assert author == 'Test Author'
+        
+        # Source without author in config
+        source_no_author = NewsletterSource(
+            id='test-newsletter-2',
+            name='Test Newsletter 2',
+            provider='substack_rss',
+            source_url='https://test2.substack.com/feed',
+            category='Technology',
+            domain='ai',
+            signal_quality='High',
+            config='{"notes": "Test notes"}'
+        )
+        
+        author = ingester._get_author_from_config(source_no_author)
+        assert author is None
+        
+        # Source with no config
+        source_no_config = NewsletterSource(
+            id='test-newsletter-3',
+            name='Test Newsletter 3',
+            provider='substack_rss',
+            source_url='https://test3.substack.com/feed',
+            category='Technology',
+            domain='ai',
+            signal_quality='High'
+        )
+        
+        author = ingester._get_author_from_config(source_no_config)
+        assert author is None
+        
+        print("✅ test_get_author_from_config passed")
+
+
 def run_all_tests():
     """Run all newsletter ingester tests."""
     tests = [
@@ -385,6 +439,7 @@ def run_all_tests():
         test_ingestion_logging,
         test_convert_to_feed_entries,
         test_convert_uses_newsletter_url_when_no_links,
+        test_get_author_from_config,
     ]
     
     passed = 0
