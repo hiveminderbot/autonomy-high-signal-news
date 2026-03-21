@@ -1,0 +1,294 @@
+{
+  "version": "1.0",
+  "description": "Blog and web sources requiring HTML scraping (no RSS or RSS is broken)",
+  "sources": [
+    {
+      "id": "hugging-face-papers",
+      "name": "Hugging Face Papers",
+      "url": "https://huggingface.co/papers",
+      "type": "blog_scrape",
+      "frequency": "daily",
+      "category": "AI Research",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://huggingface.co/papers",
+        "article_selector": "[data-target='DailyPaper']",
+        "title_selector": "h3",
+        "link_selector": "a[href^='/papers/']",
+        "author_selector": ".author",
+        "date_selector": "time",
+        "base_url": "https://huggingface.co"
+      },
+      "notes": "Community-upvoted ML papers with discussions"
+    },
+    {
+      "id": "python-insider",
+      "name": "Python Insider",
+      "url": "https://pythoninsider.blogspot.com",
+      "type": "blog_scrape",
+      "frequency": "monthly",
+      "category": "Python Development",
+      "domain": "software_development",
+      "signal_quality": "Very High",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://pythoninsider.blogspot.com",
+        "article_selector": ".post",
+        "title_selector": ".post-title, h3.post-title",
+        "link_selector": ".post-title a, h3.post-title a",
+        "author_selector": ".post-author",
+        "date_selector": ".post-date, .date-header",
+        "base_url": ""
+      },
+      "notes": "Official Python release announcements from Python core team"
+    },
+    {
+      "id": "nodejs-blog",
+      "name": "Node.js Blog",
+      "url": "https://nodejs.org/en/blog",
+      "type": "blog_scrape",
+      "frequency": "weekly",
+      "category": "Node.js Development",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://nodejs.org/en/blog",
+        "article_selector": "article.blog-post",
+        "title_selector": "h2, h3",
+        "link_selector": "h2 a, h3 a",
+        "author_selector": ".author",
+        "date_selector": "time",
+        "base_url": "https://nodejs.org"
+      },
+      "notes": "Official Node.js project blog with releases and security updates"
+    },
+    {
+      "id": "go-blog",
+      "name": "Go Blog",
+      "url": "https://go.dev/blog",
+      "type": "blog_scrape",
+      "frequency": "weekly",
+      "category": "Go Development",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://go.dev/blog/all",
+        "article_selector": ".BlogList-item",
+        "title_selector": ".BlogList-title",
+        "link_selector": ".BlogList-title a",
+        "author_selector": ".BlogList-author",
+        "date_selector": ".BlogList-date",
+        "base_url": "https://go.dev"
+      },
+      "notes": "Official Go programming language blog"
+    },
+    {
+      "id": "react-blog",
+      "name": "React Blog",
+      "url": "https://react.dev/blog",
+      "type": "blog_scrape",
+      "frequency": "monthly",
+      "category": "React Development",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://react.dev/blog",
+        "article_selector": "article",
+        "title_selector": "h2, h3",
+        "link_selector": "a[href^='/blog/']",
+        "author_selector": ".byline",
+        "date_selector": "time",
+        "base_url": "https://react.dev"
+      },
+      "notes": "Official React blog with release notes and best practices"
+    },
+    {
+      "id": "github-changelog",
+      "name": "GitHub Changelog",
+      "url": "https://github.blog/changelog",
+      "type": "blog_scrape",
+      "frequency": "daily",
+      "category": "Platform Updates",
+      "domain": "software_development",
+      "signal_quality": "Very High",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://github.blog/changelog",
+        "article_selector": "article.post-card",
+        "title_selector": "h2, h3",
+        "link_selector": "a.post-card-title-link",
+        "author_selector": ".author",
+        "date_selector": "time",
+        "base_url": "https://github.blog"
+      },
+      "notes": "GitHub platform updates and feature announcements"
+    },
+    {
+      "id": "alphasignal",
+      "name": "AlphaSignal",
+      "url": "https://alphasignal.ai",
+      "type": "newsletter_web",
+      "frequency": "weekly",
+      "category": "AI Research",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "scrape_config": {
+        "archive_url": "https://alphasignal.ai/archive",
+        "article_selector": ".newsletter-item, .archive-item",
+        "title_selector": "h2, h3",
+        "link_selector": "a",
+        "date_selector": ".date, time",
+        "base_url": "https://alphasignal.ai"
+      },
+      "notes": "AI research newsletter - check if public archive exists"
+    },
+    {
+      "id": "the-sequence",
+      "name": "The Sequence",
+      "url": "https://thesequence.substack.com",
+      "type": "newsletter_web",
+      "frequency": "weekly",
+      "category": "AI Research",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "scrape_config": {
+        "archive_url": "https://thesequence.substack.com/archive",
+        "article_selector": ".post",
+        "title_selector": ".post-title",
+        "link_selector": ".post-title a",
+        "date_selector": ".post-date",
+        "base_url": "https://thesequence.substack.com"
+      },
+      "notes": "AI research newsletter - use Substack RSS fallback if available"
+    },
+    {
+      "id": "semianalysis",
+      "name": "SemiAnalysis",
+      "url": "https://www.semianalysis.com",
+      "type": "newsletter_web",
+      "frequency": "weekly",
+      "category": "Semiconductor & AI",
+      "domain": "technology",
+      "signal_quality": "Very High",
+      "active": true,
+      "scrape_config": {
+        "archive_url": "https://www.semianalysis.com/archive",
+        "article_selector": "article, .post",
+        "title_selector": "h1, h2",
+        "link_selector": "a",
+        "date_selector": "time, .date",
+        "base_url": "https://www.semianalysis.com"
+      },
+      "notes": "Dylan Patel's semiconductor and AI infrastructure analysis"
+    },
+    {
+      "id": "the-diff",
+      "name": "The Diff",
+      "url": "https://www.thediff.co",
+      "type": "newsletter_web",
+      "frequency": "daily",
+      "category": "Business & Finance",
+      "domain": "investment",
+      "signal_quality": "High",
+      "active": true,
+      "scrape_config": {
+        "archive_url": "https://www.thediff.co/archive",
+        "article_selector": ".post, article",
+        "title_selector": "h2, h3",
+        "link_selector": "a",
+        "date_selector": "time, .date",
+        "base_url": "https://www.thediff.co"
+      },
+      "notes": "Byrne Hobart's business and finance analysis"
+    }
+  ],
+  "github_trending": [
+    {
+      "id": "github-trending-python",
+      "name": "GitHub Trending Python",
+      "url": "https://github.com/trending/python",
+      "type": "github_trending",
+      "frequency": "daily",
+      "category": "Trending Repositories",
+      "domain": "software_development",
+      "signal_quality": "Medium",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://github.com/trending/python?since=daily",
+        "article_selector": "article.Box-row",
+        "title_selector": "h2 a",
+        "description_selector": "p",
+        "stars_selector": "[href$='/stargazers']",
+        "base_url": "https://github.com"
+      },
+      "notes": "Daily trending Python repositories"
+    },
+    {
+      "id": "github-trending-javascript",
+      "name": "GitHub Trending JavaScript",
+      "url": "https://github.com/trending/javascript",
+      "type": "github_trending",
+      "frequency": "daily",
+      "category": "Trending Repositories",
+      "domain": "software_development",
+      "signal_quality": "Medium",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://github.com/trending/javascript?since=daily",
+        "article_selector": "article.Box-row",
+        "title_selector": "h2 a",
+        "description_selector": "p",
+        "stars_selector": "[href$='/stargazers']",
+        "base_url": "https://github.com"
+      },
+      "notes": "Daily trending JavaScript repositories"
+    },
+    {
+      "id": "github-trending-go",
+      "name": "GitHub Trending Go",
+      "url": "https://github.com/trending/go",
+      "type": "github_trending",
+      "frequency": "daily",
+      "category": "Trending Repositories",
+      "domain": "software_development",
+      "signal_quality": "Medium",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://github.com/trending/go?since=daily",
+        "article_selector": "article.Box-row",
+        "title_selector": "h2 a",
+        "description_selector": "p",
+        "stars_selector": "[href$='/stargazers']",
+        "base_url": "https://github.com"
+      },
+      "notes": "Daily trending Go repositories"
+    },
+    {
+      "id": "github-trending-rust",
+      "name": "GitHub Trending Rust",
+      "url": "https://github.com/trending/rust",
+      "type": "github_trending",
+      "frequency": "daily",
+      "category": "Trending Repositories",
+      "domain": "software_development",
+      "signal_quality": "Medium",
+      "active": true,
+      "scrape_config": {
+        "list_url": "https://github.com/trending/rust?since=daily",
+        "article_selector": "article.Box-row",
+        "title_selector": "h2 a",
+        "description_selector": "p",
+        "stars_selector": "[href$='/stargazers']",
+        "base_url": "https://github.com"
+      },
+      "notes": "Daily trending Rust repositories"
+    }
+  ]
+}

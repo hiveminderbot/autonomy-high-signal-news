@@ -138,6 +138,100 @@
         "author": "Paul Graham",
         "notes": "Essays on startups and technology"
       }
+    },
+    {
+      "id": "alphasignal",
+      "name": "AlphaSignal",
+      "provider": "substack_rss",
+      "source_url": "https://alphasignal.ai/feed",
+      "category": "AI Research",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Daily AI research highlights and paper summaries"
+      }
+    },
+    {
+      "id": "the-sequence",
+      "name": "The Sequence",
+      "provider": "substack_rss",
+      "source_url": "https://thesequence.substack.com/feed",
+      "category": "AI Research & Education",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "AI research newsletter with educational focus"
+      }
+    },
+    {
+      "id": "javascript-weekly",
+      "name": "JavaScript Weekly",
+      "provider": "substack_rss",
+      "source_url": "https://javascriptweekly.com/rss/",
+      "category": "JavaScript Development",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "author": "Cooper Press",
+        "notes": "Weekly JavaScript news and articles"
+      }
+    },
+    {
+      "id": "django-news",
+      "name": "Django News",
+      "provider": "substack_rss",
+      "source_url": "https://django-news.com/rss.xml",
+      "category": "Django Development",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Weekly Django ecosystem news and updates"
+      }
+    },
+    {
+      "id": "this-week-in-rust",
+      "name": "This Week in Rust",
+      "provider": "substack_rss",
+      "source_url": "https://this-week-in-rust.org/rss.xml",
+      "category": "Rust Development",
+      "domain": "software_development",
+      "signal_quality": "Very High",
+      "active": true,
+      "config": {
+        "notes": "Community-curated Rust ecosystem updates"
+      }
+    },
+    {
+      "id": "semianalysis",
+      "name": "SemiAnalysis",
+      "provider": "substack_rss",
+      "source_url": "https://www.semianalysis.com/feed",
+      "category": "Semiconductor & AI",
+      "domain": "technology",
+      "signal_quality": "Very High",
+      "active": true,
+      "config": {
+        "author": "Dylan Patel",
+        "notes": "Semiconductor and AI infrastructure analysis"
+      }
+    },
+    {
+      "id": "the-diff",
+      "name": "The Diff",
+      "provider": "substack_rss",
+      "source_url": "https://www.thediff.co/feed",
+      "category": "Business & Finance",
+      "domain": "investment",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "author": "Byrne Hobart",
+        "notes": "Business and finance analysis"
+      }
     }
   ]
 }
