@@ -44,26 +44,26 @@ Standard RSS/Atom feeds that work with `feed_fetcher.py`.
 
 Newsletter sources using RSS feeds (primarily Substack, Buttondown).
 
-**Implemented (18 sources):**
-| Source | Provider | Domain | Status |
-|--------|----------|--------|--------|
-| Stratechery | substack_rss | technology | ✅ Active |
-| Benedict Evans | buttondown_rss | technology | ✅ Active |
-| Import AI | substack_rss | ai | ✅ Active |
-| The Batch | substack_rss | ai | ✅ Active |
-| AI Supremacy | substack_rss | ai | ✅ Active |
-| TLDR | substack_rss | software_development | ✅ Active |
-| ByteByteGo | substack_rss | software_development | ✅ Active |
-| Lenny's Newsletter | substack_rss | product | ✅ Active |
-| First Round Review | substack_rss | startup | ✅ Active |
-| Paul Graham Essays | substack_rss | startup | ✅ Active |
-| AlphaSignal | substack_rss | ai | ✅ Active |
-| The Sequence | substack_rss | ai | ✅ Active |
-| JavaScript Weekly | substack_rss | software_development | ✅ Active |
-| Django News | substack_rss | software_development | ✅ Active |
-| This Week in Rust | substack_rss | software_development | ✅ Active |
-| SemiAnalysis | substack_rss | technology | ✅ Active |
-| The Diff | substack_rss | investment | ✅ Active |
+**Implemented (16 sources):**
+| Source | Provider | Domain | Status | Notes |
+|--------|----------|--------|--------|-------|
+| Stratechery | substack_rss | technology | ✅ Working | 20 entries fetched |
+| Benedict Evans | buttondown_rss | technology | ⚠️ Not tested | - |
+| Import AI | substack_rss | ai | ✅ Working | 20 entries fetched |
+| The Batch | substack_rss | ai | ❌ 404 | URL needs correction |
+| AI Supremacy | substack_rss | ai | ⚠️ Not tested | - |
+| TLDR Newsletter | substack_rss | software_development | ❌ 404 | URL needs correction |
+| ByteByteGo | substack_rss | software_development | ⚠️ Not tested | - |
+| Lenny's Newsletter | substack_rss | product | ⚠️ Not tested | - |
+| First Round Review | substack_rss | startup | ⚠️ Not tested | - |
+| Paul Graham Essays | substack_rss | startup | ⚠️ Not tested | - |
+| AlphaSignal | substack_rss | ai | ❌ 404 | URL needs correction |
+| The Sequence | substack_rss | ai | ✅ Working | 20 entries fetched |
+| JavaScript Weekly | substack_rss | software_development | ✅ Working | 4 entries fetched |
+| Django News | substack_rss | software_development | ❌ 404 | URL needs correction |
+| This Week in Rust | substack_rss | software_development | ✅ Working | 4 entries fetched |
+| SemiAnalysis | substack_rss | technology | ⚠️ Empty | Feed returned 0 entries |
+| The Diff | substack_rss | investment | ✅ Working | 5 entries fetched |
 
 ### 3. Blog Scraper Catalog (`sources/blog_scraper_catalog.json`)
 
@@ -124,6 +124,19 @@ catalog = Path('sources/newsletter_catalog.json')
 sources = load_newsletter_sources_from_catalog(catalog)
 print(f'Loaded {len(sources)} newsletter sources')
 "
+```
+
+### Pipeline with Newsletter Ingestion
+
+```bash
+# Run full pipeline with newsletter ingestion enabled
+python scripts/aggregator/pipeline.py \
+  --catalog sources/sources-ai.json \
+  --db data/aggregator.db \
+  --blog-catalog sources/blog_scraper_catalog.json \
+  --enable-blog-scraping \
+  --enable-newsletter-ingestion \
+  --verbose
 ```
 
 ### Scraping Blogs
@@ -235,6 +248,12 @@ The sources feed into the aggregation pipeline in this order:
 - ✅ Content extraction enabled for blog entries
 - ✅ Database storage verified (20 entries from Hugging Face Papers)
 
+### Newsletter Ingestion Integration
+- ✅ Pipeline integrates newsletter ingestion via `--enable-newsletter-ingestion` flag
+- ✅ 6 of 10 tested newsletter sources working (Import AI, The Sequence, JavaScript Weekly, This Week in Rust, The Diff, Stratechery)
+- ✅ Deduplication working across newsletters and other sources
+- ✅ Newsletter entries converted to FeedEntry format for unified storage
+
 ### Tested Sources
 | Source | Type | Entries | Status |
 |--------|------|---------|--------|
@@ -242,17 +261,24 @@ The sources feed into the aggregation pipeline in this order:
 | Python Insider | blog_scrape | 7 | ✅ Working |
 | Go Blog | blog_scrape | 20 | ✅ Working |
 | Node.js Blog | blog_scrape | 6 | ✅ Working |
+| Import AI | newsletter_rss | 20 | ✅ Working |
+| The Sequence | newsletter_rss | 20 | ✅ Working |
+| JavaScript Weekly | newsletter_rss | 4 | ✅ Working |
+| This Week in Rust | newsletter_rss | 4 | ✅ Working |
+| The Diff | newsletter_rss | 5 | ✅ Working |
+| Stratechery | newsletter_rss | 20 | ✅ Working |
 
-### Command
+### Command (Full Pipeline)
 ```bash
 python scripts/aggregator/pipeline.py \
   --catalog sources/sources-ai.json \
-  --db-path data/feed_cache.db \
+  --db data/aggregator.db \
   --blog-catalog sources/blog_scraper_catalog.json \
   --enable-blog-scraping \
+  --enable-newsletter-ingestion \
   --verbose
 ```
 
 ## Last Updated
 
-2026-03-21
+2026-03-21 (Newsletter ingestion integration complete)
