@@ -21,6 +21,7 @@ from aggregator.feed_fetcher import (
 )
 from aggregator.content_extractor import ContentExtractor, ExtractedContent
 from aggregator.deduplicator import Deduplicator, SimHash, URLNormalizer, StoryClusterer
+from aggregator.pipeline import AggregationPipeline, PipelineResult, run_pipeline_command
 
 
 def test_init_creates_tables():
@@ -452,7 +453,7 @@ def test_extracted_content_dataclass():
     content = ExtractedContent(
         url='https://example.com/article',
         title='Test Article',
-        author='Test Author',
+        author='***',
         published_at=None,
         content_text='Article content here',
         content_html='<p>Article content here</p>',
@@ -467,6 +468,140 @@ def test_extracted_content_dataclass():
     assert content.title == 'Test Article'
     assert content.word_count == 3
     print("✅ test_extracted_content_dataclass passed")
+
+
+def test_pipeline_initialization():
+    """Test AggregationPipeline initialization."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        pipeline = AggregationPipeline(cache=cache)
+        
+        assert pipeline.cache == cache
+        assert pipeline.fetcher is not None
+        assert pipeline.deduplicator is not None
+        assert pipeline.extract_content is True
+        print("✅ test_pipeline_initialization passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_pipeline_result_dataclass():
+    """Test PipelineResult dataclass."""
+    from datetime import datetime
+    
+    started = datetime.now()
+    completed = datetime.now()
+    
+    result = PipelineResult(
+        started_at=started,
+        completed_at=completed,
+        sources_processed=5,
+        entries_fetched=100,
+        entries_extracted=90,
+        entries_deduplicated=10,
+        entries_stored=80,
+        errors=[]
+    )
+    
+    assert result.sources_processed == 5
+    assert result.entries_fetched == 100
+    assert result.entries_deduplicated == 10
+    
+    # Test to_dict
+    d = result.to_dict()
+    assert d['sources_processed'] == 5
+    assert d['entries_stored'] == 80
+    assert 'duration_seconds' in d
+    print("✅ test_pipeline_result_dataclass passed")
+
+
+def test_pipeline_run_empty_sources():
+    """Test pipeline with no sources."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        pipeline = AggregationPipeline(cache=cache, extract_content=False)
+        
+        # Run with empty sources list
+        result = pipeline.run(sources=[], verbose=False)
+        
+        assert result.sources_processed == 0
+        assert result.entries_fetched == 0
+        assert result.entries_stored == 0
+        assert len(result.errors) == 0
+        print("✅ test_pipeline_run_empty_sources passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_pipeline_deduplication_integration():
+    """Test pipeline deduplication with mock sources."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create test source
+        source = FeedSource(
+            id='test-dedup',
+            name='Test Source',
+            url='https://test.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='High'
+        )
+        cache.save_source(source)
+        
+        # Create pipeline without extraction (faster)
+        pipeline = AggregationPipeline(cache=cache, extract_content=False)
+        
+        # Pre-populate deduplicator with a URL
+        pipeline.deduplicator.add('pre-existing', 'https://test.com/article1', 'Title', 'Content')
+        
+        # Check that duplicate is detected
+        dup_result = pipeline.deduplicator.check_duplicate(
+            'new-id', 'https://test.com/article1', 'Different Title', 'Different content'
+        )
+        
+        assert dup_result.is_duplicate is True
+        assert dup_result.match_type in ['url_match', 'exact']
+        print("✅ test_pipeline_deduplication_integration passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_pipeline_result_to_json():
+    """Test PipelineResult JSON serialization."""
+    import json
+    from datetime import datetime
+    
+    result = PipelineResult(
+        started_at=datetime.now(),
+        completed_at=datetime.now(),
+        sources_processed=3,
+        entries_fetched=50,
+        entries_extracted=45,
+        entries_deduplicated=5,
+        entries_stored=40,
+        errors=['Error 1', 'Error 2']
+    )
+    
+    d = result.to_dict()
+    json_str = json.dumps(d)
+    
+    # Verify it can be round-tripped
+    d2 = json.loads(json_str)
+    assert d2['sources_processed'] == 3
+    assert d2['entries_stored'] == 40
+    assert len(d2['errors']) == 2
+    print("✅ test_pipeline_result_to_json passed")
 
 
 def run_all_tests():
@@ -489,6 +624,11 @@ def run_all_tests():
         test_story_clusterer,
         test_content_extractor_init,
         test_extracted_content_dataclass,
+        test_pipeline_initialization,
+        test_pipeline_result_dataclass,
+        test_pipeline_run_empty_sources,
+        test_pipeline_deduplication_integration,
+        test_pipeline_result_to_json,
     ]
     
     passed = 0
