@@ -19,6 +19,8 @@ from aggregator.feed_fetcher import (
     FeedEntry, FeedSource, FeedCache, FeedFetcher,
     load_sources_from_catalog
 )
+from aggregator.content_extractor import ContentExtractor, ExtractedContent
+from aggregator.deduplicator import Deduplicator, SimHash, URLNormalizer, StoryClusterer
 
 
 def test_init_creates_tables():
@@ -309,6 +311,164 @@ def test_end_to_end_flow():
         db_path.unlink(missing_ok=True)
 
 
+def test_simhash_exact_match():
+    """Test SimHash detects exact duplicates."""
+    simhash = SimHash()
+    
+    text1 = "The quick brown fox jumps over the lazy dog"
+    text2 = "The quick brown fox jumps over the lazy dog"
+    
+    hash1 = simhash.compute(text1)
+    hash2 = simhash.compute(text2)
+    
+    assert hash1 == hash2, "Exact texts should have identical hashes"
+    assert simhash.similarity(hash1, hash2) == 1.0, "Similarity should be 1.0"
+    print("✅ test_simhash_exact_match passed")
+
+
+def test_simhash_similar_text():
+    """Test SimHash detects similar but not identical text."""
+    simhash = SimHash()
+    
+    text1 = "The quick brown fox jumps over the lazy dog in the garden"
+    text2 = "The quick brown fox jumps over a lazy dog in a garden"
+    text3 = "Completely different content about machine learning"
+    
+    hash1 = simhash.compute(text1)
+    hash2 = simhash.compute(text2)
+    hash3 = simhash.compute(text3)
+    
+    sim_12 = simhash.similarity(hash1, hash2)
+    sim_13 = simhash.similarity(hash1, hash3)
+    
+    assert sim_12 > sim_13, f"Similar text should have higher similarity: {sim_12} vs {sim_13}"
+    assert sim_12 > 0.5, f"Similar text should have similarity > 0.5: {sim_12}"
+    print("✅ test_simhash_similar_text passed")
+
+
+def test_url_normalizer():
+    """Test URL normalization."""
+    normalizer = URLNormalizer()
+    
+    # Test cases that should normalize to same value
+    urls = [
+        'https://example.com/article?utm_source=twitter',
+        'http://example.com/article',
+        'https://www.example.com/article/',
+        'https://example.com/article?utm_medium=email&utm_campaign=test',
+    ]
+    
+    normalized = [normalizer.normalize(u) for u in urls]
+    unique = set(normalized)
+    
+    assert len(unique) == 1, f"Expected 1 unique URL, got {len(unique)}: {unique}"
+    print("✅ test_url_normalizer passed")
+
+
+def test_deduplicator_exact_duplicate():
+    """Test deduplicator catches exact duplicates."""
+    dedup = Deduplicator()
+    
+    # First article should not be a duplicate
+    result1 = dedup.check_duplicate('id1', 'https://example.com/article', 'Title', 'Content')
+    assert result1.is_duplicate is False, "First article should not be duplicate"
+    
+    # Add first article
+    dedup.add('id1', 'https://example.com/article', 'Title', 'Content')
+    
+    # Same URL should be duplicate
+    result2 = dedup.check_duplicate('id2', 'https://example.com/article', 'Different', 'Different content')
+    assert result2.is_duplicate is True, "Same URL should be duplicate"
+    
+    # Same content different URL should be duplicate
+    result3 = dedup.check_duplicate('id3', 'https://other.com/article', 'Title', 'Content')
+    assert result3.is_duplicate is True, "Same content should be duplicate"
+    print("✅ test_deduplicator_exact_duplicate passed")
+
+
+def test_deduplicator_stats():
+    """Test deduplicator statistics."""
+    dedup = Deduplicator()
+    
+    stats = dedup.get_stats()
+    assert 'urls_tracked' in stats, "Stats should include urls_tracked"
+    assert 'content_hashes_tracked' in stats, "Stats should include content_hashes_tracked"
+    
+    dedup.add('id1', 'https://example.com/1', 'Title 1', 'Content 1')
+    dedup.add('id2', 'https://example.com/2', 'Title 2', 'Content 2')
+    
+    stats = dedup.get_stats()
+    assert stats['urls_tracked'] == 2, f"Expected 2 URLs tracked, got {stats['urls_tracked']}"
+    assert stats['content_hashes_tracked'] == 2, f"Expected 2 hashes tracked"
+    print("✅ test_deduplicator_stats passed")
+
+
+def test_story_clusterer():
+    """Test story clustering groups related articles."""
+    clusterer = StoryClusterer(similarity_threshold=0.6)
+    
+    articles = [
+        {'id': 'a1', 'title': 'Python 3.12 Released', 'content': 'New features include improved error messages'},
+        {'id': 'a2', 'title': 'Python 3.12 Released Today', 'content': 'The new version brings better performance'},
+        {'id': 'a3', 'title': 'JavaScript Framework Comparison', 'content': 'React vs Vue vs Angular in 2024'},
+        {'id': 'a4', 'title': 'React 19 Announcement', 'content': 'New React features and improvements'},
+    ]
+    
+    clusters = clusterer.cluster(articles)
+    
+    # Should have at least 2 clusters (Python articles clustered, JS/React separate)
+    assert len(clusters) >= 2, f"Expected at least 2 clusters, got {len(clusters)}"
+    
+    # Find Python cluster
+    python_cluster = None
+    for cluster in clusters:
+        ids = {a['id'] for a in cluster}
+        if 'a1' in ids and 'a2' in ids:
+            python_cluster = cluster
+            break
+    
+    assert python_cluster is not None, "Python articles should be clustered together"
+    print("✅ test_story_clusterer passed")
+
+
+def test_content_extractor_init():
+    """Test content extractor initialization."""
+    extractor = ContentExtractor(
+        request_timeout=30,
+        min_fetch_interval=1.0,
+        respect_robots_txt=True
+    )
+    
+    assert extractor.request_timeout == 30
+    assert extractor.min_fetch_interval == 1.0
+    assert extractor.respect_robots_txt is True
+    print("✅ test_content_extractor_init passed")
+
+
+def test_extracted_content_dataclass():
+    """Test ExtractedContent dataclass."""
+    from datetime import datetime
+    
+    content = ExtractedContent(
+        url='https://example.com/article',
+        title='Test Article',
+        author='Test Author',
+        published_at=None,
+        content_text='Article content here',
+        content_html='<p>Article content here</p>',
+        excerpt='Article content...',
+        word_count=3,
+        reading_time_minutes=1,
+        extracted_at=datetime.now(),
+        is_paywalled=False
+    )
+    
+    assert content.url == 'https://example.com/article'
+    assert content.title == 'Test Article'
+    assert content.word_count == 3
+    print("✅ test_extracted_content_dataclass passed")
+
+
 def run_all_tests():
     """Run all tests."""
     tests = [
@@ -321,6 +481,14 @@ def run_all_tests():
         test_fetcher_entry_id_unique,
         test_load_sources_from_catalog,
         test_end_to_end_flow,
+        test_simhash_exact_match,
+        test_simhash_similar_text,
+        test_url_normalizer,
+        test_deduplicator_exact_duplicate,
+        test_deduplicator_stats,
+        test_story_clusterer,
+        test_content_extractor_init,
+        test_extracted_content_dataclass,
     ]
     
     passed = 0
