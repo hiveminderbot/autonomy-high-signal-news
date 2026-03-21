@@ -31,11 +31,11 @@
 
 ## Phase 2: Aggregation Pipeline
 
-- [ ] Build RSS feed aggregator
-- [ ] Implement newsletter ingestion
-- [ ] Create deduplication system
-- [ ] Build content extraction pipeline
-- [ ] Design storage schema for articles
+- [x] Build RSS feed aggregator → `scripts/aggregator/feed_fetcher.py`
+- [x] Implement newsletter ingestion → `scripts/aggregator/newsletter_ingester.py`
+- [x] Create deduplication system → `scripts/aggregator/deduplicator.py`
+- [x] Build content extraction pipeline → `scripts/aggregator/content_extractor.py`
+- [x] Design storage schema for articles → `scripts/aggregator/storage.py`
 
 ## Phase 3: Summarization Engine
 
