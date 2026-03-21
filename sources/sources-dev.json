@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": "1.0.0",
-    "created_at": "2026-03-21",
+    "updated_at": "2026-03-21",
     "domain": "software-development",
     "source_count": 14,
     "quality_criteria": [
@@ -25,12 +25,13 @@
       },
       {
         "name": "Python Weekly",
-        "url": "https://www.pythonweekly.com/rss.xml",
-        "type": "rss",
+        "url": "https://www.pythonweekly.com/",
+        "type": "scraper",
         "frequency": "weekly",
         "focus": "Python ecosystem news",
         "quality_score": 8,
-        "notes": "BLOCKED: Cloudflare protection prevents RSS access. Use Python Insider or Django News instead."
+        "notes": "Cloudflare blocked - RSS unavailable. Use Python Insider or Django News instead.",
+        "disabled": true
       }
     ],
     "javascript": [

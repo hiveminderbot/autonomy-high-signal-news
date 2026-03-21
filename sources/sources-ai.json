@@ -1,9 +1,9 @@
 {
   "metadata": {
     "version": "1.0.0",
-    "created_at": "2026-03-21",
+    "updated_at": "2026-03-21",
     "domain": "artificial-intelligence",
-    "source_count": 15,
+    "source_count": 13,
     "quality_criteria": [
       "Regular publication schedule (at least weekly)",
       "Technical depth appropriate for practitioners",
@@ -42,12 +42,13 @@
     },
     {
       "name": "Papers with Code",
-      "url": "https://paperswithcode.com/rss",
-      "type": "rss",
+      "url": "https://paperswithcode.com/",
+      "type": "scraper",
       "frequency": "daily",
       "focus": "Research papers with implementations",
       "quality_score": 9,
-      "notes": "BROKEN: Returns HTML instead of RSS. Use Hugging Face Papers or arXiv instead."
+      "notes": "HTML scraper - RSS discontinued (redirects to HF). Use arXiv or HF blog instead.",
+      "disabled": true
     },
     {
       "name": "Towards Data Science",
@@ -59,22 +60,22 @@
       "notes": "Medium publication with practical ML tutorials and case studies"
     },
     {
-      "name": "Hugging Face Papers",
-      "url": "https://huggingface.co/papers/rss",
+      "name": "Hugging Face Blog",
+      "url": "https://huggingface.co/blog/feed.xml",
       "type": "rss",
       "frequency": "daily",
-      "focus": "Trending ML papers",
+      "focus": "Hugging Face updates and ML articles",
       "quality_score": 8,
-      "notes": "Community-upvoted papers, good signal for importance"
+      "notes": "HF blog with papers, tools, and community updates"
     },
     {
       "name": "Google AI Blog",
-      "url": "https://ai.googleblog.com/feeds/posts/default",
+      "url": "https://blog.google/technology/ai/rss/",
       "type": "rss",
       "frequency": "weekly",
       "focus": "Google AI research and products",
       "quality_score": 8,
-      "notes": "Industry research from Google"
+      "notes": "Google AI blog RSS feed"
     },
     {
       "name": "OpenAI Blog",
@@ -87,21 +88,26 @@
     },
     {
       "name": "Anthropic Research",
-      "url": "https://www.anthropic.com/research/rss.xml",
-      "type": "rss",
+      "url": "https://www.anthropic.com/research",
+      "type": "scraper",
       "frequency": "weekly",
       "focus": "AI safety and capabilities research",
       "quality_score": 9,
-      "notes": "High-quality interpretability and safety research"
+      "notes": "HTML scraper - no RSS available. High-quality interpretability and safety research.",
+      "scraper_config": {
+        "list_selector": "a[href^='/research/']",
+        "title_selector": "h3",
+        "url_pattern": "https://www.anthropic.com/research/{slug}"
+      }
     },
     {
       "name": "DeepMind Blog",
-      "url": "https://deepmind.google/blog/rss/",
+      "url": "https://deepmind.com/blog/feed/basic/",
       "type": "rss",
       "frequency": "weekly",
       "focus": "DeepMind research and applications",
       "quality_score": 9,
-      "notes": "Google DeepMind research across AI domains"
+      "notes": "Google DeepMind research blog"
     },
     {
       "name": "AI Alignment Forum",

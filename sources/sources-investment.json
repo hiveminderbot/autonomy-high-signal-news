@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": "1.0.0",
-    "created_at": "2026-03-21",
+    "updated_at": "2026-03-21",
     "domain": "investment",
     "source_count": 16,
     "quality_criteria": [
@@ -102,12 +102,17 @@
     },
     {
       "name": "First Round Review",
-      "url": "https://review.firstround.com/rss",
-      "type": "rss",
+      "url": "https://review.firstround.com/",
+      "type": "scraper",
       "frequency": "weekly",
       "focus": "VC insights and startup guidance",
       "quality_score": 9,
-      "notes": "High-quality VC perspective from First Round Capital"
+      "notes": "HTML scraper - RSS discontinued. High-quality VC perspective from First Round Capital.",
+      "scraper_config": {
+        "list_selector": "a[href*='/article/']",
+        "title_selector": "h2, h3",
+        "url_pattern": "https://review.firstround.com{path}"
+      }
     },
     {
       "name": "NFX Signal",
