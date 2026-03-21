@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-03-21T13:56:19.138328+00:00",
+  "tests": {
+    "source_catalog": {
+      "passed": true,
+      "counts": {
+        "rss": 31,
+        "newsletter": 17,
+        "github": 2,
+        "total": 50
+      },
+      "message": "Found 50 sources (target: 50+)"
+    },
+    "feed_fetcher": {
+      "passed": false,
+      "successful": 0,
+      "failed": 3,
+      "total_entries": 0,
+      "errors": [
+        "arXiv cs.AI: No entries returned",
+        "Papers with Code: No entries returned",
+        "Python Weekly: No entries returned"
+      ],
+      "message": "Fetched 0 entries from 0/3 feeds"
+    },
+    "deduplication": {
+      "passed": true,
+      "duplicates_detected": 2,
+      "unique_entries": 2,
+      "message": "Detected 2 duplicates, 2 unique entries"
+    },
+    "content_extraction": {
+      "passed": true,
+      "checks_passed": 3,
+      "total_checks": 3,
+      "message": "3/3 extraction checks passed"
+    },
+    "storage": {
+      "passed": true,
+      "checks_passed": 4,
+      "total_checks": 4,
+      "message": "4/4 storage checks passed"
+    },
+    "performance": {
+      "passed": true,
+      "test_duration": 0.02,
+      "estimated_full_run": 0.1,
+      "target_seconds": 300,
+      "message": "Estimated full run: 0.1s (target: <300s)"
+    }
+  },
+  "summary": {
+    "total_tests": 6,
+    "passed": 5,
+    "failed": 1,
+    "pass_rate": "5/6"
+  }
+}

@@ -267,10 +267,10 @@ class IntegrationTest:
                 summary="Test summary",
                 content="Test content"
             )
-            article_id = storage.save_article(article)
+            saved = storage.save_article(article)
 
-            # Test retrieval
-            article = storage.get_article(article_id)
+            # Test retrieval using the original article ID
+            article = storage.get_article("test-article-1")
 
             # Test search
             results = storage.search_articles("Test")
@@ -279,7 +279,7 @@ class IntegrationTest:
             stats = storage.get_stats()
 
             checks = [
-                (article_id is not None, "Article saved"),
+                (saved, "Article saved"),
                 (article is not None, "Article retrieved"),
                 (len(results) > 0, "Search works"),
                 (stats["total_articles"] == 1, "Stats accurate"),
