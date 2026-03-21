@@ -30,7 +30,7 @@
         "frequency": "weekly",
         "focus": "Python ecosystem news",
         "quality_score": 8,
-        "notes": "Curated Python articles and releases"
+        "notes": "BLOCKED: Cloudflare protection prevents RSS access. Use Python Insider or Django News instead."
       }
     ],
     "javascript": [

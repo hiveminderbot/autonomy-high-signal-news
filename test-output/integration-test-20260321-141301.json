@@ -1,0 +1,56 @@
+{
+  "timestamp": "2026-03-21T14:12:51.094633+00:00",
+  "tests": {
+    "source_catalog": {
+      "passed": true,
+      "counts": {
+        "rss": 32,
+        "newsletter": 17,
+        "github": 2,
+        "total": 51
+      },
+      "message": "Found 51 sources (target: 50+)"
+    },
+    "feed_fetcher": {
+      "passed": true,
+      "successful": 2,
+      "failed": 1,
+      "total_entries": 50,
+      "errors": [
+        "arXiv cs.AI: No entries returned"
+      ],
+      "message": "Fetched 50 entries from 2/3 feeds"
+    },
+    "deduplication": {
+      "passed": true,
+      "duplicates_detected": 2,
+      "unique_entries": 2,
+      "message": "Detected 2 duplicates, 2 unique entries"
+    },
+    "content_extraction": {
+      "passed": true,
+      "checks_passed": 3,
+      "total_checks": 3,
+      "message": "3/3 extraction checks passed"
+    },
+    "storage": {
+      "passed": true,
+      "checks_passed": 4,
+      "total_checks": 4,
+      "message": "4/4 storage checks passed"
+    },
+    "performance": {
+      "passed": true,
+      "test_duration": 0.02,
+      "estimated_full_run": 0.1,
+      "target_seconds": 300,
+      "message": "Estimated full run: 0.1s (target: <300s)"
+    }
+  },
+  "summary": {
+    "total_tests": 6,
+    "passed": 6,
+    "failed": 0,
+    "pass_rate": "6/6"
+  }
+}

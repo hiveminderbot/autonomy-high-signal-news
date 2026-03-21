@@ -95,10 +95,12 @@ class IntegrationTest:
         print("\n🧪 Testing feed fetcher with real sources...")
 
         # Use a small sample of reliable feeds for testing
+        # Note: arXiv is empty on weekends (skipDays), Papers with Code RSS discontinued,
+        # Python Weekly blocked by Cloudflare - using reliable alternatives
         test_feeds = [
-            {"name": "arXiv cs.AI", "url": "https://rss.arxiv.org/rss/cs.AI"},
-            {"name": "Papers with Code", "url": "https://paperswithcode.com/rss"},
-            {"name": "Python Weekly", "url": "https://www.pythonweekly.com/rss.xml"},
+            {"name": "Hacker News", "url": "https://news.ycombinator.com/rss"},
+            {"name": "TechCrunch", "url": "https://techcrunch.com/feed/"},
+            {"name": "arXiv cs.AI", "url": "https://rss.arxiv.org/rss/cs.AI"},  # May be empty on weekends
         ]
 
         # Create temporary cache

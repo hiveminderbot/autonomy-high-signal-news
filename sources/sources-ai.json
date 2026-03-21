@@ -47,7 +47,16 @@
       "frequency": "daily",
       "focus": "Research papers with implementations",
       "quality_score": 9,
-      "notes": "Papers that include code - higher practical value"
+      "notes": "BROKEN: Returns HTML instead of RSS. Use Hugging Face Papers or arXiv instead."
+    },
+    {
+      "name": "Towards Data Science",
+      "url": "https://towardsdatascience.com/feed",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Applied ML and data science articles",
+      "quality_score": 7,
+      "notes": "Medium publication with practical ML tutorials and case studies"
     },
     {
       "name": "Hugging Face Papers",
