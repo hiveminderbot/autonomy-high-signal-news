@@ -14,7 +14,9 @@
     },
     "aggregation_pipeline": {
       "status": "in_progress",
-      "description": "Build feed aggregation and deduplication system"
+      "description": "Build feed aggregation and deduplication system",
+      "deliverables_complete": 3,
+      "deliverables_total": 5
     },
     "summarization_engine": {
       "status": "pending",
@@ -42,7 +44,9 @@
       "status": "in_progress",
       "deliverables": [
         "feed_fetcher.py - RSS/Atom feed fetching with SQLite caching",
-        "tests/test_aggregation_pipeline.py - Unit tests"
+        "content_extractor.py - HTML-to-text extraction with paywall detection",
+        "deduplicator.py - SimHash near-duplicate detection",
+        "tests/test_aggregation_pipeline.py - 17 unit tests, all passing"
       ]
     },
     "summarization_module": {
