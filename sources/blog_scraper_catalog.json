@@ -14,14 +14,14 @@
       "active": true,
       "scrape_config": {
         "list_url": "https://huggingface.co/papers",
-        "article_selector": "[data-target='DailyPaper']",
+        "article_selector": "article",
         "title_selector": "h3",
-        "link_selector": "a[href^='/papers/']",
-        "author_selector": ".author",
-        "date_selector": "time",
+        "link_selector": "h3 a[href^='/papers/']",
+        "author_selector": null,
+        "date_selector": null,
         "base_url": "https://huggingface.co"
       },
-      "notes": "Community-upvoted ML papers with discussions"
+      "notes": "Community-upvoted ML papers. Uses SSR with <article> tags for each paper. May need JS rendering fallback."
     },
     {
       "id": "python-insider",
@@ -35,14 +35,14 @@
       "active": true,
       "scrape_config": {
         "list_url": "https://pythoninsider.blogspot.com",
-        "article_selector": ".post",
-        "title_selector": ".post-title, h3.post-title",
-        "link_selector": ".post-title a, h3.post-title a",
-        "author_selector": ".post-author",
-        "date_selector": ".post-date, .date-header",
+        "article_selector": ".date-outer",
+        "title_selector": "h3 a",
+        "link_selector": "h3 a",
+        "author_selector": null,
+        "date_selector": ".date-header",
         "base_url": ""
       },
-      "notes": "Official Python release announcements from Python core team"
+      "notes": "Official Python release announcements. Blogger template uses .date-outer for posts."
     },
     {
       "id": "nodejs-blog",
@@ -56,14 +56,14 @@
       "active": true,
       "scrape_config": {
         "list_url": "https://nodejs.org/en/blog",
-        "article_selector": "article.blog-post",
-        "title_selector": "h2, h3",
-        "link_selector": "h2 a, h3 a",
-        "author_selector": ".author",
+        "article_selector": "article[class*='container']",
+        "title_selector": "a[aria-label]",
+        "link_selector": "a[aria-label]",
+        "author_selector": "p",
         "date_selector": "time",
         "base_url": "https://nodejs.org"
       },
-      "notes": "Official Node.js project blog with releases and security updates"
+      "notes": "Official Node.js blog. Uses CSS modules with hashed class names. Selector uses attribute contains pattern."
     },
     {
       "id": "go-blog",
@@ -77,14 +77,14 @@
       "active": true,
       "scrape_config": {
         "list_url": "https://go.dev/blog/all",
-        "article_selector": ".BlogList-item",
-        "title_selector": ".BlogList-title",
-        "link_selector": ".BlogList-title a",
-        "author_selector": ".BlogList-author",
-        "date_selector": ".BlogList-date",
+        "article_selector": ".blogtitle",
+        "title_selector": "a",
+        "link_selector": "a",
+        "author_selector": ".author",
+        "date_selector": ".date",
         "base_url": "https://go.dev"
       },
-      "notes": "Official Go programming language blog"
+      "notes": "Official Go programming language blog. Uses <p class=blogtitle> with nested <a>, <span class=date>, <span class=author>."
     },
     {
       "id": "react-blog",
@@ -95,17 +95,17 @@
       "category": "React Development",
       "domain": "software_development",
       "signal_quality": "High",
-      "active": true,
+      "active": false,
       "scrape_config": {
         "list_url": "https://react.dev/blog",
-        "article_selector": "article",
-        "title_selector": "h2, h3",
-        "link_selector": "a[href^='/blog/']",
-        "author_selector": ".byline",
-        "date_selector": "time",
+        "article_selector": null,
+        "title_selector": null,
+        "link_selector": null,
+        "author_selector": null,
+        "date_selector": null,
         "base_url": "https://react.dev"
       },
-      "notes": "Official React blog with release notes and best practices"
+      "notes": "Official React blog. JS-rendered content - requires headless browser or API. Disabled until JS rendering is implemented."
     },
     {
       "id": "github-changelog",
