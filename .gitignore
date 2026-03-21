@@ -1,0 +1,27 @@
+# Runtime data
+state/feeds.db
+state/*.db
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+
+# Output files
+output/*.md
+output/*.json
+artifacts/*.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
