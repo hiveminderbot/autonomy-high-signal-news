@@ -1,0 +1,35 @@
+[Unit]
+Description=High-Signal News Daily Aggregation
+Documentation=https://forgejo.internal/autonomy/high-signal-news
+After=network.target
+
+[Service]
+Type=oneshot
+User=autonomy
+Group=autonomy
+WorkingDirectory=/home/autonomy/labs/high-signal-news
+Environment="PATH=/home/autonomy/.local/bin:/usr/bin:/bin"
+Environment="PYTHONPATH=/home/autonomy/labs/high-signal-news/scripts"
+Environment="BEADS_DIR=/home/autonomy/autonomy/.beads"
+
+# Run the daily aggregation
+ExecStart=/home/autonomy/labs/high-signal-news/.venv/bin/python \
+    scripts/run_daily_aggregation.py \
+    --db state/aggregation.db \
+    --newsletter-db state/newsletters.db \
+    --catalog sources/sources-ai.json \
+    --newsletter-catalog sources/newsletter_catalog.json \
+    --output-dir output \
+    --log-dir logs
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/autonomy/labs/high-signal-news/state \
+               /home/autonomy/labs/high-signal-news/output \
+               /home/autonomy/labs/high-signal-news/logs
+
+[Install]
+WantedBy=multi-user.target

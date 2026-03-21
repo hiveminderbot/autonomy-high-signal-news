@@ -1,0 +1,16 @@
+[Unit]
+Description=Run High-Signal News aggregation daily at 6:00 AM
+Documentation=https://forgejo.internal/autonomy/high-signal-news
+
+[Timer]
+# Run daily at 6:00 AM (before morning briefing time)
+OnCalendar=*-*-* 06:00:00
+
+# Randomize start time by up to 10 minutes to avoid thundering herd
+RandomizedDelaySec=10m
+
+# Ensure timer runs if system was off during scheduled time
+Persistent=true
+
+[Install]
+WantedBy=timers.target
