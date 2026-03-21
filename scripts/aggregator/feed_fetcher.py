@@ -451,7 +451,7 @@ class FeedFetcher:
                     source_id=source.id,
                     published_at=published,
                     summary=summary,
-                    author=entry.get('author'),
+                    author=entry.get("author"),
                     content=content,
                     fetched_at=datetime.now()
                 )
@@ -520,21 +520,37 @@ def load_sources_from_catalog(catalog_path: Path) -> list[FeedSource]:
         catalog = json.load(f)
     
     sources = []
-    for domain_key, domain_data in catalog.get('domains', {}).items():
-        for category, items in domain_data.get('sources', {}).items():
-            for item in items:
-                if 'url' in item and item.get('active', False):
+    domain = catalog.get('metadata', {}).get('domain', 'unknown')
+    
+    def _extract_sources(data, category_hint='General'):
+        """Recursively extract feed sources from nested JSON structure."""
+        if isinstance(data, list):
+            for item in data:
+                if isinstance(item, dict) and 'url' in item and 'name' in item:
+                    # Generate ID from name (slugify)
+                    item_id = item['name'].lower().replace(' ', '-').replace('.', '-').replace('/', '-')
                     source = FeedSource(
-                        id=item['id'],
+                        id=item_id,
                         name=item['name'],
                         url=item['url'],
-                        format=item.get('format', 'RSS').upper(),
-                        category=item.get('category', category),
-                        domain=domain_key,
-                        signal_quality=item.get('signal_quality', 'Medium'),
-                        active=item.get('active', True)
+                        format=item.get('type', item.get('format', 'RSS')).upper(),
+                        category=item.get('focus', item.get('category', category_hint)),
+                        domain=domain,
+                        signal_quality='High' if item.get('quality_score', 0) >= 8 else 'Medium',
+                        active=True
                     )
                     sources.append(source)
+                elif isinstance(item, (dict, list)):
+                    _extract_sources(item, category_hint)
+        elif isinstance(data, dict):
+            for key, value in data.items():
+                if isinstance(value, (dict, list)) and key != 'metadata':
+                    _extract_sources(value, key.replace('_', ' ').title())
+    
+    # Extract from all non-metadata sections
+    for key, value in catalog.items():
+        if key != 'metadata':
+            _extract_sources(value, key.replace('_', ' ').title())
     
     return sources
 
