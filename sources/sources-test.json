@@ -1,0 +1,56 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "updated_at": "2026-03-21",
+    "domain": "test",
+    "description": "Reliable high-volume feeds for testing the aggregation pipeline",
+    "source_count": 5
+  },
+  "rss_feeds": [
+    {
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com/rss",
+      "type": "rss",
+      "frequency": "hourly",
+      "focus": "Tech news and discussions",
+      "quality_score": 8,
+      "notes": "High-volume feed, always has content"
+    },
+    {
+      "name": "BBC Technology",
+      "url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+      "type": "rss",
+      "frequency": "hourly",
+      "focus": "Technology news",
+      "quality_score": 7,
+      "notes": "Reliable mainstream tech news"
+    },
+    {
+      "name": "Hugging Face Blog",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Hugging Face updates and ML articles",
+      "quality_score": 8,
+      "notes": "ML tooling and research blog"
+    },
+    {
+      "name": "Towards Data Science",
+      "url": "https://towardsdatascience.com/feed",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Applied ML and data science articles",
+      "quality_score": 7,
+      "notes": "Medium publication with practical ML content"
+    },
+    {
+      "name": "Google AI Blog",
+      "url": "https://blog.google/technology/ai/rss/",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Google AI research and products",
+      "quality_score": 8,
+      "notes": "Official Google AI blog"
+    }
+  ]
+}
