@@ -223,12 +223,14 @@ class FeedCache:
 
 
 class FeedFetcher:
-    """Main feed fetcher with rate limiting and caching."""
+    """Main feed fetcher with rate limiting, caching, and health monitoring."""
     
-    def __init__(self, cache: FeedCache, min_fetch_interval_seconds: int = 5):
+    def __init__(self, cache: FeedCache, min_fetch_interval_seconds: int = 5, 
+                 health_monitor=None):
         self.cache = cache
         self.min_fetch_interval = min_fetch_interval_seconds
         self.last_fetch_time: Optional[float] = None
+        self.health_monitor = health_monitor
     
     def _rate_limit(self):
         """Enforce minimum interval between fetches."""
@@ -243,8 +245,52 @@ class FeedFetcher:
         content = f"{url}:{title}".encode('utf-8')
         return hashlib.sha256(content).hexdigest()[:16]
     
+    # Default headers to avoid bot detection
+    DEFAULT_HEADERS = {
+        'User-Agent': 'HighSignalNews/1.0 (Research Aggregator; https://github.com/exedev/high-signal-news)'
+    }
+    
+    # Retry configuration
+    MAX_RETRIES = 3
+    RETRY_DELAY_BASE = 1  # Base delay in seconds (1s, 2s, 4s)
+    
+    def _fetch_with_retry(self, url: str, headers: dict = None) -> tuple[bytes, int]:
+        """Fetch URL with exponential backoff retry logic.
+        
+        Returns:
+            Tuple of (content_bytes, response_time_ms)
+        """
+        if not REQUESTS_AVAILABLE:
+            raise RuntimeError("requests library required for fetching")
+        
+        request_headers = {**self.DEFAULT_HEADERS, **(headers or {})}
+        last_error = None
+        
+        for attempt in range(self.MAX_RETRIES):
+            try:
+                start_time = time.time()
+                response = requests.get(
+                    url, 
+                    headers=request_headers, 
+                    timeout=30,
+                    allow_redirects=True
+                )
+                response.raise_for_status()
+                response_time = int((time.time() - start_time) * 1000)
+                return response.content, response_time
+                
+            except requests.exceptions.RequestException as e:
+                last_error = e
+                if attempt < self.MAX_RETRIES - 1:
+                    delay = self.RETRY_DELAY_BASE * (2 ** attempt)
+                    time.sleep(delay)
+                continue
+        
+        # All retries exhausted
+        raise last_error or RuntimeError(f"Failed to fetch {url} after {self.MAX_RETRIES} attempts")
+    
     def fetch_rss(self, source: FeedSource) -> list[FeedEntry]:
-        """Fetch and parse an RSS/Atom feed."""
+        """Fetch and parse an RSS/Atom feed with retry logic."""
         if not FEEDPARSER_AVAILABLE:
             raise RuntimeError("feedparser library required for RSS fetching")
         
@@ -252,7 +298,15 @@ class FeedFetcher:
         start_time = time.time()
         
         try:
-            parsed = feedparser.parse(source.url)
+            # Use requests with retry logic and proper headers
+            content, response_time = self._fetch_with_retry(source.url)
+            parsed = feedparser.parse(content)
+            
+            # Check for feedparser-level errors
+            if hasattr(parsed, 'bozo') and parsed.bozo:
+                # Log but don't fail - many feeds have minor issues
+                pass
+            
             entries = []
             
             for entry in parsed.entries:
@@ -285,14 +339,28 @@ class FeedFetcher:
                 )
                 entries.append(feed_entry)
             
-            response_time = int((time.time() - start_time) * 1000)
-            self.cache.log_fetch(source.id, len(entries), True, response_time_ms=response_time)
+            # Use response_time from _fetch_with_retry or calculate locally
+            if 'response_time' in dir():
+                fetch_time = response_time
+            else:
+                fetch_time = int((time.time() - start_time) * 1000)
+            
+            self.cache.log_fetch(source.id, len(entries), True, response_time_ms=fetch_time)
+            
+            # Update health status
+            if self.health_monitor:
+                self.health_monitor.update_health_status(source.id, True)
             
             return entries
             
         except Exception as e:
-            response_time = int((time.time() - start_time) * 1000)
-            self.cache.log_fetch(source.id, 0, False, str(e), response_time)
+            fetch_time = int((time.time() - start_time) * 1000)
+            self.cache.log_fetch(source.id, 0, False, str(e), fetch_time)
+            
+            # Update health status
+            if self.health_monitor:
+                self.health_monitor.update_health_status(source.id, False, str(e))
+            
             raise
     
     def fetch_source(self, source: FeedSource) -> list[FeedEntry]:
@@ -362,12 +430,23 @@ def main():
                         help='Filter by domain')
     parser.add_argument('--init', action='store_true', 
                         help='Initialize with sources from catalog')
+    parser.add_argument('--health-report', action='store_true',
+                        help='Generate health report after fetching')
+    parser.add_argument('--validate-source', help='Validate a feed URL before adding')
     
     args = parser.parse_args()
     
     # Ensure state directory exists
     db_path = Path(args.db)
     db_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Handle validation mode
+    if args.validate_source:
+        from aggregator.health_monitor import FeedHealthMonitor
+        monitor = FeedHealthMonitor(db_path)
+        result = monitor.validate_feed(args.validate_source)
+        print(json.dumps(result, indent=2))
+        return 0 if result['valid'] else 1
     
     cache = FeedCache(db_path)
     
@@ -378,17 +457,55 @@ def main():
             return 1
         
         sources = load_sources_from_catalog(catalog_path)
+        
+        # Validate sources before adding if health_monitor available
+        from aggregator.health_monitor import FeedHealthMonitor
+        monitor = FeedHealthMonitor(db_path)
+        
+        valid_sources = []
         for source in sources:
+            print(f"Validating {source.name}...", end=' ')
+            validation = monitor.validate_feed(source.url)
+            if validation['valid']:
+                print("✅")
+                valid_sources.append(source)
+            else:
+                print(f"❌ ({validation.get('error', 'Unknown error')})")
+        
+        for source in valid_sources:
             cache.save_source(source)
             print(f"Registered: {source.name} ({source.id})")
-        print(f"\nTotal sources: {len(sources)}")
+        print(f"\nTotal sources: {len(valid_sources)} (validated)")
         return 0
     
-    fetcher = FeedFetcher(cache)
+    # Initialize health monitor if available
+    try:
+        from aggregator.health_monitor import FeedHealthMonitor
+        health_monitor = FeedHealthMonitor(db_path)
+    except ImportError:
+        health_monitor = None
+    
+    fetcher = FeedFetcher(cache, health_monitor=health_monitor)
     results = fetcher.fetch_all(domain=args.domain)
     
     total = sum(len(entries) for entries in results.values())
     print(f"\nTotal entries fetched: {total}")
+    
+    # Generate health report if requested
+    if args.health_report and health_monitor:
+        print("\n" + "=" * 60)
+        print("📊 Health Report")
+        print("=" * 60)
+        report = health_monitor.generate_health_report(domain=args.domain)
+        print(f"Healthy: {report['summary']['healthy']}")
+        print(f"Degraded: {report['summary']['degraded']}")
+        print(f"Unhealthy: {report['summary']['unhealthy']}")
+        
+        if report['problematic_feeds']:
+            print("\nProblematic feeds:")
+            for feed in report['problematic_feeds']:
+                print(f"  - {feed['source_name']}: {feed['status']}")
+    
     return 0
 
 
