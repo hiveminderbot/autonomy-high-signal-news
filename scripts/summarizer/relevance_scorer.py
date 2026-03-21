@@ -34,6 +34,14 @@ class RelevanceScore:
 class RelevanceScorer:
     """Score articles by relevance for the daily briefing."""
     
+    # Tier thresholds for ranking (score ranges)
+    TIER_THRESHOLDS = {
+        'must_read': 85,
+        'important': 70,
+        'contextual': 50,
+        'skip': 0,
+    }
+    
     # Source quality ratings (0-100)
     SOURCE_QUALITY = {
         'arXiv': 95,
@@ -328,6 +336,32 @@ class RelevanceScorer:
         ]
         
         return filtered[:max_stories]
+    
+    def filter_by_tier(self, scores: list[RelevanceScore], 
+                       tiers: list[str]) -> list[RelevanceScore]:
+        """
+        Filter relevance scores by ranking tier.
+        
+        Args:
+            scores: List of RelevanceScore objects
+            tiers: List of tiers to include (e.g., ['must_read', 'important'])
+        
+        Returns:
+            Filtered list of RelevanceScore objects
+        """
+        return [score for score in scores if score.ranking_tier in tiers]
+    
+    def score_all_stories(self, stories: list[dict]) -> dict[str, RelevanceScore]:
+        """
+        Batch score multiple stories and return as a dict.
+        
+        Args:
+            stories: List of story dicts
+        
+        Returns:
+            Dict mapping story_id to RelevanceScore
+        """
+        return {story.get('id', 'unknown'): self.score_story(story) for story in stories}
 
 
 def calculate_domain_distribution(stories: list[dict]) -> dict[str, int]:
