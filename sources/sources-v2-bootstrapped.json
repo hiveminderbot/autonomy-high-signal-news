@@ -1,0 +1,260 @@
+{
+  "metadata": {
+    "version": "2.0.0",
+    "updated_at": "2026-03-21",
+    "description": "Bootstrapped high-signal sources - verified RSS feeds for daily aggregation",
+    "source_count": 25,
+    "research_method": "Manual curation based on community reputation, editorial quality, and RSS availability"
+  },
+  "rss_feeds": [
+    {
+      "name": "arXiv cs.AI",
+      "url": "https://rss.arxiv.org/rss/cs.AI",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "AI research papers",
+      "quality_score": 10,
+      "category": "ai_research",
+      "notes": "Primary source - all latest AI research submissions"
+    },
+    {
+      "name": "arXiv cs.LG",
+      "url": "https://rss.arxiv.org/rss/cs.LG",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Machine learning research",
+      "quality_score": 10,
+      "category": "ai_research",
+      "notes": "Core ML research - algorithms, theory, methods"
+    },
+    {
+      "name": "arXiv cs.CL",
+      "url": "https://rss.arxiv.org/rss/cs.CL",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Computational linguistics and NLP",
+      "quality_score": 9,
+      "category": "ai_research",
+      "notes": "Essential for LLM and NLP developments"
+    },
+    {
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com/rss",
+      "type": "rss",
+      "frequency": "hourly",
+      "focus": "Tech news and discussions",
+      "quality_score": 8,
+      "category": "tech_news",
+      "notes": "High volume, requires filtering but strong community curation"
+    },
+    {
+      "name": "Distill.pub",
+      "url": "https://distill.pub/rss.xml",
+      "type": "rss",
+      "frequency": "monthly",
+      "focus": "Explanatory ML research",
+      "quality_score": 10,
+      "category": "ai_research",
+      "notes": "High-quality visual explanations of ML concepts - low volume, high value"
+    },
+    {
+      "name": "Hugging Face Blog",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "ML tooling and models",
+      "quality_score": 8,
+      "category": "ai_tools",
+      "notes": "Model releases, datasets, and community updates"
+    },
+    {
+      "name": "This Week in Rust",
+      "url": "https://this-week-in-rust.org/rss.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Rust language updates",
+      "quality_score": 9,
+      "category": "dev_language",
+      "notes": "Curated weekly roundup of Rust ecosystem"
+    },
+    {
+      "name": "JavaScript Weekly",
+      "url": "https://cprss.s3.amazonaws.com/javascriptweekly.com.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "JavaScript ecosystem",
+      "quality_score": 8,
+      "category": "dev_language",
+      "notes": "Curated JS news, tutorials, and releases"
+    },
+    {
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/feed/",
+      "type": "rss",
+      "frequency": "hourly",
+      "focus": "Startup and tech news",
+      "quality_score": 6,
+      "category": "tech_news",
+      "notes": "Funding news, product launches - requires filtering for signal"
+    },
+    {
+      "name": "Stratechery",
+      "url": "https://stratechery.com/feed/",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Tech strategy and analysis",
+      "quality_score": 9,
+      "category": "tech_strategy",
+      "notes": "Ben Thompson's analysis - business model focus (partial content via RSS)"
+    },
+    {
+      "name": "Ars Technica",
+      "url": "http://feeds.arstechnica.com/arstechnica/technology-lab",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Tech news with depth",
+      "quality_score": 8,
+      "category": "tech_news",
+      "notes": "Quality journalism, technical depth"
+    },
+    {
+      "name": "MIT Technology Review",
+      "url": "https://www.technologyreview.com/feed/",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Emerging tech journalism",
+      "quality_score": 8,
+      "category": "tech_news",
+      "notes": "Long-form tech journalism"
+    },
+    {
+      "name": "Lobsters",
+      "url": "https://lobste.rs/rss",
+      "type": "rss",
+      "frequency": "hourly",
+      "focus": "Programming community links",
+      "quality_score": 8,
+      "category": "dev_community",
+      "notes": "Smaller, more technical community than HN"
+    },
+    {
+      "name": "GitHub Changelog",
+      "url": "https://github.blog/changelog/feed/",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "GitHub platform updates",
+      "quality_score": 8,
+      "category": "dev_tools",
+      "notes": "Official GitHub features and updates"
+    },
+    {
+      "name": "Pytorch Blog",
+      "url": "https://pytorch.org/blog/atom.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "PyTorch framework updates",
+      "quality_score": 8,
+      "category": "ai_tools",
+      "notes": "ML framework releases and tutorials"
+    }
+  ],
+  "newsletters": [
+    {
+      "name": "Import AI",
+      "url": "https://importai.substack.com",
+      "rss_url": "https://importai.substack.com/feed",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "AI research roundup",
+      "quality_score": 9,
+      "category": "ai_research",
+      "notes": "Jack Clark (Anthropic) - concise technical summaries"
+    },
+    {
+      "name": "The Sequence",
+      "url": "https://thesequence.substack.com",
+      "rss_url": "https://thesequence.substack.com/feed",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "AI research and business",
+      "quality_score": 7,
+      "category": "ai_research",
+      "notes": "Research papers + industry analysis"
+    },
+    {
+      "name": "The Diff",
+      "url": "https://www.thediff.co",
+      "rss_url": "https://www.thediff.co/rss",
+      "type": "newsletter",
+      "frequency": "daily",
+      "focus": "Finance and tech analysis",
+      "quality_score": 9,
+      "category": "tech_strategy",
+      "notes": "Byrne Hobart - financial analysis of tech trends"
+    },
+    {
+      "name": "Interconnects",
+      "url": "https://www.interconnects.ai",
+      "rss_url": "https://www.interconnects.ai/feed",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "AI analysis and commentary",
+      "quality_score": 8,
+      "category": "ai_research",
+      "notes": "Nathan Lambert - technical depth with opinions"
+    }
+  ],
+  "special_handling": [
+    {
+      "name": "AI Alignment Forum",
+      "url": "https://www.alignmentforum.org",
+      "rss_url": "https://www.alignmentforum.org/rss.xml",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "AI safety research",
+      "quality_score": 9,
+      "category": "ai_safety",
+      "notes": "Rate limited - requires 60s delay between requests",
+      "min_fetch_interval": 60,
+      "enabled": false
+    },
+    {
+      "name": "OpenAI Blog",
+      "url": "https://openai.com/blog",
+      "rss_url": "https://openai.com/blog/rss.xml",
+      "type": "rss",
+      "frequency": "monthly",
+      "focus": "OpenAI announcements",
+      "quality_score": 10,
+      "category": "ai_research",
+      "notes": "Major model releases - low volume but critical",
+      "enabled": true
+    },
+    {
+      "name": "DeepMind Blog",
+      "url": "https://deepmind.google",
+      "rss_url": "https://deepmind.google/blog/rss.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "DeepMind research",
+      "quality_score": 9,
+      "category": "ai_research",
+      "notes": "Google DeepMind research updates",
+      "enabled": true
+    }
+  ],
+  "aggregation_strategy": {
+    "description": "Fetch sources in priority order, deduplicate, rank by quality_score and freshness",
+    "fetch_order": [
+      "arXiv feeds (daily morning)",
+      "Newsletter RSS feeds (daily morning)",
+      "High-frequency news (HN, Lobsters - every 6 hours)",
+      "Weekly digests (This Week in Rust, etc - on publication day)"
+    ],
+    "rate_limiting": {
+      "default_delay": 5,
+      "alignment_forum_delay": 60,
+      "respect_robots_txt": true
+    }
+  }
+}
