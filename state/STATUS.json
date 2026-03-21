@@ -35,11 +35,20 @@
       "description": "Theme detection across generalist feeds only",
       "note": "Avoids tautologies by excluding domain-specific feeds from trend detection"
     },
+    "llm_analysis": {
+      "status": "working",
+      "description": "Hermes subagent-based LLM analysis",
+      "note": "Uses delegate_task to spawn subagents for article analysis",
+      "deliverables": [
+        "scripts/subagent_summarizer.py",
+        "scripts/run_llm_analysis.py"
+      ]
+    },
     "briefing_generation": {
       "status": "working",
-      "description": "Content-based newsletter with extracted insight",
-      "note": "Uses full content, not just RSS snippets",
-      "output": "output/newsletter-proper.md"
+      "description": "Newsletter using LLM-analyzed content",
+      "note": "Uses subagent-generated insight, not templates",
+      "output": "output/newsletter-llm-analyzed.md"
     }
   },
   
