@@ -72,14 +72,14 @@ Sources requiring HTML scraping (no RSS or RSS is broken).
 **Implemented (14 sources):**
 
 #### Blog Scraping (`blog_scrape` type)
-| Source | Domain | Scraping Strategy |
-|--------|--------|-------------------|
-| Hugging Face Papers | ai | List page + article extraction |
-| Python Insider | software_development | Blogspot scraping |
-| Node.js Blog | software_development | Official blog scraping |
-| Go Blog | software_development | Go.dev blog scraping |
-| React Blog | software_development | React.dev blog scraping |
-| GitHub Changelog | software_development | GitHub blog scraping |
+| Source | Domain | Status | Entries | Notes |
+|--------|--------|--------|---------|-------|
+| Hugging Face Papers | ai | ✅ Working | ~20/day | Community-upvoted ML papers |
+| Python Insider | software_development | ✅ Working | ~7/month | Official Python release announcements |
+| Node.js Blog | software_development | ✅ Working | ~6/week | Official Node.js releases |
+| Go Blog | software_development | ✅ Working | ~20 | Go language blog with author/date |
+| React Blog | software_development | ❌ Disabled | N/A | JS-rendered, needs headless browser |
+| GitHub Changelog | software_development | ⚠️ Not tested | - | GitHub platform updates |
 
 #### Newsletter Web (`newsletter_web` type)
 | Source | Domain | Scraping Strategy |
@@ -224,6 +224,34 @@ The sources feed into the aggregation pipeline in this order:
 4. **Content Extractor** (`content_extractor.py`) - Deep content extraction
 5. **Deduplicator** (`deduplicator.py`) - Near-duplicate detection
 6. **Storage** (`storage.py`) - SQLite with FTS5
+
+## Pipeline Integration Test Results
+
+**Test Date:** 2026-03-21
+
+### Blog Scraper Integration
+- ✅ Pipeline successfully scrapes blog sources alongside RSS feeds
+- ✅ Deduplication working (no duplicates across RSS and scraped content)
+- ✅ Content extraction enabled for blog entries
+- ✅ Database storage verified (20 entries from Hugging Face Papers)
+
+### Tested Sources
+| Source | Type | Entries | Status |
+|--------|------|---------|--------|
+| Hugging Face Papers | blog_scrape | 20 | ✅ Working |
+| Python Insider | blog_scrape | 7 | ✅ Working |
+| Go Blog | blog_scrape | 20 | ✅ Working |
+| Node.js Blog | blog_scrape | 6 | ✅ Working |
+
+### Command
+```bash
+python scripts/aggregator/pipeline.py \
+  --catalog sources/sources-ai.json \
+  --db-path data/feed_cache.db \
+  --blog-catalog sources/blog_scraper_catalog.json \
+  --enable-blog-scraping \
+  --verbose
+```
 
 ## Last Updated
 
