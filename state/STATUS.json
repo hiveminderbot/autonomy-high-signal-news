@@ -1,0 +1,52 @@
+{
+  "name": "high-signal-news",
+  "status": "active",
+  "version": "0.1.0",
+  "description": "High-value daily morning briefing system for AI, software development, and investment news",
+  "created_at": "2026-03-21",
+  "updated_at": "2026-03-21",
+  "owner": "autonomy",
+  "current_phase": "source_discovery",
+  "phases": {
+    "source_discovery": {
+      "status": "in_progress",
+      "description": "Research and evaluate high-signal news sources across AI, software development, and investment domains"
+    },
+    "aggregation_pipeline": {
+      "status": "pending",
+      "description": "Build feed aggregation and deduplication system"
+    },
+    "summarization_engine": {
+      "status": "pending",
+      "description": "Implement content clustering and summarization"
+    },
+    "briefing_generation": {
+      "status": "pending",
+      "description": "Create morning briefing format and delivery mechanism"
+    }
+  },
+  "components": {
+    "source_catalog": {
+      "path": "research/source-catalog.json",
+      "status": "in_progress"
+    },
+    "aggregation_scripts": {
+      "path": "scripts/aggregator/",
+      "status": "pending"
+    },
+    "summarization_module": {
+      "path": "scripts/summarizer/",
+      "status": "pending"
+    },
+    "briefing_generator": {
+      "path": "scripts/briefing/",
+      "status": "pending"
+    }
+  },
+  "target_domains": ["ai", "software_development", "investment"],
+  "daily_briefing_goal": {
+    "max_reading_time_minutes": 10,
+    "max_stories_per_domain": 5,
+    "output_formats": ["markdown", "telegram", "email"]
+  }
+}
