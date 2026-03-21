@@ -17,11 +17,11 @@
 - [x] Document inclusion criteria for dev sources → `design/inclusion-criteria.md`
 
 ### Investment Domain
-- [ ] Identify public market AI/tech news sources
-- [ ] Find VC funding round trackers
-- [ ] Evaluate regulatory news sources
-- [ ] Curate investment-focused newsletters
-- [ ] Document inclusion criteria for investment sources
+- [x] Identify public market AI/tech news sources → `sources/sources-investment.json`
+- [x] Find VC funding round trackers → `sources/sources-investment.json`
+- [x] Evaluate regulatory news sources → `sources/sources-investment.json`
+- [x] Curate investment-focused newsletters → `sources/sources-investment.json`
+- [x] Document inclusion criteria for investment sources → included in sources-investment.json metadata
 
 ### Cross-Domain
 - [ ] Research RSS aggregation tools (FreshRSS, Miniflux, etc.)

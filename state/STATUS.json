@@ -27,10 +27,15 @@
   },
   "components": {
     "source_catalog": {
-      "path": "research/source-catalog.json",
+      "path": "sources/",
       "status": "complete",
       "sources_count": 42,
-      "mvp_sources": 10
+      "mvp_sources": 10,
+      "domains": {
+        "ai": "sources/sources-ai.json",
+        "software_development": "sources/sources-dev.json",
+        "investment": "sources/sources-investment.json"
+      }
     },
     "aggregation_scripts": {
       "path": "scripts/aggregator/",

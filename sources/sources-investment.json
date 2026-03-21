@@ -1,0 +1,201 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created_at": "2026-03-21",
+    "domain": "investment",
+    "source_count": 16,
+    "quality_criteria": [
+      "Timely market-moving information",
+      "Verified reporting standards",
+      "Analyst expertise and track record",
+      "Low hype-to-substance ratio",
+      "Actionable for tech/AI investors"
+    ]
+  },
+  "public_markets": {
+    "tech_equities": [
+      {
+        "name": "Bloomberg Technology",
+        "url": "https://feeds.bloomberg.com/bloomberg/markets/news.rss",
+        "type": "rss",
+        "frequency": "real-time",
+        "focus": "Tech stock market news",
+        "quality_score": 9,
+        "notes": "Premier financial news source for tech sector movements"
+      },
+      {
+        "name": "CNBC Tech",
+        "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html",
+        "type": "rss",
+        "frequency": "real-time",
+        "focus": "Technology stocks and markets",
+        "quality_score": 7,
+        "notes": "Breaking tech market news, filter for signal"
+      },
+      {
+        "name": "Seeking Alpha - Tech",
+        "url": "https://seekingalpha.com/api/v3/merchandised_content/tech.rss",
+        "type": "rss",
+        "frequency": "daily",
+        "focus": "Tech stock analysis",
+        "quality_score": 7,
+        "notes": "Contributor model - requires quality filtering"
+      },
+      {
+        "name": "The Information",
+        "url": "https://www.theinformation.com/feed",
+        "type": "rss",
+        "frequency": "daily",
+        "focus": "Tech business news",
+        "quality_score": 9,
+        "notes": "Premium tech journalism, high signal-to-noise"
+      }
+    ],
+    "market_analysis": [
+      {
+        "name": "Stratechery",
+        "url": "https://stratechery.com/feed/",
+        "type": "rss",
+        "frequency": "weekly",
+        "focus": "Tech strategy and markets",
+        "quality_score": 10,
+        "notes": "Ben Thompson's analysis - essential for tech investors"
+      },
+      {
+        "name": "Aswath Damodaran's Blog",
+        "url": "https://aswathdamodaran.blogspot.com/feeds/posts/default",
+        "type": "rss",
+        "frequency": "monthly",
+        "focus": "Valuation and market mechanics",
+        "quality_score": 10,
+        "notes": "NYU professor - authoritative on valuation methodology"
+      }
+    ]
+  },
+  "vc_funding": [
+    {
+      "name": "TechCrunch - Funding",
+      "url": "https://techcrunch.com/category/venture/feed/",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "VC funding rounds",
+      "quality_score": 7,
+      "notes": "Comprehensive funding coverage, some noise"
+    },
+    {
+      "name": "PitchBook News",
+      "url": "https://pitchbook.com/news/feed",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Private market intelligence",
+      "quality_score": 9,
+      "notes": "Professional PE/VC data provider"
+    },
+    {
+      "name": "Crunchbase News",
+      "url": "https://news.crunchbase.com/feed/",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Startup funding and data",
+      "quality_score": 8,
+      "notes": "Data-driven funding coverage"
+    },
+    {
+      "name": "First Round Review",
+      "url": "https://review.firstround.com/rss",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "VC insights and startup guidance",
+      "quality_score": 9,
+      "notes": "High-quality VC perspective from First Round Capital"
+    },
+    {
+      "name": "NFX Signal",
+      "url": "https://www.nfx.com/signal/feed",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Network effects and VC insights",
+      "quality_score": 8,
+      "notes": "NFX fund - network effects expertise"
+    }
+  ],
+  "regulatory_policy": [
+    {
+      "name": "SEC News",
+      "url": "https://www.sec.gov/cgi/browse-edgar?action=getcurrent&type=&company=&dateb=&owner=include&start=0&count=40&output=atom",
+      "type": "atom",
+      "frequency": "real-time",
+      "focus": "SEC filings and announcements",
+      "quality_score": 10,
+      "notes": "Primary source for regulatory filings"
+      },
+    {
+      "name": "FTC News",
+      "url": "https://www.ftc.gov/news-events/news/feed",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Antitrust and consumer protection",
+      "quality_score": 9,
+      "notes": "Essential for tech antitrust developments"
+    },
+    {
+      "name": "Reuters - Regulation",
+      "url": "https://www.reuters.com/business/finance/regulatory-news/feed/",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Financial regulation news",
+      "quality_score": 9,
+      "notes": "Professional regulatory journalism"
+    }
+  ],
+  "newsletters": [
+    {
+      "name": "Money Stuff",
+      "url": "https://www.bloomberg.com/news/newsletters/money-stuff",
+      "type": "newsletter",
+      "frequency": "weekdays",
+      "focus": "Markets and finance analysis",
+      "quality_score": 10,
+      "notes": "Matt Levine - essential financial commentary",
+      "rss_fallback": "https://feeds.bloomberg.com/bloomberg/view/news.rss"
+    },
+    {
+      "name": "Term Sheet",
+      "url": "https://fortune.com/newsletter/term-sheet/",
+      "type": "newsletter",
+      "frequency": "daily",
+      "focus": "Deals and VC news",
+      "quality_score": 8,
+      "notes": "Fortune's deals newsletter"
+    },
+    {
+      "name": "The Diff",
+      "url": "https://www.thediff.co",
+      "type": "newsletter",
+      "frequency": "weekdays",
+      "focus": "Business and investment analysis",
+      "quality_score": 9,
+      "notes": "Byrne Hobart - deep dives on tech/business"
+    }
+  ],
+  "data_sources": [
+    {
+      "name": "FRED Blog",
+      "url": "https://fredblog.stlouisfed.org/feed/",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Economic data and indicators",
+      "quality_score": 9,
+      "notes": "St. Louis Fed economic data insights"
+    },
+    {
+      "name": "ARK Invest Research",
+      "url": "https://ark-invest.com/research/feed",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Disruptive innovation research",
+      "quality_score": 7,
+      "notes": "Cathy Wood's ARK - innovation-focused, evaluate critically"
+    }
+  ]
+}
