@@ -247,12 +247,25 @@ class FeedFetcher:
     
     # Default headers to avoid bot detection
     DEFAULT_HEADERS = {
-        'User-Agent': 'HighSignalNews/1.0 (Research Aggregator; https://github.com/exedev/high-signal-news)'
+        'User-Agent': 'HighSignalNews/1.0 (Research Aggregator; https://github.com/exedev/high-signal-news)',
+        'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
     }
     
     # Retry configuration
     MAX_RETRIES = 3
     RETRY_DELAY_BASE = 1  # Base delay in seconds (1s, 2s, 4s)
+    
+    # RSSHub instances for Cloudflare-protected feeds
+    # These are public RSSHub instances that can proxy feeds
+    RSSHUB_INSTANCES = [
+        'https://rsshub.app',
+        'https://rsshub.rssforever.com',
+        'https://rsshub.pseudoyu.com',
+    ]
     
     def _fetch_with_retry(self, url: str, headers: dict = None) -> tuple[bytes, int]:
         """Fetch URL with exponential backoff retry logic.
@@ -289,17 +302,122 @@ class FeedFetcher:
         # All retries exhausted
         raise last_error or RuntimeError(f"Failed to fetch {url} after {self.MAX_RETRIES} attempts")
     
+    def _is_cloudflare_error(self, error: Exception) -> bool:
+        """Check if error indicates Cloudflare protection."""
+        error_str = str(error).lower()
+        return (
+            'cloudflare' in error_str or
+            '403' in error_str or
+            'forbidden' in error_str or
+            'cf-ray' in error_str
+        )
+    
+    def _try_rsshub_fallback(self, original_url: str) -> tuple[bytes, int]:
+        """Try to fetch via RSSHub instances as fallback for Cloudflare-protected feeds.
+        
+        RSSHub can proxy many feeds through different infrastructure, bypassing
+        Cloudflare blocks on the original URL.
+        
+        Returns:
+            Tuple of (content_bytes, response_time_ms) or raises exception
+        """
+        if not REQUESTS_AVAILABLE:
+            raise RuntimeError("requests library required for RSSHub fallback")
+        
+        last_error = None
+        
+        for rsshub_base in self.RSSHUB_INSTANCES:
+            try:
+                # Encode the original URL for RSSHub route
+                import urllib.parse
+                encoded_url = urllib.parse.quote(original_url, safe='')
+                rsshub_url = f"{rsshub_base}/rsshub/transform/json/{encoded_url}"
+                
+                start_time = time.time()
+                response = requests.get(
+                    rsshub_url,
+                    headers=self.DEFAULT_HEADERS,
+                    timeout=60,  # RSSHub can be slower
+                    allow_redirects=True
+                )
+                response.raise_for_status()
+                response_time = int((time.time() - start_time) * 1000)
+                
+                # RSSHub returns JSON, we need to convert it to RSS-like format
+                # For now, return the content as-is and let feedparser handle it
+                return response.content, response_time
+                
+            except requests.exceptions.RequestException as e:
+                last_error = e
+                continue
+        
+        raise last_error or RuntimeError(f"RSSHub fallback failed for {original_url}")
+    
+    def _try_feedsyndicate_fallback(self, original_url: str) -> tuple[bytes, int]:
+        """Try alternative feed syndication services.
+        
+        Uses services like FeedBurner, Feedly, or other feed proxies.
+        """
+        if not REQUESTS_AVAILABLE:
+            raise RuntimeError("requests library required for feed syndication fallback")
+        
+        # Try Feedly's feed fetcher (they have good infrastructure)
+        try:
+            import urllib.parse
+            encoded_url = urllib.parse.quote(original_url, safe='')
+            feedly_url = f"https://cloud.feedly.com/v3/streams/contents?streamId=feed/{encoded_url}"
+            
+            start_time = time.time()
+            response = requests.get(
+                feedly_url,
+                headers=self.DEFAULT_HEADERS,
+                timeout=30,
+                allow_redirects=True
+            )
+            response.raise_for_status()
+            response_time = int((time.time() - start_time) * 1000)
+            
+            return response.content, response_time
+            
+        except requests.exceptions.RequestException:
+            pass
+        
+        raise RuntimeError(f"All feed syndication fallbacks failed for {original_url}")
+    
     def fetch_rss(self, source: FeedSource) -> list[FeedEntry]:
-        """Fetch and parse an RSS/Atom feed with retry logic."""
+        """Fetch and parse an RSS/Atom feed with retry logic and Cloudflare fallback."""
         if not FEEDPARSER_AVAILABLE:
             raise RuntimeError("feedparser library required for RSS fetching")
         
         self._rate_limit()
         start_time = time.time()
+        content = None
+        response_time = 0
+        used_fallback = False
+        fallback_method = None
         
         try:
-            # Use requests with retry logic and proper headers
-            content, response_time = self._fetch_with_retry(source.url)
+            # Try primary fetch with retry logic
+            try:
+                content, response_time = self._fetch_with_retry(source.url)
+            except Exception as primary_error:
+                # Check if this is a Cloudflare block
+                if self._is_cloudflare_error(primary_error):
+                    print(f"  ⚠️  Cloudflare detected for {source.id}, trying RSSHub fallback...")
+                    try:
+                        content, response_time = self._try_rsshub_fallback(source.url)
+                        used_fallback = True
+                        fallback_method = 'rsshub'
+                        print(f"  ✅ RSSHub fallback succeeded for {source.id}")
+                    except Exception as rsshub_error:
+                        print(f"  ⚠️  RSSHub failed, trying feed syndication fallback...")
+                        content, response_time = self._try_feedsyndicate_fallback(source.url)
+                        used_fallback = True
+                        fallback_method = 'feedsyndicate'
+                        print(f"  ✅ Feed syndication fallback succeeded for {source.id}")
+                else:
+                    raise  # Re-raise if not Cloudflare
+            
             parsed = feedparser.parse(content)
             
             # Check for feedparser-level errors
@@ -340,12 +458,15 @@ class FeedFetcher:
                 entries.append(feed_entry)
             
             # Use response_time from _fetch_with_retry or calculate locally
-            if 'response_time' in dir():
-                fetch_time = response_time
-            else:
-                fetch_time = int((time.time() - start_time) * 1000)
+            fetch_time = response_time if response_time else int((time.time() - start_time) * 1000)
             
-            self.cache.log_fetch(source.id, len(entries), True, response_time_ms=fetch_time)
+            # Log success, noting if fallback was used
+            success_message = None
+            if used_fallback and fallback_method:
+                success_message = f"Success via {fallback_method} fallback"
+            
+            self.cache.log_fetch(source.id, len(entries), True, 
+                                error_message=success_message, response_time_ms=fetch_time)
             
             # Update health status
             if self.health_monitor:
