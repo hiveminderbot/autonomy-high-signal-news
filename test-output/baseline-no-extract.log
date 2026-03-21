@@ -1,0 +1,38 @@
+2026-03-21 23:36:41,764 - daily_aggregation - INFO - Starting daily aggregation run: 20260321_233641
+2026-03-21 23:36:41,764 - daily_aggregation - INFO - Domain filter: all
+2026-03-21 23:36:41,765 - daily_aggregation - INFO - Feed limit: 5
+2026-03-21 23:36:41,765 - daily_aggregation - INFO - Newsletter limit: unlimited
+2026-03-21 23:36:41,765 - daily_aggregation - INFO - Initializing databases...
+2026-03-21 23:36:41,766 - daily_aggregation - INFO - Loading feed sources from sources/sources-test.json...
+2026-03-21 23:36:41,767 - daily_aggregation - INFO - Loaded 5 feed sources
+2026-03-21 23:36:41,767 - daily_aggregation - INFO - Loading newsletter sources from sources/newsletter_catalog.json...
+2026-03-21 23:36:41,767 - daily_aggregation - INFO - Loaded 17 newsletter sources
+2026-03-21 23:36:41,767 - daily_aggregation - INFO - Initializing aggregation pipeline...
+2026-03-21 23:36:41,767 - daily_aggregation - INFO - Running aggregation pipeline...
+
+--- Phase 1: RSS Feed Processing ---
+Pipeline starting: 5 sources to process
+  Processing: Hacker News (hacker-news)
+    ✓ Stored 30 entries
+  Processing: BBC Technology (bbc-technology)
+    ✓ Stored 20 entries
+  Processing: Hugging Face Blog (hugging-face-blog)
+    ⚠ Duplicate skipped: Groq on Hugging Face Inference Providers 🔥...
+    ✓ Stored 749 entries
+  Processing: Towards Data Science (towards-data-science)
+    ✓ Stored 20 entries
+  Processing: Google AI Blog (google-ai-blog)
+    ✓ Stored 20 entries
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - Results saved to output/aggregation_results_20260321_233641.json
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - ==================================================
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - DAILY AGGREGATION COMPLETE
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - ==================================================
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - Duration: 2.5s
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - Feed sources processed: 5
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - Feed entries fetched: 840
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - Feed entries stored: 839
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - Newsletter sources processed: 0
+2026-03-21 23:36:44,257 - daily_aggregation - INFO - Newsletter entries fetched: 0
+2026-03-21 23:36:44,258 - daily_aggregation - INFO - Newsletter entries stored: 0
+2026-03-21 23:36:44,258 - daily_aggregation - INFO - Total entries stored: 839
+2026-03-21 23:36:44,258 - daily_aggregation - INFO - Errors: 0

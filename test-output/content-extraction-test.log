@@ -1,0 +1,105 @@
+2026-03-21 23:31:08,678 - daily_aggregation - INFO - Starting daily aggregation run: 20260321_233108
+2026-03-21 23:31:08,678 - daily_aggregation - INFO - Domain filter: all
+2026-03-21 23:31:08,678 - daily_aggregation - INFO - Feed limit: 5
+2026-03-21 23:31:08,678 - daily_aggregation - INFO - Newsletter limit: unlimited
+2026-03-21 23:31:08,678 - daily_aggregation - INFO - Initializing databases...
+2026-03-21 23:31:08,680 - daily_aggregation - INFO - Loading feed sources from sources/sources-test.json...
+2026-03-21 23:31:08,680 - daily_aggregation - INFO - Loaded 5 feed sources
+2026-03-21 23:31:08,680 - daily_aggregation - INFO - Loading newsletter sources from sources/newsletter_catalog.json...
+2026-03-21 23:31:08,681 - daily_aggregation - INFO - Loaded 17 newsletter sources
+2026-03-21 23:31:08,681 - daily_aggregation - INFO - Initializing aggregation pipeline...
+2026-03-21 23:31:08,681 - daily_aggregation - INFO - Running aggregation pipeline...
+
+--- Phase 1: RSS Feed Processing ---
+Pipeline starting: 5 sources to process
+  Processing: Hacker News (hacker-news)
+    ⚠ Extraction warning for https://www.reuters.com/business/autos-transportation/how-ford-burned-12-billion-brazil-2021-05-20/: Request failed: 401 Client Error: HTTP Forbidden for url: https://www.reuters.com/business/autos-transportation/how-ford-burned-12-billion-brazil-2021-05-20/
+    ⚠ Extraction warning for https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6097646: Request failed: 403 Client Error: Forbidden for url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6097646
+    ✓ Stored 30 entries
+  Processing: BBC Technology (bbc-technology)
+    ✓ Stored 20 entries
+  Processing: Hugging Face Blog (hugging-face-blog)
+    ⚠ Extraction warning for https://huggingface.co/blog/SandboxAQ/sair-data-accelerating-drug-discovery-with-ai: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/SandboxAQ/sair-data-accelerating-drug-discovery-with-ai
+    ⚠ Extraction warning for https://huggingface.co/blog/zerogpu-aoti: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/zerogpu-aoti
+    ⚠ Extraction warning for https://huggingface.co/blog/nvidia/multilingual-reasoning-v1: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/nvidia/multilingual-reasoning-v1
+    ⚠ Extraction warning for https://huggingface.co/blog/claude-and-mcp: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/claude-and-mcp
+    ⚠ Extraction warning for https://huggingface.co/blog/kernel-builder: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/kernel-builder
+    ⚠ Extraction warning for https://huggingface.co/blog/mcp-for-research: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/mcp-for-research
+    ⚠ Extraction warning for https://huggingface.co/blog/AI-MO/kimina-prover-rl: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/AI-MO/kimina-prover-rl
+    ⚠ Extraction warning for https://huggingface.co/blog/Arm/executorch-0-dot-7: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/Arm/executorch-0-dot-7
+    ⚠ Extraction warning for https://huggingface.co/blog/Arm/neural-super-sampling: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/Arm/neural-super-sampling
+    ⚠ Extraction warning for https://huggingface.co/blog/textquests: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/textquests
+    ⚠ Extraction warning for https://huggingface.co/blog/filbench: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/filbench
+    ⚠ Extraction warning for https://huggingface.co/blog/aisheets: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/aisheets
+    ⚠ Extraction warning for https://huggingface.co/blog/accelerate-nd-parallel: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/accelerate-nd-parallel
+    ⚠ Extraction warning for https://huggingface.co/blog/trl-vlm-alignment: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/trl-vlm-alignment
+    ⚠ Extraction warning for https://huggingface.co/blog/welcome-openai-gpt-oss: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/welcome-openai-gpt-oss
+    ⚠ Extraction warning for https://huggingface.co/blog/nvidia/ai-q-top-ranking-open-portable-deep-research-agent: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/nvidia/ai-q-top-ranking-open-portable-deep-research-agent
+    ⚠ Extraction warning for https://huggingface.co/blog/tiiuae/3lm-benchmark: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tiiuae/3lm-benchmark
+    ⚠ Extraction warning for https://huggingface.co/blog/gradio-vton-mcp: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/gradio-vton-mcp
+    ⚠ Extraction warning for https://huggingface.co/blog/trackio: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/trackio
+    ⚠ Extraction warning for https://huggingface.co/blog/hf-cli: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/hf-cli
+    ⚠ Extraction warning for https://huggingface.co/blog/parquet-cdc: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/parquet-cdc
+    ⚠ Extraction warning for https://huggingface.co/blog/timescope-video-lmm-benchmark: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/timescope-video-lmm-benchmark
+    ⚠ Extraction warning for https://huggingface.co/blog/lora-fast: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/lora-fast
+    ⚠ Extraction warning for https://huggingface.co/blog/nvidia/multi-llm-nim: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/nvidia/multi-llm-nim
+    ⚠ Extraction warning for https://huggingface.co/blog/virtual-cell-challenge: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/virtual-cell-challenge
+    ⚠ Extraction warning for https://huggingface.co/blog/consilium-multi-llm: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/consilium-multi-llm
+    ⚠ Extraction warning for https://huggingface.co/blog/futurebench: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/futurebench
+    ⚠ Extraction warning for https://huggingface.co/blog/gradio-mcp-updates: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/gradio-mcp-updates
+    ⚠ Extraction warning for https://huggingface.co/blog/ettin: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/ettin
+    ⚠ Extraction warning for https://huggingface.co/blog/migrating-the-hub-to-xet: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/migrating-the-hub-to-xet
+    ⚠ Extraction warning for https://huggingface.co/blog/AI-MO/kimina-prover: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/AI-MO/kimina-prover
+    ⚠ Extraction warning for https://huggingface.co/blog/async-robot-inference: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/async-robot-inference
+    ⚠ Extraction warning for https://huggingface.co/blog/screenenv: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/screenenv
+    ⚠ Extraction warning for https://huggingface.co/blog/building-hf-mcp: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/building-hf-mcp
+    ⚠ Extraction warning for https://huggingface.co/blog/reachy-mini: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/reachy-mini
+    ⚠ Extraction warning for https://huggingface.co/blog/mi300kernels: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/mi300kernels
+    ⚠ Extraction warning for https://huggingface.co/blog/gradio-mcp-servers: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/gradio-mcp-servers
+    ⚠ Extraction warning for https://huggingface.co/blog/smollm3: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/smollm3
+    ⚠ Extraction warning for https://huggingface.co/blog/infrastructure-alerting: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/infrastructure-alerting
+    ⚠ Extraction warning for https://huggingface.co/blog/mmdp: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/mmdp
+    ⚠ Extraction warning for https://huggingface.co/blog/tiiuae/e2lm-competition: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tiiuae/e2lm-competition
+    ⚠ Extraction warning for https://huggingface.co/blog/train-sparse-encoder: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/train-sparse-encoder
+    ⚠ Extraction warning for https://huggingface.co/blog/nvidia/llama-nemotron-nano-vl: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/nvidia/llama-nemotron-nano-vl
+    ⚠ Extraction warning for https://huggingface.co/blog/gemma3n: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/gemma3n
+    ⚠ Extraction warning for https://huggingface.co/blog/transformers-backend-sglang: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/transformers-backend-sglang
+    ⚠ Extraction warning for https://huggingface.co/blog/flux-qlora: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/flux-qlora
+    ⚠ Duplicate skipped: Groq on Hugging Face Inference Providers 🔥...
+    ⚠ Extraction warning for https://huggingface.co/blog/tngtech/llm-performance-blocked-by-long-prompts: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tngtech/llm-performance-blocked-by-long-prompts
+    ⚠ Extraction warning for https://huggingface.co/blog/hello-hf-kernels: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/hello-hf-kernels
+    ⚠ Extraction warning for https://huggingface.co/blog/inference-providers-featherless: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/inference-providers-featherless
+    ⚠ Extraction warning for https://huggingface.co/blog/nvidia/gr00t-n1-5-so101-tuning: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/nvidia/gr00t-n1-5-so101-tuning
+    ⚠ Extraction warning for https://huggingface.co/blog/nvidia-training-cluster: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/nvidia-training-cluster
+    ⚠ Extraction warning for https://huggingface.co/blog/screensuite: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/screensuite
+    ⚠ Extraction warning for https://huggingface.co/blog/kv-cache: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/kv-cache
+    ⚠ Extraction warning for https://huggingface.co/blog/Arm/ai-sound-gen-on-arm: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/Arm/ai-sound-gen-on-arm
+    ⚠ Extraction warning for https://huggingface.co/blog/Hcompany/holo1: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/Hcompany/holo1
+    ⚠ Extraction warning for https://huggingface.co/blog/smolvla: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/smolvla
+    ⚠ Extraction warning for https://huggingface.co/blog/vllm-colocate: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/vllm-colocate
+    ⚠ Extraction warning for https://huggingface.co/blog/structured-codeagent: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/structured-codeagent
+    ⚠ Extraction warning for https://huggingface.co/blog/liger-grpo: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/liger-grpo
+    ⚠ Extraction warning for https://huggingface.co/blog/dell-ai-applications: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/dell-ai-applications
+    ⚠ Extraction warning for https://huggingface.co/blog/python-tiny-agents: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/python-tiny-agents
+    ⚠ Extraction warning for https://huggingface.co/blog/tiiuae/falcon-h1: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tiiuae/falcon-h1
+    ⚠ Extraction warning for https://huggingface.co/blog/tiiuae/falcon-arabic: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tiiuae/falcon-arabic
+    ⚠ Extraction warning for https://huggingface.co/blog/diffusers-quantization: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/diffusers-quantization
+    ⚠ Extraction warning for https://huggingface.co/blog/nanovlm: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/nanovlm
+    ⚠ Extraction warning for https://huggingface.co/blog/azure-ai-foundry: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/azure-ai-foundry
+    ⚠ Extraction warning for https://huggingface.co/blog/tiiuae/falcon-edge: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tiiuae/falcon-edge
+    ⚠ Extraction warning for https://huggingface.co/blog/transformers-model-definition: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/transformers-model-definition
+    ⚠ Extraction warning for https://huggingface.co/blog/kaggle-integration: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/kaggle-integration
+    ⚠ Extraction warning for https://huggingface.co/blog/fast-whisper-endpoints: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/fast-whisper-endpoints
+    ⚠ Extraction warning for https://huggingface.co/blog/vlms-2025: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/vlms-2025
+    ⚠ Extraction warning for https://huggingface.co/blog/lerobot-datasets: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/lerobot-datasets
+    ⚠ Extraction warning for https://huggingface.co/blog/gradio-mcp: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/gradio-mcp
+    ⚠ Extraction warning for https://huggingface.co/blog/qwen-3-chat-template-deep-dive: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/qwen-3-chat-template-deep-dive
+    ⚠ Extraction warning for https://huggingface.co/blog/llama-guard-4: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/llama-guard-4
+    ⚠ Extraction warning for https://huggingface.co/blog/autoround: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/autoround
+    ⚠ Extraction warning for https://huggingface.co/blog/ServiceNow/pipelinerl: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/ServiceNow/pipelinerl
+    ⚠ Extraction warning for https://huggingface.co/blog/tiny-agents: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tiny-agents
+    ⚠ Extraction warning for https://huggingface.co/blog/tngtech/finetuning-olmocr-to-be-a-faithful-ocr-engine: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tngtech/finetuning-olmocr-to-be-a-faithful-ocr-engine
+    ⚠ Extraction warning for https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests
+    ⚠ Extraction warning for https://huggingface.co/blog/why-gradio-stands-out: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/why-gradio-stands-out
+    ⚠ Extraction warning for https://huggingface.co/blog/inference-providers-cohere: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/inference-providers-cohere
+    ⚠ Extraction warning for https://huggingface.co/blog/helmet: Request failed: 429 Client Error: Too Many Requests for url: https://huggingface.co/blog/helmet
