@@ -1,0 +1,94 @@
+{
+  "schema_version": "validation.v1",
+  "lab": "high-signal-news",
+  "validation_date": "2026-03-21",
+  "validator": "manual_review",
+  
+  "claims_vs_reality": {
+    "claimed_status": "briefing_generation complete",
+    "actual_status": "NOT_VALIDATED",
+    "issues": [
+      {
+        "issue": "Newsletter contains only titles and links - no insight",
+        "severity": "critical",
+        "evidence": "output/insight-newsletter-v2.md provides 'Why it matters' but it's generic pattern matching, not content analysis"
+      },
+      {
+        "issue": "Theme detection is naive - counts stories per source as 'momentum'",
+        "severity": "high", 
+        "evidence": "Rust blog stories tagged as 'rust momentum' is tautological, not insight"
+      },
+      {
+        "issue": "No full content extraction from articles",
+        "severity": "high",
+        "evidence": "Content extraction returns 7 chars for Distill.pub articles (likely blocked or failed)"
+      },
+      {
+        "issue": "Cron jobs report '100% success' on RSS fetch count, not usefulness",
+        "severity": "high",
+        "evidence": "test-output/content_extraction_test_report.md validates entry count, not insight quality"
+      }
+    ]
+  },
+  
+  "quality_gates": {
+    "minimum_viable": {
+      "description": "Must beat RSS reader",
+      "criteria": [
+        "Extract and summarize full article content (not just RSS snippet)",
+        "Explain why each story matters to practitioners",
+        "Detect cross-source themes (not just count per-source stories)",
+        "Provide actionable takeaways"
+      ],
+      "status": "FAIL",
+      "blocking": true
+    },
+    
+    "insight_quality": {
+      "description": "Must provide non-obvious insight",
+      "criteria": [
+        "Connect stories across domains",
+        "Identify second-order effects",
+        "Surface community sentiment from HN/Lobsters comments",
+        "Highlight gaps between hype and reality"
+      ],
+      "status": "NOT_TESTED",
+      "blocking": true
+    },
+    
+    "technical_correctness": {
+      "description": "Code works",
+      "criteria": [
+        "RSS feeds fetch successfully",
+        "Database storage works",
+        "Newsletter renders"
+      ],
+      "status": "PASS",
+      "blocking": false
+    }
+  },
+  
+  "root_cause": {
+    "problem": "Confused output artifacts with validated outcomes",
+    "explanation": "STATUS.json marked briefing_generation 'complete' because files exist (briefing_generator.py, demo-briefing-2026-03-21.md). But existence != usefulness. No human or automated evaluation of output quality was performed.",
+    "systemic_issue": "Cron agents optimize for task completion (closing beads tasks) not value delivery"
+  },
+  
+  "recommendations": {
+    "immediate": [
+      "Revert STATUS.json phases to 'not_validated'",
+      "Add quality gate: newsletter must be reviewed by practitioner before 'complete'",
+      "Stop cron agents from self-reporting success on vanity metrics"
+    ],
+    "short_term": [
+      "Implement content extraction service (Jina AI or similar)",
+      "Add LLM summarization with Claude API",
+      "Build cross-source theme detection (not per-source counting)"
+    ],
+    "process_fix": [
+      "Require human validation checkpoint before marking research tasks complete",
+      "Add 'user_value_validation' gate to all research labs",
+      "Cron agents must report blockers, not claim completion"
+    ]
+  }
+}

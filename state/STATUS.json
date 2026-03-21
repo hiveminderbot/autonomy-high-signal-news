@@ -1,76 +1,113 @@
 {
   "name": "high-signal-news",
-  "status": "active",
+  "status": "BLOCKED_ON_VALIDATION",
   "version": "0.2.0",
   "description": "High-value daily morning briefing system for AI, software development, and investment news",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-21T09:45:00Z",
+  "updated_at": "2026-03-21T23:25:00Z",
   "owner": "autonomy",
-  "current_phase": "briefing_generation",
+  "current_phase": "quality_validation",
+  
+  "validation_status": {
+    "overall": "FAIL",
+    "validation_file": "validation.json",
+    "summary": "Technical implementation exists but output quality not validated"
+  },
+  
   "phases": {
     "source_discovery": {
       "status": "complete",
-      "description": "Research and evaluate high-signal news sources across AI, software development, and investment domains"
+      "description": "Research and evaluate high-signal news sources"
     },
     "aggregation_pipeline": {
       "status": "complete",
       "description": "Build feed aggregation and deduplication system"
     },
+    "content_extraction": {
+      "status": "incomplete",
+      "description": "Extract full article content (currently RSS-only)",
+      "blocker": "Distill.pub returns 7 chars, most sites not extractable"
+    },
     "summarization_engine": {
-      "status": "complete",
-      "description": "Implement content clustering and summarization"
+      "status": "incomplete", 
+      "description": "Generate insight from content (currently keyword matching)",
+      "blocker": "No LLM integration, generic 'why it matters' templates"
     },
     "briefing_generation": {
-      "status": "complete",
-      "description": "Create morning briefing format and delivery mechanism"
+      "status": "incomplete",
+      "description": "Create useful morning briefing",
+      "blocker": "Newsletter is link aggregator, not insight provider"
     }
   },
+  
   "components": {
     "source_catalog": {
-      "path": "research/",
-      "status": "complete",
-      "sources_count": 42,
-      "mvp_sources": 10
+      "path": "sources/sources-v2-bootstrapped.json",
+      "status": "validated",
+      "sources_count": 22
     },
-    "aggregation_scripts": {
-      "path": "scripts/aggregator/",
-      "status": "complete",
-      "deliverables": [
-        "feed_fetcher.py",
-        "content_extractor.py",
-        "deduplicator.py",
-        "tests/test_aggregation_pipeline.py"
+    "rss_fetching": {
+      "status": "working",
+      "note": "Fetches RSS entries successfully"
+    },
+    "content_extraction": {
+      "status": "broken",
+      "issues": [
+        "Distill.pub returns 7 chars (likely JS-rendered, needs browser)",
+        "Many sites block scraping",
+        "No fallback to Jina AI or similar service"
       ]
     },
-    "summarization_module": {
-      "path": "scripts/summarizer/",
-      "status": "complete",
-      "deliverables": [
-        "story_clusterer.py",
-        "entity_extractor.py",
-        "content_summarizer.py",
-        "relevance_scorer.py"
+    "insight_generation": {
+      "status": "not_implemented",
+      "issues": [
+        "Keyword-based theme detection is naive",
+        "No cross-source pattern analysis",
+        "Generic 'why it matters' without content reading"
       ]
-    },
-    "briefing_generator": {
-      "path": "scripts/briefing/",
-      "status": "complete",
-      "deliverables": [
-        "briefing_generator.py - Markdown and Telegram format generation"
-      ],
-      "demo_output": "output/demo-briefing-2026-03-21.md"
     }
   },
-  "daily_briefing_goal": {
-    "max_reading_time_minutes": 10,
-    "max_stories_per_domain": 5,
-    "output_formats": ["markdown", "telegram"]
-  },
+  
+  "blockers": [
+    {
+      "id": "content-extraction-fails",
+      "description": "Cannot extract full article content from most sources",
+      "severity": "blocking",
+      "possible_fixes": [
+        "Use Jina AI Reader API",
+        "Use Firecrawl extraction",
+        "Browser-based extraction with playwright"
+      ]
+    },
+    {
+      "id": "no-llm-insight",
+      "description": "No AI-generated insight from content",
+      "severity": "blocking",
+      "possible_fixes": [
+        "Integrate Claude API for summarization",
+        "Add cross-article theme synthesis"
+      ]
+    },
+    {
+      "id": "naive-theme-detection",
+      "description": "Theme detection counts per-source stories as 'trends'",
+      "severity": "high",
+      "example": "Rust blog articles tagged 'rust momentum' is tautological"
+    }
+  ],
+  
   "next_steps": [
-    "Configure RSS feeds for top 10 MVP sources",
-    "Set up SQLite database with schema",
-    "Schedule daily run via cron/systemd",
-    "Add Telegram bot delivery",
-    "Test end-to-end for 1 week"
+    "Fix content extraction using Jina AI or similar",
+    "Add Claude API integration for real summarization",
+    "Rebuild theme detection to cross-reference generalist feeds only",
+    "Validate with practitioner: 'is this better than RSS reader?'",
+    "Only then mark phases complete"
+  ],
+  
+  "lessons": [
+    "Cron agents optimize for task closure, not value delivery",
+    "Counting RSS entries != useful insight",
+    "STATUS.json claimed 'complete' based on file existence, not quality",
+    "Need human validation checkpoint before marking research done"
   ]
 }
