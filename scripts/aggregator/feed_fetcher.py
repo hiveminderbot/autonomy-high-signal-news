@@ -220,17 +220,78 @@ class FeedCache:
                        WHERE id = ?""",
                     (error_message, source_id)
                 )
+    
+    def disable_source(self, source_id: str, reason: str = ""):
+        """Disable a source and log the action."""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute(
+                "UPDATE feed_sources SET active = 0 WHERE id = ?",
+                (source_id,)
+            )
+            # Log the automatic disabling
+            conn.execute("""
+                INSERT INTO fetch_log (source_id, entries_count, success, error_message, response_time_ms)
+                VALUES (?, 0, 0, ?, 0)
+            """, (source_id, f"AUTO_DISABLED: {reason}"))
+    
+    def get_source_error_count(self, source_id: str) -> int:
+        """Get the current error count for a source."""
+        with sqlite3.connect(self.db_path) as conn:
+            row = conn.execute(
+                "SELECT error_count FROM feed_sources WHERE id = ?",
+                (source_id,)
+            ).fetchone()
+            return row[0] if row else 0
+    
+    def get_disabled_sources(self) -> list[FeedSource]:
+        """Get all disabled (inactive) sources."""
+        with sqlite3.connect(self.db_path) as conn:
+            rows = conn.execute(
+                "SELECT * FROM feed_sources WHERE active = 0"
+            ).fetchall()
+            
+            columns = [desc[0] for desc in conn.execute(
+                "SELECT * FROM feed_sources LIMIT 0"
+            ).description]
+            
+            sources = []
+            for row in rows:
+                data = dict(zip(columns, row))
+                sources.append(FeedSource(
+                    id=data['id'],
+                    name=data['name'],
+                    url=data['url'],
+                    format=data['format'],
+                    category=data['category'],
+                    domain=data['domain'],
+                    signal_quality=data['signal_quality'],
+                    active=bool(data['active']),
+                    fetch_interval_minutes=data['fetch_interval_minutes']
+                ))
+            return sources
+    
+    def reenable_source(self, source_id: str):
+        """Re-enable a source and reset its error count."""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute(
+                "UPDATE feed_sources SET active = 1, error_count = 0 WHERE id = ?",
+                (source_id,)
+            )
 
 
 class FeedFetcher:
     """Main feed fetcher with rate limiting, caching, and health monitoring."""
     
+    # Error threshold for automatic source disabling
+    ERROR_THRESHOLD = 5
+    
     def __init__(self, cache: FeedCache, min_fetch_interval_seconds: int = 5, 
-                 health_monitor=None):
+                 health_monitor=None, auto_disable: bool = True):
         self.cache = cache
         self.min_fetch_interval = min_fetch_interval_seconds
         self.last_fetch_time: Optional[float] = None
         self.health_monitor = health_monitor
+        self.auto_disable = auto_disable
     
     def _rate_limit(self):
         """Enforce minimum interval between fetches."""
@@ -495,10 +556,17 @@ class FeedFetcher:
         else:
             raise ValueError(f"Unsupported feed format: {source.format}")
     
-    def fetch_all(self, domain: Optional[str] = None) -> dict[str, list[FeedEntry]]:
-        """Fetch all configured sources."""
-        sources = self.cache.get_sources(domain=domain)
+    def fetch_all(self, domain: Optional[str] = None, 
+                  include_disabled: bool = False) -> dict[str, list[FeedEntry]]:
+        """Fetch all configured sources.
+        
+        Args:
+            domain: Filter by domain
+            include_disabled: If True, also fetch disabled sources (for retry mode)
+        """
+        sources = self.cache.get_sources(domain=domain, active_only=not include_disabled)
         results = {}
+        disabled_sources = []
         
         for source in sources:
             try:
@@ -507,9 +575,33 @@ class FeedFetcher:
                 self.cache.save_entries(entries)
                 results[source.id] = entries
                 print(f"  -> {len(entries)} entries")
+                
+                # If this was a retry of a disabled source and it succeeded, re-enable it
+                if include_disabled and not source.active and len(entries) > 0:
+                    self.cache.reenable_source(source.id)
+                    print(f"  ✅ Re-enabled {source.id} (fetch succeeded)")
+                    
             except Exception as e:
                 print(f"  -> ERROR: {e}")
                 results[source.id] = []
+                
+                # Check if source should be automatically disabled
+                if self.auto_disable and not include_disabled:
+                    error_count = self.cache.get_source_error_count(source.id)
+                    if error_count >= self.ERROR_THRESHOLD:
+                        self.cache.disable_source(
+                            source.id, 
+                            f"Auto-disabled after {error_count} consecutive failures: {str(e)[:100]}"
+                        )
+                        disabled_sources.append(source.id)
+                        print(f"  ⚠️  AUTO-DISABLED {source.id} after {error_count} failures")
+        
+        # Summary of auto-disabled sources
+        if disabled_sources:
+            print(f"\n⚠️  {len(disabled_sources)} source(s) auto-disabled due to repeated failures:")
+            for sid in disabled_sources:
+                print(f"    - {sid}")
+            print(f"\nUse --retry-disabled to attempt fetching these sources again.")
         
         return results
 
@@ -570,6 +662,10 @@ def main():
     parser.add_argument('--health-report', action='store_true',
                         help='Generate health report after fetching')
     parser.add_argument('--validate-source', help='Validate a feed URL before adding')
+    parser.add_argument('--retry-disabled', action='store_true',
+                        help='Retry disabled sources and re-enable if successful')
+    parser.add_argument('--no-auto-disable', action='store_true',
+                        help='Disable automatic source disabling on repeated failures')
     
     args = parser.parse_args()
     
@@ -622,8 +718,21 @@ def main():
     except ImportError:
         health_monitor = None
     
-    fetcher = FeedFetcher(cache, health_monitor=health_monitor)
-    results = fetcher.fetch_all(domain=args.domain)
+    fetcher = FeedFetcher(cache, health_monitor=health_monitor, 
+                          auto_disable=not args.no_auto_disable)
+    
+    # Handle retry-disabled mode
+    if args.retry_disabled:
+        disabled = cache.get_disabled_sources()
+        if disabled:
+            print(f"\n🔁 Retrying {len(disabled)} disabled source(s)...")
+            for src in disabled:
+                print(f"  - {src.id} ({src.name})")
+            print()
+        else:
+            print("No disabled sources to retry.")
+    
+    results = fetcher.fetch_all(domain=args.domain, include_disabled=args.retry_disabled)
     
     total = sum(len(entries) for entries in results.values())
     print(f"\nTotal entries fetched: {total}")

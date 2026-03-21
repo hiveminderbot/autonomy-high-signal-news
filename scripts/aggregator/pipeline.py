@@ -86,6 +86,7 @@ class AggregationPipeline:
         domain_filter: Optional[str] = None,
         limit_sources: Optional[int] = None,
         verbose: bool = False,
+        include_disabled: bool = False,
     ) -> PipelineResult:
         """
         Run the complete aggregation pipeline.
@@ -95,6 +96,7 @@ class AggregationPipeline:
             domain_filter: Optional domain to filter sources (e.g., 'ai', 'software_development')
             limit_sources: Maximum number of sources to process
             verbose: Print progress information
+            include_disabled: If True, also fetch disabled sources (for retry mode)
             
         Returns:
             PipelineResult with statistics about the run
@@ -104,7 +106,7 @@ class AggregationPipeline:
         
         # Load sources if not provided
         if sources is None:
-            sources = self.cache.get_sources(domain=domain_filter)
+            sources = self.cache.get_sources(domain=domain_filter, active_only=not include_disabled)
         
         if limit_sources:
             sources = sources[:limit_sources]
@@ -116,9 +118,12 @@ class AggregationPipeline:
         entries_extracted = 0
         entries_deduplicated = 0
         entries_stored = 0
+        auto_disabled_sources = []
+        reenabled_sources = []
         
         for source in sources:
-            if not source.active:
+            # Skip inactive sources unless in retry mode
+            if not source.active and not include_disabled:
                 continue
                 
             try:
@@ -128,6 +133,13 @@ class AggregationPipeline:
                 # Step 1: Fetch entries from source
                 entries = self._fetch_from_source(source, verbose)
                 entries_fetched += len(entries)
+                
+                # If retry mode and fetch succeeded, re-enable the source
+                if include_disabled and not source.active and len(entries) > 0:
+                    self.cache.reenable_source(source.id)
+                    reenabled_sources.append(source.id)
+                    if verbose:
+                        print(f"    ✅ Re-enabled {source.id} (fetch succeeded)")
                 
                 # Step 2: Process each entry (extract + dedup)
                 processed_entries = []
@@ -176,6 +188,31 @@ class AggregationPipeline:
                 self.errors.append(err_msg)
                 if verbose:
                     print(f"  ✗ {err_msg}")
+                
+                # Check if source should be automatically disabled
+                if not include_disabled:  # Don't auto-disable during retry mode
+                    error_count = self.cache.get_source_error_count(source.id)
+                    if error_count >= FeedFetcher.ERROR_THRESHOLD:
+                        self.cache.disable_source(
+                            source.id,
+                            f"Auto-disabled after {error_count} consecutive failures: {str(e)[:100]}"
+                        )
+                        auto_disabled_sources.append(source.id)
+                        if verbose:
+                            print(f"    ⚠️ AUTO-DISABLED after {error_count} failures")
+        
+        # Print auto-disable summary
+        if auto_disabled_sources:
+            print(f"\n⚠️  {len(auto_disabled_sources)} source(s) auto-disabled due to repeated failures:")
+            for sid in auto_disabled_sources:
+                print(f"    - {sid}")
+            print(f"\nUse --retry-disabled to attempt fetching these sources again.")
+        
+        # Print re-enable summary
+        if reenabled_sources:
+            print(f"\n✅ {len(reenabled_sources)} source(s) re-enabled after successful fetch:")
+            for sid in reenabled_sources:
+                print(f"    - {sid}")
         
         # Step 4: Scrape blog sources (after RSS feeds)
         if self.enable_blog_scraping and self.blog_scraper and self.blog_catalog_path:
@@ -507,6 +544,7 @@ def run_pipeline_command(
     enable_blog_scraping: bool = True,
     enable_newsletter_ingestion: bool = False,
     newsletter_catalog_path: Optional[Path] = None,
+    retry_disabled: bool = False,
 ) -> PipelineResult:
     """
     Command-line interface to run the pipeline.
@@ -522,6 +560,7 @@ def run_pipeline_command(
         enable_blog_scraping: Whether to enable blog scraping
         enable_newsletter_ingestion: Whether to enable newsletter ingestion
         newsletter_catalog_path: Path to newsletter catalog JSON
+        retry_disabled: Whether to retry disabled sources and re-enable if successful
         
     Returns:
         PipelineResult
@@ -537,6 +576,17 @@ def run_pipeline_command(
         if verbose:
             print(f"Loaded {len(sources)} RSS sources from catalog")
     
+    # Handle retry-disabled mode
+    if retry_disabled:
+        disabled = cache.get_disabled_sources()
+        if disabled:
+            print(f"\n🔁 Retrying {len(disabled)} disabled source(s)...")
+            for src in disabled:
+                print(f"  - {src.id} ({src.name})")
+            print()
+        else:
+            print("No disabled sources to retry.")
+    
     # Create and run pipeline
     pipeline = AggregationPipeline(
         cache=cache,
@@ -551,6 +601,7 @@ def run_pipeline_command(
         domain_filter=domain,
         limit_sources=limit,
         verbose=verbose,
+        include_disabled=retry_disabled,
     )
     
     return result
@@ -621,6 +672,11 @@ def main():
         default=Path('sources/newsletter_catalog.json'),
         help='Path to newsletter catalog JSON'
     )
+    parser.add_argument(
+        '--retry-disabled',
+        action='store_true',
+        help='Retry disabled sources and re-enable if successful'
+    )
     
     args = parser.parse_args()
     
@@ -638,6 +694,7 @@ def main():
         enable_blog_scraping=not args.no_blog_scraping,
         enable_newsletter_ingestion=args.enable_newsletter_ingestion,
         newsletter_catalog_path=args.newsletter_catalog,
+        retry_disabled=args.retry_disabled,
     )
     
     if args.json:

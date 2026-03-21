@@ -32,17 +32,24 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def run_pipeline() -> dict:
+def run_pipeline(retry_disabled: bool = False) -> dict:
     """Run the full aggregation pipeline."""
     logger.info("=" * 60)
     logger.info("Starting daily aggregation pipeline")
+    if retry_disabled:
+        logger.info("Mode: Retry disabled sources")
     logger.info("=" * 60)
     
     start_time = datetime.now()
     
+    # Build command
+    cmd = [sys.executable, "-m", "scripts.aggregator.pipeline", "--full"]
+    if retry_disabled:
+        cmd.append("--retry-disabled")
+    
     # Run the pipeline
     result = subprocess.run(
-        [sys.executable, "-m", "scripts.aggregator.pipeline", "--full"],
+        cmd,
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent
@@ -176,9 +183,16 @@ def save_run_history(status: dict, health: dict):
 
 def main():
     """Main entry point."""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Daily runner for High-Signal News aggregation')
+    parser.add_argument('--retry-disabled', action='store_true',
+                        help='Retry disabled sources and re-enable if successful')
+    args = parser.parse_args()
+    
     try:
         # Run pipeline
-        status = run_pipeline()
+        status = run_pipeline(retry_disabled=args.retry_disabled)
         
         # Check health
         health = check_source_health()
