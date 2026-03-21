@@ -629,6 +629,8 @@ def run_all_tests():
         test_pipeline_run_empty_sources,
         test_pipeline_deduplication_integration,
         test_pipeline_result_to_json,
+        test_extended_pipeline_result_dataclass,
+        test_extended_pipeline_newsletter_integration,
     ]
     
     passed = 0
@@ -648,6 +650,61 @@ def run_all_tests():
     print(f"\n{'='*50}")
     print(f"Results: {passed} passed, {failed} failed")
     return failed == 0
+
+
+# Extended pipeline tests
+def test_extended_pipeline_result_dataclass():
+    """Test ExtendedPipelineResult serialization."""
+    from aggregator.pipeline_extended import ExtendedPipelineResult
+    
+    result = ExtendedPipelineResult(
+        started_at=datetime(2026, 3, 15, 10, 0, 0),
+        completed_at=datetime(2026, 3, 15, 10, 1, 30),
+        sources_processed=5,
+        entries_fetched=100,
+        entries_extracted=95,
+        entries_deduplicated=10,
+        entries_stored=85,
+        errors=[],
+        newsletter_sources_processed=3,
+        newsletter_entries_fetched=20,
+        newsletter_entries_stored=18,
+    )
+    
+    data = result.to_dict()
+    assert data['sources_processed'] == 5
+    assert data['entries_stored'] == 85
+    assert data['newsletter_sources_processed'] == 3
+    assert data['newsletter_entries_stored'] == 18
+    assert data['duration_seconds'] == 90.0
+    print("✅ test_extended_pipeline_result_dataclass passed")
+
+
+def test_extended_pipeline_newsletter_integration():
+    """Test that extended pipeline can integrate with newsletter cache."""
+    from aggregator.pipeline_extended import ExtendedAggregationPipeline
+    from aggregator.newsletter_ingester import NewsletterCache, NewsletterIngester
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        feed_cache = FeedCache(db_path)
+        newsletter_cache = NewsletterCache(db_path)
+        
+        pipeline = ExtendedAggregationPipeline(
+            cache=feed_cache,
+            newsletter_cache=newsletter_cache,
+            newsletter_ingester=NewsletterIngester(newsletter_cache),
+        )
+        
+        # Verify both caches are accessible
+        assert pipeline.cache is feed_cache
+        assert pipeline.newsletter_cache is newsletter_cache
+        assert pipeline.newsletter_ingester is not None
+        print("✅ test_extended_pipeline_newsletter_integration passed")
+    finally:
+        db_path.unlink(missing_ok=True)
 
 
 if __name__ == '__main__':

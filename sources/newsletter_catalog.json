@@ -1,0 +1,143 @@
+{
+  "version": "1.0",
+  "description": "High-signal newsletter sources for aggregation pipeline",
+  "newsletters": [
+    {
+      "id": "stratechery",
+      "name": "Stratechery",
+      "provider": "substack_rss",
+      "source_url": "https://stratechery.com/feed/",
+      "category": "Technology Analysis",
+      "domain": "technology",
+      "signal_quality": "Very High",
+      "active": true,
+      "config": {
+        "author": "Ben Thompson",
+        "notes": "Deep tech strategy analysis"
+      }
+    },
+    {
+      "id": "benedict-evans",
+      "name": "Benedict Evans Newsletter",
+      "provider": "buttondown_rss",
+      "source_url": "https://www.ben-evans.com/newsletter/rss.xml",
+      "category": "Technology Analysis",
+      "domain": "technology",
+      "signal_quality": "Very High",
+      "active": true,
+      "config": {
+        "author": "Benedict Evans",
+        "notes": "Mobile and tech industry analysis"
+      }
+    },
+    {
+      "id": "import-ai",
+      "name": "Import AI",
+      "provider": "substack_rss",
+      "source_url": "https://importai.substack.com/feed",
+      "category": "AI Research",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "author": "Jack Clark",
+        "notes": "AI research and policy weekly"
+      }
+    },
+    {
+      "id": "the-batch",
+      "name": "The Batch",
+      "provider": "substack_rss",
+      "source_url": "https://www.deeplearning.ai/the-batch/feed/",
+      "category": "AI News",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "author": "DeepLearning.AI",
+        "notes": "Weekly AI news and insights"
+      }
+    },
+    {
+      "id": "ai-supremacy",
+      "name": "AI Supremacy",
+      "provider": "substack_rss",
+      "source_url": "https://aisupremacy.substack.com/feed",
+      "category": "AI Industry",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "AI industry and startup news"
+      }
+    },
+    {
+      "id": "tldr",
+      "name": "TLDR Newsletter",
+      "provider": "substack_rss",
+      "source_url": "https://tldr.tech/feed",
+      "category": "Tech News",
+      "domain": "software_development",
+      "signal_quality": "Medium-High",
+      "active": true,
+      "config": {
+        "notes": "Daily tech newsletter with dev focus"
+      }
+    },
+    {
+      "id": "bytebytego",
+      "name": "ByteByteGo",
+      "provider": "substack_rss",
+      "source_url": "https://blog.bytebytego.com/feed",
+      "category": "System Design",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "author": "Alex Xu",
+        "notes": "System design and architecture"
+      }
+    },
+    {
+      "id": "lenny-newsletter",
+      "name": "Lenny's Newsletter",
+      "provider": "substack_rss",
+      "source_url": "https://www.lennysnewsletter.com/feed",
+      "category": "Product Management",
+      "domain": "product",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "author": "Lenny Rachitsky",
+        "notes": "Product management and growth"
+      }
+    },
+    {
+      "id": "first-round-review",
+      "name": "First Round Review",
+      "provider": "substack_rss",
+      "source_url": "https://review.firstround.com/feed",
+      "category": "Startup & Engineering",
+      "domain": "startup",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Startup advice and engineering culture"
+      }
+    },
+    {
+      "id": "paul-graham",
+      "name": "Paul Graham Essays",
+      "provider": "substack_rss",
+      "source_url": "http://www.paulgraham.com/rss.html",
+      "category": "Startup Philosophy",
+      "domain": "startup",
+      "signal_quality": "Very High",
+      "active": true,
+      "config": {
+        "author": "Paul Graham",
+        "notes": "Essays on startups and technology"
+      }
+    }
+  ]
+}
