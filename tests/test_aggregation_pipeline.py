@@ -631,6 +631,15 @@ def run_all_tests():
         test_pipeline_result_to_json,
         test_extended_pipeline_result_dataclass,
         test_extended_pipeline_newsletter_integration,
+        # ArticleStorage tests
+        test_storage_init_creates_tables,
+        test_storage_save_and_get_article,
+        test_storage_duplicate_url_rejection,
+        test_storage_full_text_search,
+        test_storage_get_recent_articles,
+        test_storage_stats,
+        test_storage_content_hash_dedup,
+        test_storage_ingestion_log,
     ]
     
     passed = 0
@@ -703,6 +712,301 @@ def test_extended_pipeline_newsletter_integration():
         assert pipeline.newsletter_cache is newsletter_cache
         assert pipeline.newsletter_ingester is not None
         print("✅ test_extended_pipeline_newsletter_integration passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_init_creates_tables():
+    """Test that ArticleStorage initializes the database correctly."""
+    from aggregator.storage import ArticleStorage
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        with sqlite3.connect(db_path) as conn:
+            tables = conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            ).fetchall()
+            table_names = {t[0] for t in tables}
+        
+        assert 'articles' in table_names, "articles table missing"
+        assert 'story_clusters' in table_names, "story_clusters table missing"
+        assert 'ingestion_log' in table_names, "ingestion_log table missing"
+        print("✅ test_storage_init_creates_tables passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_save_and_get_article():
+    """Test saving and retrieving an article."""
+    from aggregator.storage import ArticleStorage, create_article_from_entry
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        article = create_article_from_entry(
+            entry_id='test-article-1',
+            title='Test Article Title',
+            url='https://example.com/article1',
+            source_id='test-source',
+            source_name='Test Source',
+            domain='ai',
+            summary='A test article',
+            content='Full content here'
+        )
+        
+        saved = storage.save_article(article)
+        assert saved, "Article should be saved"
+        
+        retrieved = storage.get_article('test-article-1')
+        assert retrieved is not None, "Article should be retrievable"
+        assert retrieved.title == 'Test Article Title'
+        assert retrieved.url == 'https://example.com/article1'
+        assert retrieved.domain == 'ai'
+        
+        print("✅ test_storage_save_and_get_article passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_duplicate_url_rejection():
+    """Test that duplicate URLs are rejected."""
+    from aggregator.storage import ArticleStorage, create_article_from_entry
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        article1 = create_article_from_entry(
+            entry_id='article-1',
+            title='First Article',
+            url='https://example.com/same',
+            source_id='source-1',
+            source_name='Source 1',
+            domain='ai'
+        )
+        
+        article2 = create_article_from_entry(
+            entry_id='article-2',
+            title='Second Article',
+            url='https://example.com/same',  # Same URL
+            source_id='source-2',
+            source_name='Source 2',
+            domain='software_development'
+        )
+        
+        saved1 = storage.save_article(article1)
+        saved2 = storage.save_article(article2)
+        
+        assert saved1, "First article should be saved"
+        assert not saved2, "Second article with same URL should be rejected"
+        
+        print("✅ test_storage_duplicate_url_rejection passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_full_text_search():
+    """Test full-text search functionality."""
+    from aggregator.storage import ArticleStorage, create_article_from_entry
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        # Create articles with different content
+        articles = [
+            create_article_from_entry(
+                f'ai-{i}',
+                f'AI Research Article {i}',
+                f'https://ai.com/article{i}',
+                'ai-source',
+                'AI Source',
+                'ai',
+                content='Machine learning and neural networks are advancing rapidly.'
+            )
+            for i in range(3)
+        ] + [
+            create_article_from_entry(
+                f'dev-{i}',
+                f'Programming Article {i}',
+                f'https://dev.com/article{i}',
+                'dev-source',
+                'Dev Source',
+                'software_development',
+                content='Python and JavaScript frameworks comparison.'
+            )
+            for i in range(2)
+        ]
+        
+        for article in articles:
+            storage.save_article(article)
+        
+        # Search for AI content
+        ai_results = storage.search_articles('machine learning')
+        assert len(ai_results) >= 3, f"Expected at least 3 AI results, got {len(ai_results)}"
+        
+        # Search with domain filter
+        dev_results = storage.search_articles('Python', domain='software_development')
+        assert len(dev_results) == 2, f"Expected 2 dev results, got {len(dev_results)}"
+        
+        print("✅ test_storage_full_text_search passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_get_recent_articles():
+    """Test retrieving recent articles."""
+    from aggregator.storage import ArticleStorage, create_article_from_entry
+    from datetime import datetime, timedelta
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        # Create articles with recent published_at dates
+        now = datetime.now()
+        for i in range(5):
+            article = create_article_from_entry(
+                f'recent-{i}',
+                f'Recent Article {i}',
+                f'https://example.com/recent{i}',
+                'test-source',
+                'Test Source',
+                'ai',
+                published_at=now - timedelta(hours=i)  # Published within last few hours
+            )
+            storage.save_article(article)
+        
+        # Get recent articles
+        recent = storage.get_recent_articles(hours=24, limit=10)
+        assert len(recent) == 5, f"Expected 5 recent articles, got {len(recent)}"
+        
+        # Filter by domain
+        ai_recent = storage.get_recent_articles(domain='ai', hours=24)
+        assert len(ai_recent) == 5
+        
+        print("✅ test_storage_get_recent_articles passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_stats():
+    """Test storage statistics."""
+    from aggregator.storage import ArticleStorage, create_article_from_entry
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        # Create articles in different domains
+        for i in range(3):
+            storage.save_article(create_article_from_entry(
+                f'ai-{i}', f'AI {i}', f'https://ai.com/{i}',
+                'source1', 'Source 1', 'ai'
+            ))
+        
+        for i in range(2):
+            storage.save_article(create_article_from_entry(
+                f'dev-{i}', f'Dev {i}', f'https://dev.com/{i}',
+                'source2', 'Source 2', 'software_development'
+            ))
+        
+        stats = storage.get_stats()
+        
+        assert stats['total_articles'] == 5, f"Expected 5 articles, got {stats['total_articles']}"
+        assert stats['by_domain']['ai'] == 3
+        assert stats['by_domain']['software_development'] == 2
+        assert stats['last_24h'] == 5
+        
+        print("✅ test_storage_stats passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_content_hash_dedup():
+    """Test content hash based deduplication check."""
+    from aggregator.storage import ArticleStorage, create_article_from_entry
+    import hashlib
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        # Create and save article
+        article = create_article_from_entry(
+            'original',
+            'Same Title',
+            'https://example.com/original',
+            'source1',
+            'Source 1',
+            'ai',
+            summary='Same summary',
+            content='Same content'
+        )
+        storage.save_article(article)
+        
+        # Check if content hash exists
+        content_to_hash = f"Same Title:Same summary:Same content"[:1000]
+        content_hash = hashlib.sha256(content_to_hash.encode()).hexdigest()[:16]
+        
+        existing_id = storage.check_content_hash_exists(content_hash)
+        assert existing_id == 'original', "Should find the original article"
+        
+        # Check non-existent hash
+        nonexistent = storage.check_content_hash_exists('nonexistenthash123')
+        assert nonexistent is None
+        
+        print("✅ test_storage_content_hash_dedup passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_storage_ingestion_log():
+    """Test ingestion logging."""
+    from aggregator.storage import ArticleStorage
+    
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        storage = ArticleStorage(db_path)
+        
+        # Log operations
+        log_id = storage.log_ingestion('fetch', 'source1', 10, True)
+        assert log_id > 0
+        
+        storage.complete_ingestion_log(log_id, True)
+        
+        # Log error
+        log_id2 = storage.log_ingestion('extract', 'source2', 0, False, 'Network error')
+        storage.complete_ingestion_log(log_id2, False, 'Network error')
+        
+        # Get logs
+        logs = storage.get_recent_logs(limit=10)
+        assert len(logs) == 2
+        
+        # Filter by operation
+        fetch_logs = storage.get_recent_logs(operation='fetch')
+        assert len(fetch_logs) == 1
+        
+        print("✅ test_storage_ingestion_log passed")
     finally:
         db_path.unlink(missing_ok=True)
 
