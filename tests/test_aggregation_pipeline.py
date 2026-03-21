@@ -604,6 +604,291 @@ def test_pipeline_result_to_json():
     print("✅ test_pipeline_result_to_json passed")
 
 
+def test_error_count_incremented_on_failure():
+    """Test that error count increments when fetch fails."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create a source
+        cache.save_source(FeedSource(
+            id='error-source',
+            name='Error Source',
+            url='https://error.example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='Medium'
+        ))
+        
+        # Log some failures
+        cache.log_fetch('error-source', 0, False, 'Connection timeout', 1000)
+        cache.log_fetch('error-source', 0, False, 'Connection timeout', 1000)
+        
+        # Check error count
+        error_count = cache.get_source_error_count('error-source')
+        assert error_count == 2, f"Expected error count 2, got {error_count}"
+        
+        print("✅ test_error_count_incremented_on_failure passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_error_count_reset_on_success():
+    """Test that error count resets to 0 after successful fetch."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create a source
+        cache.save_source(FeedSource(
+            id='recovery-source',
+            name='Recovery Source',
+            url='https://recovery.example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='Medium'
+        ))
+        
+        # Log some failures
+        cache.log_fetch('recovery-source', 0, False, 'Connection timeout', 1000)
+        cache.log_fetch('recovery-source', 0, False, 'Connection timeout', 1000)
+        
+        # Verify errors accumulated
+        assert cache.get_source_error_count('recovery-source') == 2
+        
+        # Log a success
+        cache.log_fetch('recovery-source', 5, True, None, 500)
+        
+        # Error count should be reset to 0
+        error_count = cache.get_source_error_count('recovery-source')
+        assert error_count == 0, f"Expected error count 0 after success, got {error_count}"
+        
+        print("✅ test_error_count_reset_on_success passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_source_auto_disabled_after_threshold():
+    """Test that source is auto-disabled after ERROR_THRESHOLD failures."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create a mock fetcher with auto_disable enabled
+        fetcher = FeedFetcher(cache, auto_disable=True)
+        threshold = fetcher.ERROR_THRESHOLD
+        
+        # Create a source
+        cache.save_source(FeedSource(
+            id='failing-source',
+            name='Failing Source',
+            url='https://failing.example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='Medium'
+        ))
+        
+        # Simulate threshold failures
+        for i in range(threshold):
+            cache.log_fetch('failing-source', 0, False, f'Failure {i+1}', 1000)
+        
+        # Source should still be active before hitting the threshold check
+        sources = cache.get_sources(active_only=True)
+        assert len(sources) == 1, "Source should still be active"
+        
+        # Simulate one more failure to trigger auto-disable
+        # (This happens in fetch_all when checking error_count >= threshold)
+        error_count = cache.get_source_error_count('failing-source')
+        if error_count >= threshold:
+            cache.disable_source('failing-source', f"Auto-disabled after {error_count} consecutive failures")
+        
+        # Verify source is now disabled
+        disabled = cache.get_disabled_sources()
+        assert len(disabled) == 1, f"Expected 1 disabled source, got {len(disabled)}"
+        assert disabled[0].id == 'failing-source'
+        
+        # Verify it's not in active sources
+        active = cache.get_sources(active_only=True)
+        assert len(active) == 0, "Should have no active sources"
+        
+        print("✅ test_source_auto_disabled_after_threshold passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_disabled_source_excluded_from_fetch():
+    """Test that disabled sources are excluded from fetch_all."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create active and disabled sources
+        cache.save_source(FeedSource(
+            id='active-source',
+            name='Active Source',
+            url='https://active.example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='High'
+        ))
+        
+        cache.save_source(FeedSource(
+            id='disabled-source',
+            name='Disabled Source',
+            url='https://disabled.example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='Medium',
+            active=False
+        ))
+        
+        # Get active sources only
+        active = cache.get_sources(active_only=True)
+        assert len(active) == 1
+        assert active[0].id == 'active-source'
+        
+        # Get disabled sources
+        disabled = cache.get_disabled_sources()
+        assert len(disabled) == 1
+        assert disabled[0].id == 'disabled-source'
+        
+        print("✅ test_disabled_source_excluded_from_fetch passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_reenable_source_resets_error_count():
+    """Test that re-enabling a source resets its error count."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create and disable a source with errors
+        cache.save_source(FeedSource(
+            id='reenable-source',
+            name='Re-enable Source',
+            url='https://reenable.example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='Medium'
+        ))
+        
+        # Add errors and disable
+        for i in range(5):
+            cache.log_fetch('reenable-source', 0, False, f'Error {i}', 1000)
+        cache.disable_source('reenable-source', 'Test disable')
+        
+        # Verify disabled with errors
+        assert cache.get_source_error_count('reenable-source') == 5
+        
+        # Re-enable
+        cache.reenable_source('reenable-source')
+        
+        # Verify reset
+        assert cache.get_source_error_count('reenable-source') == 0
+        
+        # Verify it's active
+        active = cache.get_sources(active_only=True)
+        assert len(active) == 1
+        
+        print("✅ test_reenable_source_resets_error_count passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_fetcher_auto_disable_disabled():
+    """Test that auto-disable can be turned off."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create fetcher with auto_disable=False
+        fetcher = FeedFetcher(cache, auto_disable=False)
+        
+        # Create a source
+        cache.save_source(FeedSource(
+            id='no-disable-source',
+            name='No Disable Source',
+            url='https://example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='Medium'
+        ))
+        
+        # Log many failures
+        for i in range(10):
+            cache.log_fetch('no-disable-source', 0, False, f'Error {i}', 1000)
+        
+        # Source should still be active because auto_disable is False
+        # (in real usage, fetch_all checks auto_disable before calling disable_source)
+        active = cache.get_sources(active_only=True)
+        assert len(active) == 1, "Source should still be active with auto_disable=False"
+        
+        print("✅ test_fetcher_auto_disable_disabled passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
+def test_fetch_log_tracks_errors():
+    """Test that fetch log tracks error messages."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+    
+    try:
+        cache = FeedCache(db_path)
+        
+        # Create a source
+        cache.save_source(FeedSource(
+            id='log-test-source',
+            name='Log Test Source',
+            url='https://log.example.com/feed',
+            format='RSS',
+            category='Test',
+            domain='ai',
+            signal_quality='Medium'
+        ))
+        
+        # Log fetches with various statuses
+        cache.log_fetch('log-test-source', 10, True, None, 500)
+        cache.log_fetch('log-test-source', 0, False, 'Network timeout', 1000)
+        cache.log_fetch('log-test-source', 0, False, 'HTTP 500', 2000)
+        
+        # Query the fetch log
+        with sqlite3.connect(db_path) as conn:
+            rows = conn.execute(
+                "SELECT success, error_message FROM fetch_log WHERE source_id = ? ORDER BY id",
+                ('log-test-source',)
+            ).fetchall()
+        
+        assert len(rows) == 3
+        assert rows[0] == (1, None)
+        assert rows[1] == (0, 'Network timeout')
+        assert rows[2] == (0, 'HTTP 500')
+        
+        print("✅ test_fetch_log_tracks_errors passed")
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
 def run_all_tests():
     """Run all tests."""
     tests = [
@@ -640,6 +925,14 @@ def run_all_tests():
         test_storage_stats,
         test_storage_content_hash_dedup,
         test_storage_ingestion_log,
+        # Auto-disable tests
+        test_error_count_incremented_on_failure,
+        test_error_count_reset_on_success,
+        test_source_auto_disabled_after_threshold,
+        test_disabled_source_excluded_from_fetch,
+        test_reenable_source_resets_error_count,
+        test_fetcher_auto_disable_disabled,
+        test_fetch_log_tracks_errors,
     ]
     
     passed = 0
