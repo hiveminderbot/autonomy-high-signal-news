@@ -498,6 +498,24 @@ class FeedFetcher:
                 'date_selector': None,
                 'base_url': 'https://huggingface.co'
             },
+            'towards-data-science': {
+                'list_url': 'https://towardsdatascience.com/',
+                'article_selector': 'article',
+                'title_selector': 'h2 a, h1 a, .pw-post-title a',
+                'link_selector': 'h2 a[href*="towardsdatascience.com"], h1 a[href*="towardsdatascience.com"], a[rel="noopener"]',
+                'author_selector': '.pw-author a, [data-testid="authorName"]',
+                'date_selector': 'time, [data-testid="storyPublishDate"]',
+                'base_url': 'https://towardsdatascience.com'
+            },
+            'the-information': {
+                'list_url': 'https://www.theinformation.com/',
+                'article_selector': 'article, .article-card, .story-card',
+                'title_selector': 'h2 a, h3 a, .headline a',
+                'link_selector': 'a[href*="/articles/"], .headline a',
+                'author_selector': '.byline, .author',
+                'date_selector': 'time, .date',
+                'base_url': 'https://www.theinformation.com'
+            },
         }
         
         if source.id not in HTML_SCRAPE_CONFIGS:
