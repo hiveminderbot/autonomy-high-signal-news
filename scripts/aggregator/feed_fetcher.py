@@ -394,6 +394,15 @@ class FeedFetcher:
             'cf-ray' in error_str
         )
     
+    def _is_auth_error(self, error: Exception) -> bool:
+        """Check if error indicates an authentication/authorization failure (401)."""
+        error_str = str(error).lower()
+        return (
+            '401' in error_str or
+            'unauthorized' in error_str or
+            'auth_failed' in error_str
+        )
+    
     def _try_rsshub_fallback(self, original_url: str) -> tuple[bytes, int]:
         """Try to fetch via RSSHub instances as fallback for Cloudflare-protected feeds.
         
@@ -466,6 +475,106 @@ class FeedFetcher:
         
         raise RuntimeError(f"All feed syndication fallbacks failed for {original_url}")
     
+    def _try_html_scrape_fallback(self, source: FeedSource) -> list[FeedEntry]:
+        """Try to fetch by scraping HTML as fallback for RSS auth errors.
+        
+        Some sources (like Hugging Face Papers) require authentication for RSS
+        but have public HTML pages. This fallback scrapes the HTML directly.
+        
+        Args:
+            source: The FeedSource to scrape
+            
+        Returns:
+            List of FeedEntry objects scraped from HTML
+        """
+        # Mapping of RSS source IDs to their HTML scraping configurations
+        HTML_SCRAPE_CONFIGS = {
+            'hugging-face-papers': {
+                'list_url': 'https://huggingface.co/papers',
+                'article_selector': 'article',
+                'title_selector': 'h3',
+                'link_selector': 'h3 a[href^="/papers/"]',
+                'author_selector': None,
+                'date_selector': None,
+                'base_url': 'https://huggingface.co'
+            },
+        }
+        
+        if source.id not in HTML_SCRAPE_CONFIGS:
+            raise RuntimeError(f"No HTML scraping config for source: {source.id}")
+        
+        config = HTML_SCRAPE_CONFIGS[source.id]
+        
+        try:
+            from bs4 import BeautifulSoup
+        except ImportError:
+            raise RuntimeError("beautifulsoup4 required for HTML scraping fallback")
+        
+        # Fetch the HTML page
+        headers = {
+            'User-Agent': self.DEFAULT_HEADERS['User-Agent'],
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        }
+        
+        response = requests.get(config['list_url'], headers=headers, timeout=30)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        entries = []
+        articles = soup.select(config['article_selector'])
+        
+        for article in articles[:20]:  # Limit to 20 most recent
+            try:
+                # Extract title
+                title_elem = article.select_one(config['title_selector'])
+                if not title_elem:
+                    continue
+                title = title_elem.get_text(strip=True)
+                
+                # Extract link
+                link_elem = article.select_one(config['link_selector'])
+                if not link_elem:
+                    continue
+                
+                href = link_elem.get('href', '')
+                if not href:
+                    continue
+                
+                # Build full URL
+                if href.startswith('http'):
+                    article_url = href
+                elif href.startswith('/'):
+                    article_url = config['base_url'] + href
+                else:
+                    from urllib.parse import urljoin
+                    article_url = urljoin(config['list_url'], href)
+                
+                # Generate unique ID
+                entry_id = hashlib.md5(f"{source.id}:{article_url}".encode()).hexdigest()[:16]
+                
+                feed_entry = FeedEntry(
+                    id=entry_id,
+                    title=title[:200],
+                    url=article_url,
+                    source_id=source.id,
+                    published_at=None,  # HF Papers doesn't have dates in list view
+                    summary=None,
+                    author=None,
+                    content=None,
+                    fetched_at=datetime.now()
+                )
+                entries.append(feed_entry)
+                
+            except Exception as e:
+                # Log and continue
+                continue
+        
+        if not entries:
+            raise RuntimeError(f"No entries found scraping HTML for {source.id}")
+        
+        return entries
+    
     def fetch_rss(self, source: FeedSource) -> list[FeedEntry]:
         """Fetch and parse an RSS/Atom feed with retry logic and Cloudflare fallback."""
         if not FEEDPARSER_AVAILABLE:
@@ -498,8 +607,31 @@ class FeedFetcher:
                         used_fallback = True
                         fallback_method = 'feedsyndicate'
                         print(f"  ✅ Feed syndication fallback succeeded for {source.id}")
+                # Check if this is an auth error (401) - try HTML scraping fallback
+                elif self._is_auth_error(primary_error):
+                    print(f"  ⚠️  Auth error (401) for {source.id}, trying HTML scraping fallback...")
+                    try:
+                        entries = self._try_html_scrape_fallback(source)
+                        used_fallback = True
+                        fallback_method = 'html_scrape'
+                        print(f"  ✅ HTML scraping fallback succeeded for {source.id} ({len(entries)} entries)")
+                        
+                        # Log success with fallback note
+                        fetch_time = int((time.time() - start_time) * 1000)
+                        self.cache.log_fetch(source.id, len(entries), True, 
+                                            error_message="Success via html_scrape fallback", 
+                                            response_time_ms=fetch_time)
+                        
+                        # Update health status
+                        if self.health_monitor:
+                            self.health_monitor.update_health_status(source.id, True)
+                        
+                        return entries
+                    except Exception as html_error:
+                        print(f"  ❌ HTML scraping fallback failed for {source.id}: {html_error}")
+                        raise primary_error  # Re-raise original error
                 else:
-                    raise  # Re-raise if not Cloudflare
+                    raise  # Re-raise if not Cloudflare or auth error
             
             parsed = feedparser.parse(content)
             

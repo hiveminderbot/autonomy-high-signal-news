@@ -116,8 +116,8 @@
       "frequency": "daily",
       "focus": "AI safety and alignment research",
       "quality_score": 9,
-      "notes": "Research forum for AI alignment and safety. Rate limited - requires 30s delay between requests.",
-      "min_fetch_interval": 30
+      "notes": "Research forum for AI alignment and safety. Rate limited - requires 60s delay between requests to avoid 429 errors.",
+      "min_fetch_interval": 60
     },
     {
       "name": "Microsoft Research AI",
