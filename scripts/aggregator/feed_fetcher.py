@@ -56,6 +56,7 @@ class FeedSource:
     signal_quality: str
     active: bool = True
     fetch_interval_minutes: int = 60
+    min_fetch_interval: int = 5  # Minimum seconds between requests to this source (rate limiting)
 
 
 class FeedCache:
@@ -290,16 +291,36 @@ class FeedFetcher:
         self.cache = cache
         self.min_fetch_interval = min_fetch_interval_seconds
         self.last_fetch_time: Optional[float] = None
+        self.last_source_fetch_time: dict[str, float] = {}  # Per-source rate limiting
         self.health_monitor = health_monitor
         self.auto_disable = auto_disable
     
-    def _rate_limit(self):
-        """Enforce minimum interval between fetches."""
-        if self.last_fetch_time:
-            elapsed = time.time() - self.last_fetch_time
-            if elapsed < self.min_fetch_interval:
-                time.sleep(self.min_fetch_interval - elapsed)
-        self.last_fetch_time = time.time()
+    def _rate_limit(self, source_id: str = None, min_interval: int = None):
+        """Enforce minimum interval between fetches.
+        
+        Args:
+            source_id: Optional source ID for per-source rate limiting
+            min_interval: Optional override for minimum interval in seconds
+        """
+        interval = min_interval if min_interval is not None else self.min_fetch_interval
+        
+        if source_id:
+            # Per-source rate limiting
+            last_time = self.last_source_fetch_time.get(source_id)
+            if last_time:
+                elapsed = time.time() - last_time
+                if elapsed < interval:
+                    sleep_time = interval - elapsed
+                    print(f"  ⏱️  Rate limiting {source_id}: sleeping {sleep_time:.1f}s")
+                    time.sleep(sleep_time)
+            self.last_source_fetch_time[source_id] = time.time()
+        else:
+            # Global rate limiting (backward compatibility)
+            if self.last_fetch_time:
+                elapsed = time.time() - self.last_fetch_time
+                if elapsed < interval:
+                    time.sleep(interval - elapsed)
+            self.last_fetch_time = time.time()
     
     def _generate_entry_id(self, url: str, title: str) -> str:
         """Generate a stable ID for a feed entry."""
@@ -450,7 +471,8 @@ class FeedFetcher:
         if not FEEDPARSER_AVAILABLE:
             raise RuntimeError("feedparser library required for RSS fetching")
         
-        self._rate_limit()
+        # Use per-source rate limiting with configured interval
+        self._rate_limit(source_id=source.id, min_interval=source.min_fetch_interval)
         start_time = time.time()
         content = None
         response_time = 0
@@ -621,6 +643,10 @@ def load_sources_from_catalog(catalog_path: Path) -> list[FeedSource]:
                 if isinstance(item, dict) and 'url' in item and 'name' in item:
                     # Generate ID from name (slugify)
                     item_id = item['name'].lower().replace(' ', '-').replace('.', '-').replace('/', '-')
+                    
+                    # Check if source is disabled in catalog
+                    is_disabled = item.get('disabled', False)
+                    
                     source = FeedSource(
                         id=item_id,
                         name=item['name'],
@@ -629,7 +655,8 @@ def load_sources_from_catalog(catalog_path: Path) -> list[FeedSource]:
                         category=item.get('focus', item.get('category', category_hint)),
                         domain=domain,
                         signal_quality='High' if item.get('quality_score', 0) >= 8 else 'Medium',
-                        active=True
+                        active=not is_disabled,
+                        min_fetch_interval=item.get('min_fetch_interval', 5)  # Per-source rate limiting
                     )
                     sources.append(source)
                 elif isinstance(item, (dict, list)):
