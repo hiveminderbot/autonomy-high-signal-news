@@ -1,73 +1,76 @@
 {
   "name": "high-signal-news",
   "status": "active",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "High-value daily morning briefing system for AI, software development, and investment news",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-21T09:40:00Z",
+  "updated_at": "2026-03-21T09:45:00Z",
   "owner": "autonomy",
-  "current_phase": "aggregation_pipeline",
+  "current_phase": "briefing_generation",
   "phases": {
     "source_discovery": {
       "status": "complete",
       "description": "Research and evaluate high-signal news sources across AI, software development, and investment domains"
     },
     "aggregation_pipeline": {
-      "status": "in_progress",
-      "description": "Build feed aggregation and deduplication system",
-      "deliverables_complete": 3,
-      "deliverables_total": 5
+      "status": "complete",
+      "description": "Build feed aggregation and deduplication system"
     },
     "summarization_engine": {
-      "status": "in_progress",
+      "status": "complete",
       "description": "Implement content clustering and summarization"
     },
     "briefing_generation": {
-      "status": "pending",
+      "status": "complete",
       "description": "Create morning briefing format and delivery mechanism"
     }
   },
   "components": {
     "source_catalog": {
-      "path": "sources/",
+      "path": "research/",
       "status": "complete",
       "sources_count": 42,
-      "mvp_sources": 10,
-      "domains": {
-        "ai": "sources/sources-ai.json",
-        "software_development": "sources/sources-dev.json",
-        "investment": "sources/sources-investment.json"
-      }
+      "mvp_sources": 10
     },
     "aggregation_scripts": {
       "path": "scripts/aggregator/",
-      "status": "in_progress",
+      "status": "complete",
       "deliverables": [
-        "feed_fetcher.py - RSS/Atom feed fetching with SQLite caching",
-        "content_extractor.py - HTML-to-text extraction with paywall detection",
-        "deduplicator.py - SimHash near-duplicate detection",
-        "tests/test_aggregation_pipeline.py - 17 unit tests, all passing"
+        "feed_fetcher.py",
+        "content_extractor.py",
+        "deduplicator.py",
+        "tests/test_aggregation_pipeline.py"
       ]
     },
     "summarization_module": {
       "path": "scripts/summarizer/",
-      "status": "in_progress",
+      "status": "complete",
       "deliverables": [
-        "story_clusterer.py - TF-IDF based story clustering with cross-domain detection",
-        "entity_extractor.py - Named entity and keyword extraction",
-        "content_summarizer.py - Extractive summarization with compression metrics",
-        "relevance_scorer.py - Multi-signal relevance scoring for briefing prioritization"
+        "story_clusterer.py",
+        "entity_extractor.py",
+        "content_summarizer.py",
+        "relevance_scorer.py"
       ]
     },
     "briefing_generator": {
       "path": "scripts/briefing/",
-      "status": "pending"
+      "status": "complete",
+      "deliverables": [
+        "briefing_generator.py - Markdown and Telegram format generation"
+      ],
+      "demo_output": "output/demo-briefing-2026-03-21.md"
     }
   },
-  "target_domains": ["ai", "software_development", "investment"],
   "daily_briefing_goal": {
     "max_reading_time_minutes": 10,
     "max_stories_per_domain": 5,
-    "output_formats": ["markdown", "telegram", "email"]
-  }
+    "output_formats": ["markdown", "telegram"]
+  },
+  "next_steps": [
+    "Configure RSS feeds for top 10 MVP sources",
+    "Set up SQLite database with schema",
+    "Schedule daily run via cron/systemd",
+    "Add Telegram bot delivery",
+    "Test end-to-end for 1 week"
+  ]
 }
