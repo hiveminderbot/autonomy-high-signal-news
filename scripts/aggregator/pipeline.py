@@ -17,6 +17,7 @@ from typing import Optional
 # Import aggregator modules
 from aggregator.feed_fetcher import FeedCache, FeedFetcher, FeedSource, FeedEntry, load_sources_from_catalog
 from aggregator.content_extractor import ContentExtractor, ExtractedContent
+from aggregator.rate_limited_extractor import RateLimitedContentExtractor, create_rate_limited_extractor
 from aggregator.deduplicator import Deduplicator, DuplicateResult
 from aggregator.blog_scraper import BlogScraper, BlogEntry, load_blog_sources_from_catalog
 from aggregator.newsletter_ingester import NewsletterIngester, NewsletterCache, load_newsletter_sources_from_catalog
@@ -70,7 +71,20 @@ class AggregationPipeline:
     ):
         self.cache = cache
         self.fetcher = fetcher or FeedFetcher(cache)
-        self.extractor = extractor or ContentExtractor() if extract_content else None
+        
+        # Use rate-limited extractor for production, fall back to basic extractor if provided
+        if extract_content:
+            if extractor:
+                self.extractor = extractor
+            else:
+                # Use rate-limited extractor with sensible defaults
+                self.extractor = create_rate_limited_extractor(
+                    min_success_rate=50.0,
+                    enable_metrics=True,
+                )
+        else:
+            self.extractor = None
+        
         self.deduplicator = deduplicator or Deduplicator(simhash_threshold=dedup_threshold)
         self.blog_scraper = blog_scraper or BlogScraper() if enable_blog_scraping else None
         self.blog_catalog_path = blog_catalog_path
