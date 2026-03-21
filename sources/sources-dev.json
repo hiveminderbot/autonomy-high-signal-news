@@ -1,0 +1,166 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created_at": "2026-03-21",
+    "domain": "software-development",
+    "source_count": 14,
+    "quality_criteria": [
+      "Regular publication schedule",
+      "Practical, actionable content",
+      "Author expertise verification",
+      "Community engagement and reputation",
+      "Technical accuracy"
+    ]
+  },
+  "language_specific": {
+    "python": [
+      {
+        "name": "Python Insider",
+        "url": "https://pythoninsider.blogspot.com/feeds/posts/default",
+        "type": "rss",
+        "frequency": "monthly",
+        "focus": "Python core development",
+        "quality_score": 9,
+        "notes": "Official Python release announcements"
+      },
+      {
+        "name": "Python Weekly",
+        "url": "https://www.pythonweekly.com/rss.xml",
+        "type": "rss",
+        "frequency": "weekly",
+        "focus": "Python ecosystem news",
+        "quality_score": 8,
+        "notes": "Curated Python articles and releases"
+      }
+    ],
+    "javascript": [
+      {
+        "name": "JavaScript Weekly",
+        "url": "https://javascriptweekly.com/rss/",
+        "type": "rss",
+        "frequency": "weekly",
+        "focus": "JavaScript ecosystem",
+        "quality_score": 8,
+        "notes": "Cooper Press - solid curation"
+      },
+      {
+        "name": "Node Weekly",
+        "url": "https://nodeweekly.com/rss/",
+        "type": "rss",
+        "frequency": "weekly",
+        "focus": "Node.js ecosystem",
+        "quality_score": 8,
+        "notes": "Cooper Press - Node-specific"
+      }
+    ],
+    "rust": [
+      {
+        "name": "This Week in Rust",
+        "url": "https://this-week-in-rust.org/rss.xml",
+        "type": "rss",
+        "frequency": "weekly",
+        "focus": "Rust ecosystem",
+        "quality_score": 9,
+        "notes": "Community-curated, comprehensive"
+      }
+    ],
+    "go": [
+      {
+        "name": "Go Weekly",
+        "url": "https://golangweekly.com/rss/",
+        "type": "rss",
+        "frequency": "weekly",
+        "focus": "Go ecosystem",
+        "quality_score": 8,
+        "notes": "Cooper Press - Go-specific"
+      }
+    ]
+  },
+  "frameworks": [
+    {
+      "name": "React Newsletter",
+      "url": "https://reactnewsletter.com/rss.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "React ecosystem",
+      "quality_score": 8,
+      "notes": "React-specific updates and patterns"
+    },
+    {
+      "name": "Django News",
+      "url": "https://django-news.com/rss.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Django ecosystem",
+      "quality_score": 8,
+      "notes": "Community-curated Django news"
+    },
+    {
+      "name": "FastAPI Newsletter",
+      "url": "https://fastapi.tiangolo.com/rss.xml",
+      "type": "rss",
+      "frequency": "monthly",
+      "focus": "FastAPI releases and tutorials",
+      "quality_score": 7,
+      "notes": "Official FastAPI updates"
+    }
+  ],
+  "general_dev": [
+    {
+      "name": "Hacker News (Top)",
+      "url": "https://hnrss.org/frontpage",
+      "type": "rss",
+      "frequency": "realtime",
+      "focus": "Tech news and discussion",
+      "quality_score": 7,
+      "notes": "High volume, requires filtering. Top posts only recommended."
+    },
+    {
+      "name": "Dev.to Top",
+      "url": "https://dev.to/feed",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Developer articles",
+      "quality_score": 6,
+      "notes": "Variable quality, but good diversity"
+    },
+    {
+      "name": "GitHub Changelog",
+      "url": "https://github.blog/changelog/rss/",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "GitHub platform updates",
+      "quality_score": 9,
+      "notes": "Essential for GitHub-dependent workflows"
+    }
+  ],
+  "newsletters": [
+    {
+      "name": "TLDR",
+      "url": "https://tldr.tech",
+      "type": "newsletter",
+      "frequency": "daily",
+      "focus": "Tech news briefs",
+      "quality_score": 7,
+      "notes": "Quick daily tech news summary"
+    },
+    {
+      "name": "Console",
+      "url": "https://console.dev",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "Developer tools reviews",
+      "quality_score": 8,
+      "notes": "High-quality tool reviews and recommendations"
+    },
+    {
+      "name": "Pointer",
+      "url": "https://www.pointer.io",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "Software engineering",
+      "quality_score": 8,
+      "notes": "Curated by engineering leaders"
+    }
+  ]
+}

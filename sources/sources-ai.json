@@ -1,0 +1,148 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created_at": "2026-03-21",
+    "domain": "artificial-intelligence",
+    "source_count": 12,
+    "quality_criteria": [
+      "Regular publication schedule (at least weekly)",
+      "Technical depth appropriate for practitioners",
+      "Editorial curation (not just aggregation)",
+      "Community recognition and citation",
+      "Low noise-to-signal ratio"
+    ]
+  },
+  "rss_feeds": [
+    {
+      "name": "arXiv cs.AI",
+      "url": "https://rss.arxiv.org/rss/cs.AI",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "AI research papers",
+      "quality_score": 10,
+      "notes": "Primary source for cutting-edge AI research"
+    },
+    {
+      "name": "arXiv cs.LG",
+      "url": "https://rss.arxiv.org/rss/cs.LG",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Machine learning research",
+      "quality_score": 10,
+      "notes": "Core ML research papers"
+    },
+    {
+      "name": "arXiv cs.CL",
+      "url": "https://rss.arxiv.org/rss/cs.CL",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Computational linguistics and NLP",
+      "quality_score": 9,
+      "notes": "Essential for LLM/NLP developments"
+    },
+    {
+      "name": "Papers with Code",
+      "url": "https://paperswithcode.com/rss",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Research papers with implementations",
+      "quality_score": 9,
+      "notes": "Papers that include code - higher practical value"
+    },
+    {
+      "name": "Hugging Face Papers",
+      "url": "https://huggingface.co/papers/rss",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "Trending ML papers",
+      "quality_score": 8,
+      "notes": "Community-upvoted papers, good signal for importance"
+    },
+    {
+      "name": "Google AI Blog",
+      "url": "https://ai.googleblog.com/feeds/posts/default",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Google AI research and products",
+      "quality_score": 8,
+      "notes": "Industry research from Google"
+    },
+    {
+      "name": "OpenAI Blog",
+      "url": "https://openai.com/blog/rss.xml",
+      "type": "rss",
+      "frequency": "monthly",
+      "focus": "OpenAI research and announcements",
+      "quality_score": 9,
+      "notes": "Major model releases and research"
+    },
+    {
+      "name": "Anthropic Research",
+      "url": "https://www.anthropic.com/research/rss.xml",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "AI safety and capabilities research",
+      "quality_score": 9,
+      "notes": "High-quality interpretability and safety research"
+    }
+  ],
+  "newsletters": [
+    {
+      "name": "Import AI",
+      "url": "https://importai.substack.com",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "AI research roundup",
+      "quality_score": 9,
+      "notes": "Jack Clark (Anthropic) - concise, technical, excellent curation",
+      "rss_fallback": "https://importai.substack.com/feed"
+    },
+    {
+      "name": "The Batch",
+      "url": "https://www.deeplearning.ai/the-batch/",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "AI news and analysis",
+      "quality_score": 8,
+      "notes": "Andrew Ng's publication - good balance of business and technical"
+    },
+    {
+      "name": "TLDR AI",
+      "url": "https://tldr.tech/ai",
+      "type": "newsletter",
+      "frequency": "daily",
+      "focus": "AI/ML news briefs",
+      "quality_score": 7,
+      "notes": "Short daily summaries, good for staying current"
+    },
+    {
+      "name": "Interconnects",
+      "url": "https://www.interconnects.ai",
+      "type": "newsletter",
+      "frequency": "weekly",
+      "focus": "AI analysis and commentary",
+      "quality_score": 8,
+      "notes": "Nathan Lambert (Allen Institute) - technical depth with commentary"
+    }
+  ],
+  "github": [
+    {
+      "name": "Trending Python ML",
+      "url": "https://github.com/trending/python?since=daily",
+      "type": "github_trending",
+      "frequency": "daily",
+      "focus": "Trending ML repositories",
+      "quality_score": 7,
+      "notes": "Requires scraping or API"
+    },
+    {
+      "name": "Awesome-ML",
+      "url": "https://github.com/josephmisiti/awesome-machine-learning",
+      "type": "github_repo",
+      "frequency": "weekly",
+      "focus": "Curated ML resources",
+      "quality_score": 7,
+      "notes": "Meta-resource for discovery"
+    }
+  ]
+}
