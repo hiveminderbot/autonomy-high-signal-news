@@ -386,8 +386,10 @@ class BlogScraper:
             return self.scrape_blog_list(source)
 
 
-def load_blog_sources_from_catalog(catalog_path: Path) -> List[BlogSource]:
+def load_blog_sources_from_catalog(catalog_path) -> List[BlogSource]:
     """Load blog sources from a catalog JSON file."""
+    if isinstance(catalog_path, str):
+        catalog_path = Path(catalog_path)
     if not catalog_path.exists():
         return []
     
