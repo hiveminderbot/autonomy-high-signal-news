@@ -24,10 +24,10 @@
       "category": "Technology Analysis",
       "domain": "technology",
       "signal_quality": "Very High",
-      "active": true,
+      "active": false,
       "config": {
         "author": "Benedict Evans",
-        "notes": "Mobile and tech industry analysis"
+        "notes": "Mobile and tech industry analysis - DISABLED: No public RSS feed available"
       }
     },
     {
@@ -120,9 +120,9 @@
       "category": "Startup & Engineering",
       "domain": "startup",
       "signal_quality": "High",
-      "active": true,
+      "active": false,
       "config": {
-        "notes": "Startup advice and engineering culture"
+        "notes": "Startup advice and engineering culture - DISABLED: Feed URL returns 404, only glossary RSS available"
       }
     },
     {
