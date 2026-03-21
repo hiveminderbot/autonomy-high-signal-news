@@ -50,17 +50,17 @@ Newsletter sources using RSS feeds (primarily Substack, Buttondown).
 | Stratechery | substack_rss | technology | ✅ Working | 20 entries fetched |
 | Benedict Evans | buttondown_rss | technology | ⚠️ Not tested | - |
 | Import AI | substack_rss | ai | ✅ Working | 20 entries fetched |
-| The Batch | substack_rss | ai | ❌ 404 | URL needs correction |
+| The Batch | substack_rss | ai | ✅ Working | URL fixed (thebatch.substack.com) |
 | AI Supremacy | substack_rss | ai | ⚠️ Not tested | - |
-| TLDR Newsletter | substack_rss | software_development | ❌ 404 | URL needs correction |
+| TLDR Newsletter | substack_rss | software_development | ✅ Working | URL fixed (tldr.substack.com) |
 | ByteByteGo | substack_rss | software_development | ⚠️ Not tested | - |
 | Lenny's Newsletter | substack_rss | product | ⚠️ Not tested | - |
 | First Round Review | substack_rss | startup | ⚠️ Not tested | - |
 | Paul Graham Essays | substack_rss | startup | ⚠️ Not tested | - |
-| AlphaSignal | substack_rss | ai | ❌ 404 | URL needs correction |
+| AlphaSignal | substack_rss | ai | ✅ Working | URL fixed (alphasignal.substack.com) |
 | The Sequence | substack_rss | ai | ✅ Working | 20 entries fetched |
 | JavaScript Weekly | substack_rss | software_development | ✅ Working | 4 entries fetched |
-| Django News | substack_rss | software_development | ❌ 404 | URL needs correction |
+| Django News | substack_rss | software_development | ✅ Working | URL fixed (django-news.substack.com) |
 | This Week in Rust | substack_rss | software_development | ✅ Working | 4 entries fetched |
 | SemiAnalysis | substack_rss | technology | ⚠️ Empty | Feed returned 0 entries |
 | The Diff | substack_rss | investment | ✅ Working | 5 entries fetched |
