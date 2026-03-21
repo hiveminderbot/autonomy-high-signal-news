@@ -3,18 +3,18 @@
 ## Phase 1: Source Discovery
 
 ### AI Domain
-- [ ] Identify top RSS feeds for AI research (arXiv, Papers with Code, etc.)
-- [ ] Evaluate high-signal AI newsletters (Import AI, The Batch, etc.)
+- [x] Identify top RSS feeds for AI research (arXiv, Papers with Code, etc.) → `sources/sources-ai.json`
+- [x] Evaluate high-signal AI newsletters (Import AI, The Batch, etc.) → `sources/sources-ai.json`
 - [ ] Curate AI-focused Twitter/X accounts
-- [ ] Find AI-related GitHub trending repositories
-- [ ] Document inclusion criteria for AI sources
+- [x] Find AI-related GitHub trending repositories → `sources/sources-ai.json`
+- [x] Document inclusion criteria for AI sources → `design/inclusion-criteria.md`
 
 ### Software Development Domain
-- [ ] Identify language-specific news sources (Python, JavaScript, Go, Rust)
-- [ ] Find framework release trackers (React, Django, etc.)
-- [ ] Evaluate dev blogs and newsletters
-- [ ] Curate high-signal Hacker News filters
-- [ ] Document inclusion criteria for dev sources
+- [x] Identify language-specific news sources (Python, JavaScript, Go, Rust) → `sources/sources-dev.json`
+- [x] Find framework release trackers (React, Django, etc.) → `sources/sources-dev.json`
+- [x] Evaluate dev blogs and newsletters → `sources/sources-dev.json`
+- [x] Curate high-signal Hacker News filters → `sources/sources-dev.json`
+- [x] Document inclusion criteria for dev sources → `design/inclusion-criteria.md`
 
 ### Investment Domain
 - [ ] Identify public market AI/tech news sources
