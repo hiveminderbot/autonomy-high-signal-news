@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "created_at": "2026-03-21",
     "domain": "artificial-intelligence",
-    "source_count": 12,
+    "source_count": 15,
     "quality_criteria": [
       "Regular publication schedule (at least weekly)",
       "Technical depth appropriate for practitioners",
@@ -84,6 +84,33 @@
       "focus": "AI safety and capabilities research",
       "quality_score": 9,
       "notes": "High-quality interpretability and safety research"
+    },
+    {
+      "name": "DeepMind Blog",
+      "url": "https://deepmind.google/blog/rss/",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "DeepMind research and applications",
+      "quality_score": 9,
+      "notes": "Google DeepMind research across AI domains"
+    },
+    {
+      "name": "AI Alignment Forum",
+      "url": "https://www.alignmentforum.org/rss.xml",
+      "type": "rss",
+      "frequency": "daily",
+      "focus": "AI safety and alignment research",
+      "quality_score": 9,
+      "notes": "Research forum for AI alignment and safety"
+    },
+    {
+      "name": "Microsoft Research AI",
+      "url": "https://www.microsoft.com/en-us/research/research-area/artificial-intelligence/feed/",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "Microsoft AI research",
+      "quality_score": 8,
+      "notes": "Research publications from Microsoft"
     }
   ],
   "newsletters": [
