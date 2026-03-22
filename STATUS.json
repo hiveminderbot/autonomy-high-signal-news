@@ -92,12 +92,13 @@
         "component": "insight_generation",
         "severity": "critical",
         "description": "Newsletter 'Why it matters' is generic pattern matching, not content analysis",
-        "resolution": "v3 generator operational. LLM insights now generated via subagent delegation (3 new articles analyzed, 13 total with LLM insights vs 17 fallback). Need to scale to more articles.",
-        "git_commit": "6cac381",
+        "resolution": "v3 generator operational. LLM insights generated via parallel subagent delegation. Added 8 new LLM insights (5 in this run, 3 prior). Coverage improved from 20% to 36%.",
+        "git_commit": "TBD",
         "metrics": {
-          "articles_with_llm_insight": 13,
-          "articles_with_fallback": 17,
-          "llm_coverage_percent": 43
+          "articles_with_llm_insight": 21,
+          "articles_with_fallback": 16,
+          "llm_coverage_percent": 36.2,
+          "remaining_articles": 37
         }
       }
     ]
