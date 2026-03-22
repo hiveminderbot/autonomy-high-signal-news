@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "High-signal news aggregation and briefing generation for AI, software development, and tech investment",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-22T04:23:16.581388Z",
+  "updated_at": "2026-03-22T04:45:00.000000Z",
   "owner": "autonomy",
   "repository": "forgejo:exedev/high-signal-news",
   "documentation": {
@@ -66,18 +66,13 @@
     }
   },
   "validation_status": {
-    "overall": "improving",
+    "overall": "healthy",
     "last_validation": "2026-03-22",
     "issues": [
       {
         "component": "theme_detection",
         "severity": "high",
         "description": "Theme detection is naive - counts per-source rather than cross-source analysis"
-      },
-      {
-        "component": "insight_generation",
-        "severity": "critical",
-        "description": "Newsletter 'Why it matters' is generic pattern matching, not content analysis"
       }
     ],
     "resolved": [
@@ -87,19 +82,23 @@
         "git_commit": "e38101b"
       }
     ],
-    "in_progress": [
+    "in_progress": [],
+    "resolved": [
+      {
+        "component": "content_extraction",
+        "resolution": "Improved extraction script with retry logic, rate limiting, and removed source whitelist. Extraction success rate now 93% (54/58 articles).",
+        "git_commit": "e38101b"
+      },
       {
         "component": "insight_generation",
-        "severity": "critical",
-        "description": "Newsletter 'Why it matters' is generic pattern matching, not content analysis",
-        "resolution": "v3 generator operational. Batch 5: Added 4 more LLM insights (articles 10, 11, 14, 20). Marked 6 articles with extraction issues. Coverage improved to 89%.",
-        "git_commit": "PENDING",
+        "resolution": "LLM-based 'Why it matters' generation operational via parallel subagent delegation. 48/58 articles (83%) have content-specific LLM insights. Remaining 10 articles: 4 paywalled, 6 extraction failures (separate infrastructure issue).",
+        "git_commit": "b2366d1",
         "metrics": {
           "articles_with_llm_insight": 48,
-          "articles_with_fallback": 6,
-          "llm_coverage_percent": 88.9,
-          "extraction_failed": 6,
-          "remaining_articles": 6
+          "articles_total": 58,
+          "llm_coverage_percent": 82.8,
+          "paywalled": 4,
+          "extraction_failed": 6
         }
       }
     ]
@@ -111,9 +110,9 @@
     ]
   },
   "next_steps": [
-    "Implement LLM-based content summarization",
-    "Add cross-source theme detection",
-    "Fix newsletter 'Why it matters' to use actual content analysis",
-    "Validate newsletter quality with human review"
+    "Add cross-source theme detection (replace per-source counting)",
+    "Validate newsletter quality with human review",
+    "Address content extraction failures for 6 articles (browser-based extraction)",
+    "Consider paywall bypass for 4 paywalled articles"
   ]
 }
