@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "updated_at": "2026-03-22",
+    "description": "High-signal individual voices on social platforms",
+    "note": "These are people, not publications - following individual thinkers rather than editorial boards"
+  },
+  "high_signal_accounts": [
+    {
+      "name": "Andrej Karpathy",
+      "platform": "twitter",
+      "handle": "@karpathy",
+      "focus": "AI/ML education, research",
+      "quality_score": 10,
+      "why_follow": "Ex-OpenAI, Tesla. Best educator in AI. Clear technical explanations without hype.",
+      "rss_fallback": "https://nitter.net/karpathy/rss",
+      "notes": "Thread reader often needed for long-form thoughts"
+    },
+    {
+      "name": "Simon Willison",
+      "platform": "twitter",
+      "handle": "@simonw",
+      "focus": "Python, data journalism, AI tools",
+      "quality_score": 9,
+      "why_follow": "Deep practical knowledge, excellent at explaining complex topics simply",
+      "rss_fallback": "https://nitter.net/simonw/rss",
+      "notes": "Also has excellent blog at simonwillison.net"
+    },
+    {
+      "name": "Yann LeCun",
+      "platform": "twitter",
+      "handle": "@ylecun",
+      "focus": "AI research, Meta AI, deep learning",
+      "quality_score": 9,
+      "why_follow": "Meta Chief Scientist. Research perspective, often contrarian to hype",
+      "rss_fallback": "https://nitter.net/ylecun/rss",
+      "notes": "Can be argumentative but signals are high"
+    },
+    {
+      "name": "Jeremy Howard",
+      "platform": "twitter",
+      "handle": "@jeremyphoward",
+      "focus": "Practical ML, fast.ai, education",
+      "quality_score": 9,
+      "why_follow": "fast.ai founder. Makes ML accessible, focuses on practical application",
+      "rss_fallback": "https://nitter.net/jeremyphoward/rss",
+      "notes": "Often shares notebooks and working code"
+    },
+    {
+      "name": "Dan Luu",
+      "platform": "twitter",
+      "handle": "@danluu",
+      "focus": "Systems performance, engineering culture",
+      "quality_score": 10,
+      "why_follow": "Extremely rigorous analysis of systems performance. Data-driven contrarian takes.",
+      "rss_fallback": "https://nitter.net/danluu/rss",
+      "notes": "Blog posts are deep dives; tweets are signals worth tracking"
+    },
+    {
+      "name": "Patrick McKenzie",
+      "platform": "twitter",
+      "handle": "@patio11",
+      "focus": "Software business, fintech, Japan",
+      "quality_score": 9,
+      "why_follow": "Unique perspective on intersection of tech and business. Long-form tweet threads.",
+      "rss_fallback": "https://nitter.net/patio11/rss",
+      "notes": "Works at Stripe; insights on financial infrastructure"
+    },
+    {
+      "name": "Jessie Frazelle",
+      "platform": "twitter",
+      "handle": "@jessfraz",
+      "focus": "Containers, Linux, systems",
+      "quality_score": 9,
+      "why_follow": "Deep systems knowledge, early Docker contributor, practical insights",
+      "rss_fallback": "https://nitter.net/jessfraz/rss",
+      "notes": "Now at Oxide Computer; hardware + software perspective"
+    },
+    {
+      "name": "John Carmack",
+      "platform": "twitter",
+      "handle": "@ID_AA_Carmack",
+      "focus": "Graphics, VR, AI, optimization",
+      "quality_score": 10,
+      "why_follow": "Legendary engineer. Still coding daily. Unique insights on AGI from ML research.",
+      "rss_fallback": "https://nitter.net/ID_AA_Carmack/rss",
+      "notes": "Now full-time AGI research; shares research process openly"
+    }
+  ],
+  "methodology": {
+    "selection_criteria": [
+      "Individual expertise over institutional authority",
+      "Consistent signal over hype cycles",
+      "Technical depth over hot takes",
+      "Track record of accurate predictions",
+      "Shares working code/artifacts, not just opinions"
+    ],
+    "excluded": [
+      "Corporate accounts (too much PR)",
+      "News aggregators (already covered)",
+      "High volume/low signal accounts",
+      "Primarily promotional accounts"
+    ]
+  },
+  "integration_notes": {
+    "challenge": "Twitter/X API expensive, Nitter unstable",
+    "workaround": "Use Nitter RSS feeds with fallback to manual curation",
+    "priority": "Medium - these are highest signal but hardest to automate",
+    "alternative": "Monitor their blogs when available (Simon Willison, Dan Luu have RSS)"
+  }
+}
