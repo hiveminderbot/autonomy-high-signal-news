@@ -1,0 +1,106 @@
+{
+  "timestamp": "2026-03-22T00:25:36.957597",
+  "duration_seconds": 30.488152503967285,
+  "sources_tested": [
+    "hacker-news",
+    "bbc-technology",
+    "hugging-face-blog"
+  ],
+  "total_entries": 15,
+  "successful": 15,
+  "failed": 0,
+  "skipped": 0,
+  "success_rate": 100.0,
+  "metrics": {
+    "total_domains": 7,
+    "total_requests": 15,
+    "overall_success_rate": 100.0,
+    "domains_with_low_success": [],
+    "domain_details": {
+      "news.dyne.org": {
+        "domain": "news.dyne.org",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 779.3891429901123,
+        "last_request_at": "2026-03-22T00:25:07.708371",
+        "last_error": null
+      },
+      "tinygrad.org": {
+        "domain": "tinygrad.org",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 210.18242835998535,
+        "last_request_at": "2026-03-22T00:25:08.418922",
+        "last_error": null
+      },
+      "tooscut.app": {
+        "domain": "tooscut.app",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 329.01573181152344,
+        "last_request_at": "2026-03-22T00:25:09.248241",
+        "last_error": null
+      },
+      "lucumr.pocoo.org": {
+        "domain": "lucumr.pocoo.org",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 148.4966278076172,
+        "last_request_at": "2026-03-22T00:25:09.897034",
+        "last_error": null
+      },
+      "theboomloom.com": {
+        "domain": "theboomloom.com",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 603.9168834686279,
+        "last_request_at": "2026-03-22T00:25:11.001254",
+        "last_error": null
+      },
+      "bbc.com": {
+        "domain": "bbc.com",
+        "total_requests": 5,
+        "successful_requests": 5,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 228.05500030517578,
+        "last_request_at": "2026-03-22T00:25:15.008479",
+        "last_error": null
+      },
+      "huggingface.co": {
+        "domain": "huggingface.co",
+        "total_requests": 5,
+        "successful_requests": 5,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 3715.2507305145264,
+        "last_request_at": "2026-03-22T00:25:36.456775",
+        "last_error": null
+      }
+    }
+  }
+}

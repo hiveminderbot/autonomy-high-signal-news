@@ -88,9 +88,9 @@ def test_rate_limited_extraction():
         
         try:
             # Fetch feed entries
-            from aggregator.feed_fetcher import RSSFeedFetcher
-            fetcher = RSSFeedFetcher()
-            entries = fetcher.fetch_feed(source)
+            from aggregator.feed_fetcher import FeedFetcher
+            fetcher = FeedFetcher(cache)
+            entries = fetcher.fetch_source(source)
             
             print(f"   Fetched {len(entries)} entries")
             
