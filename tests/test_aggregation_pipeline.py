@@ -263,9 +263,10 @@ def test_load_sources_from_catalog():
         
         sources = load_sources_from_catalog(catalog_path)
         
-        assert len(sources) == 2, f"Expected 2 sources, got {len(sources)}"
+        # Newsletters are filtered out (handled by newsletter_ingester separately)
+        assert len(sources) == 1, f"Expected 1 source (newsletters filtered), got {len(sources)}"
         ids = {s.id for s in sources}
-        assert 'test-newsletter' in ids, "test-newsletter not found"
+        assert 'test-newsletter' not in ids, "test-newsletter should be filtered (handled separately)"
         assert 'arxiv-test' in ids, "arxiv-test not found"
         print("✅ test_load_sources_from_catalog passed")
 
