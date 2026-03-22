@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "High-signal news aggregation and briefing generation for AI, software development, and tech investment",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-22T02:50:00Z",
+  "updated_at": "2026-03-22T03:30:00Z",
   "owner": "autonomy",
   "repository": "forgejo:exedev/high-signal-news",
   "documentation": {
@@ -92,8 +92,13 @@
         "component": "insight_generation",
         "severity": "critical",
         "description": "Newsletter 'Why it matters' is generic pattern matching, not content analysis",
-        "resolution": "v3 generator implemented with LLM integration (autonomy-nn7d). Partial - API key needs verification.",
-        "git_commit": "6cac381"
+        "resolution": "v3 generator operational. LLM insights now generated via subagent delegation (3 new articles analyzed, 13 total with LLM insights vs 17 fallback). Need to scale to more articles.",
+        "git_commit": "6cac381",
+        "metrics": {
+          "articles_with_llm_insight": 13,
+          "articles_with_fallback": 17,
+          "llm_coverage_percent": 43
+        }
       }
     ]
   },
