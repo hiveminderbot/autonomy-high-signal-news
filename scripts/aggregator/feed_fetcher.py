@@ -8,12 +8,13 @@ and respectful crawling behavior.
 
 import json
 import hashlib
+import os
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 from dataclasses import dataclass, asdict
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 import sqlite3
 
 # Optional dependencies with graceful fallback
@@ -28,6 +29,19 @@ try:
     REQUESTS_AVAILABLE = True
 except ImportError:
     REQUESTS_AVAILABLE = False
+
+try:
+    from bs4 import BeautifulSoup
+    BS4_AVAILABLE = True
+except ImportError:
+    BS4_AVAILABLE = False
+
+# Import blog scraper for SCRAPER format support
+try:
+    from blog_scraper import BlogScraper, BlogSource, BlogEntry
+    BLOG_SCRAPER_AVAILABLE = True
+except ImportError:
+    BLOG_SCRAPER_AVAILABLE = False
 
 
 @dataclass
@@ -741,10 +755,218 @@ class FeedFetcher:
             print(f"Skipping {source.id}: fetched recently")
             return []
         
-        if source.format.upper() in ('RSS', 'ATOM'):
+        format_upper = source.format.upper()
+        
+        if format_upper in ('RSS', 'ATOM'):
             return self.fetch_rss(source)
+        elif format_upper == 'SCRAPER':
+            return self.fetch_scraper(source)
+        elif format_upper == 'GITHUB_TRENDING':
+            return self.fetch_github_trending(source)
+        elif format_upper == 'GITHUB_REPO':
+            return self.fetch_github_repo(source)
         else:
             raise ValueError(f"Unsupported feed format: {source.format}")
+    
+    def _build_scrape_config(self, source: FeedSource) -> dict:
+        """Build scrape configuration based on known source patterns."""
+        url = source.url.lower()
+        
+        # Anthropic Research pattern
+        if 'anthropic.com' in url:
+            return {
+                'list_url': source.url,
+                'article_selector': 'a[href^="/research/"]',
+                'title_selector': 'h3, h2',
+                'base_url': 'https://www.anthropic.com'
+            }
+        
+        # Default fallback - use generic article selectors
+        return {
+            'list_url': source.url,
+            'article_selector': 'article, .post, .entry, .blog-post',
+            'title_selector': 'h2, h3, .title',
+            'link_selector': 'a',
+            'base_url': source.url.rstrip('/')
+        }
+    
+    def fetch_scraper(self, source: FeedSource) -> list[FeedEntry]:
+        """Fetch articles from a SCRAPER format source using blog scraping."""
+        if not BLOG_SCRAPER_AVAILABLE:
+            raise RuntimeError("blog_scraper module not available for SCRAPER format")
+        
+        # Build scrape config based on source URL patterns
+        scrape_config = self._build_scrape_config(source)
+        
+        # Convert FeedSource to BlogSource
+        blog_source = BlogSource(
+            id=source.id,
+            name=source.name,
+            url=source.url,
+            type='blog_scrape',
+            category=source.category,
+            domain=source.domain,
+            signal_quality=source.signal_quality,
+            active=source.active,
+            scrape_config=scrape_config
+        )
+        
+        # Use BlogScraper to fetch entries
+        scraper = BlogScraper(
+            request_timeout=30,
+            min_fetch_interval=source.min_fetch_interval / 1000.0  # Convert ms to seconds
+        )
+        
+        blog_entries = scraper.scrape_blog_list(blog_source)
+        
+        # Convert BlogEntry to FeedEntry
+        entries = []
+        for blog_entry in blog_entries:
+            feed_entry = FeedEntry(
+                id=blog_entry.id,
+                title=blog_entry.title,
+                url=blog_entry.url,
+                source_id=blog_entry.source_id,
+                published_at=blog_entry.published_at,
+                summary=blog_entry.summary,
+                author=blog_entry.author,
+                content=blog_entry.content,
+                fetched_at=blog_entry.scraped_at
+            )
+            entries.append(feed_entry)
+        
+        return entries
+    
+    def fetch_github_trending(self, source: FeedSource) -> list[FeedEntry]:
+        """Fetch trending repositories from GitHub."""
+        if not REQUESTS_AVAILABLE:
+            raise RuntimeError("requests library not available for GitHub API")
+        if not BS4_AVAILABLE:
+            raise RuntimeError("beautifulsoup4 not available for GitHub scraping")
+        
+        # Parse URL to extract language and time period
+        # URL format: https://github.com/trending/{language}?since={period}
+        parsed = urlparse(source.url)
+        path_parts = parsed.path.strip('/').split('/')
+        
+        language = None
+        period = 'daily'  # default
+        
+        if len(path_parts) >= 2 and path_parts[0] == 'trending':
+            language = path_parts[1] if len(path_parts) > 1 else None
+        
+        # Extract 'since' parameter
+        if parsed.query:
+            query_params = parse_qs(parsed.query)
+            if 'since' in query_params:
+                period = query_params['since'][0]
+        
+        # Build GitHub API URL for trending (using search as proxy)
+        # GitHub doesn't have a direct trending API, so we use search with stars
+        days = {'daily': 1, 'weekly': 7, 'monthly': 30}.get(period, 1)
+        date_threshold = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
+        
+        query = f"created:>{date_threshold}"
+        if language:
+            query += f" language:{language}"
+        query += " sort:stars"
+        
+        api_url = f"https://api.github.com/search/repositories?q={query}&sort=stars&order=desc&per_page=10"
+        
+        headers = {
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'HighSignalNewsBot/1.0'
+        }
+        
+        # Check for GitHub token
+        github_token = getattr(self, '_github_token', None) or os.environ.get('GITHUB_TOKEN')
+        if github_token:
+            headers['Authorization'] = f'token {github_token}'
+        
+        try:
+            response = requests.get(api_url, headers=headers, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            
+            entries = []
+            for idx, repo in enumerate(data.get('items', [])):
+                entry_id = hashlib.md5(f"{source.id}:{repo['html_url']}".encode()).hexdigest()[:16]
+                
+                # Build summary from description and stats
+                description = repo.get('description') or 'No description'
+                summary = f"{description}\n\n⭐ {repo.get('stargazers_count', 0):,} stars | 🍴 {repo.get('forks_count', 0):,} forks | 📝 {repo.get('language', 'Unknown')}"
+                
+                entry = FeedEntry(
+                    id=entry_id,
+                    title=repo.get('full_name', 'Unknown'),
+                    url=repo['html_url'],
+                    source_id=source.id,
+                    published_at=datetime.strptime(repo['created_at'], '%Y-%m-%dT%H:%M:%SZ') if repo.get('created_at') else datetime.now(),
+                    summary=summary,
+                    author=repo.get('owner', {}).get('login'),
+                    content=None,  # Could fetch README separately
+                    fetched_at=datetime.now()
+                )
+                entries.append(entry)
+            
+            return entries
+            
+        except requests.RequestException as e:
+            raise RuntimeError(f"Failed to fetch GitHub trending: {e}")
+    
+    def fetch_github_repo(self, source: FeedSource) -> list[FeedEntry]:
+        """Fetch repository metadata from GitHub."""
+        if not REQUESTS_AVAILABLE:
+            raise RuntimeError("requests library not available for GitHub API")
+        
+        # Parse owner/repo from URL
+        # URL format: https://github.com/{owner}/{repo}
+        parsed = urlparse(source.url)
+        path_parts = parsed.path.strip('/').split('/')
+        
+        if len(path_parts) < 2:
+            raise ValueError(f"Invalid GitHub repo URL: {source.url}")
+        
+        owner, repo = path_parts[0], path_parts[1]
+        api_url = f"https://api.github.com/repos/{owner}/{repo}"
+        
+        headers = {
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'HighSignalNewsBot/1.0'
+        }
+        
+        # Check for GitHub token
+        github_token = getattr(self, '_github_token', None) or os.environ.get('GITHUB_TOKEN')
+        if github_token:
+            headers['Authorization'] = f'token {github_token}'
+        
+        try:
+            response = requests.get(api_url, headers=headers, timeout=30)
+            response.raise_for_status()
+            repo_data = response.json()
+            
+            entry_id = hashlib.md5(f"{source.id}:{repo_data['html_url']}".encode()).hexdigest()[:16]
+            
+            # Build summary
+            description = repo_data.get('description') or 'No description'
+            summary = f"{description}\n\n⭐ {repo_data.get('stargazers_count', 0):,} stars | 🍴 {repo_data.get('forks_count', 0):,} forks | 📝 {repo_data.get('language', 'Unknown')} | 👁️ {repo_data.get('watchers_count', 0):,} watchers"
+            
+            entry = FeedEntry(
+                id=entry_id,
+                title=repo_data.get('full_name', f"{owner}/{repo}"),
+                url=repo_data['html_url'],
+                source_id=source.id,
+                published_at=datetime.strptime(repo_data['created_at'], '%Y-%m-%dT%H:%M:%SZ') if repo_data.get('created_at') else datetime.now(),
+                summary=summary,
+                author=repo_data.get('owner', {}).get('login'),
+                content=repo_data.get('readme_content'),  # Could fetch README
+                fetched_at=datetime.now()
+            )
+            
+            return [entry]
+            
+        except requests.RequestException as e:
+            raise RuntimeError(f"Failed to fetch GitHub repo: {e}")
     
     def fetch_all(self, domain: Optional[str] = None, 
                   include_disabled: bool = False) -> dict[str, list[FeedEntry]]:
