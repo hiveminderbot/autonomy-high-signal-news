@@ -6,10 +6,20 @@ Groups stories by theme with LLM-powered 'Why it matters' generation.
 Uses actual article content analysis instead of generic pattern matching.
 
 Features:
-- LLM-based insight generation using Kimi API
+- Uses LLM insights from run_llm_analysis.py (run via Hermes for LLM access)
 - Caching of LLM results in database
-- Fallback to v2 pattern matching if LLM unavailable
+- Fallback to v2 pattern matching if no LLM insights available
 - Content-aware importance scoring
+
+USAGE:
+1. First, populate LLM insights (run from Hermes context):
+   python scripts/run_llm_analysis.py
+   
+2. Then generate newsletter:
+   python scripts/generate_insight_newsletter_v3.py
+
+Note: Direct API calls removed because Kimi Code API keys are restricted
+      to specific coding agents (Claude Code, Kimi CLI, etc.).
 """
 
 import sqlite3
@@ -17,17 +27,12 @@ import sys
 import os
 import re
 import json
-import requests
 from datetime import datetime
 from collections import defaultdict
 
 DB_PATH = 'news.db'
 OUTPUT_PATH = 'output/insight-newsletter-v3.md'
 CACHE_TABLE = 'llm_why_it_matters_cache'
-
-# API Configuration
-KIMI_API_KEY = os.getenv('KIMI_API_KEY') or os.getenv('HERMES_KIMI_API_KEY')
-KIMI_API_URL = os.getenv('KIMI_BASE_URL', 'https://api.kimi.com/coding/v1')
 
 
 def ensure_cache_table(conn):
@@ -74,64 +79,8 @@ def cache_why_it_matters(conn, article_id, why_it_matters, model_used='kimi'):
     conn.commit()
 
 
-def get_llm_why_it_matters(article_id, title, source, content):
-    """Generate 'why it matters' using LLM API."""
-    if not KIMI_API_KEY:
-        return None
-    
-    if not content or len(content) < 100:
-        return None
-    
-    # Truncate content to fit token budget (approx 4000 chars ~ 1000 tokens)
-    content_preview = content[:4000]
-    
-    prompt = f"""Analyze this article and explain why it matters to practitioners.
-
-TITLE: {title}
-SOURCE: {source}
-
-CONTENT:
-{content_preview}
-
-Provide a 1-2 sentence explanation of why this matters. Be specific to the actual content.
-Avoid generic statements like "AI is important" or "this is interesting".
-Focus on the practical impact, technical significance, or actionable insight.
-
-Respond with ONLY the "why it matters" explanation, no preamble."""
-
-    try:
-        response = requests.post(
-            f"{KIMI_API_URL}/chat/completions",
-            headers={
-                'Authorization': f'Bearer {KIMI_API_KEY}',
-                'Content-Type': 'application/json'
-            },
-            json={
-                'model': 'kimi-k2-5',
-                'messages': [{'role': 'user', 'content': prompt}],
-                'temperature': 0.3,
-                'max_tokens': 150
-            },
-            timeout=30
-        )
-        
-        if response.status_code == 200:
-            result = response.json()
-            why = result['choices'][0]['message']['content'].strip()
-            # Clean up common LLM artifacts
-            why = re.sub(r'^(Why it matters:|["\']|Here is|This matters because)', '', why, flags=re.IGNORECASE).strip()
-            return why if len(why) > 20 else None
-        else:
-            print(f"    LLM API error: {response.status_code}")
-            return None
-            
-    except Exception as e:
-        print(f"    LLM request failed: {e}")
-        return None
-
-
 def get_why_it_matters(conn, article_id, title, source, content, themes):
-    """Get 'why it matters' - tries LLM first, then cache, then fallback."""
+    """Get 'why it matters' - tries LLM analysis, then cache, then fallback."""
     
     # 1. Check if LLM analysis already exists from run_llm_analysis.py
     cursor = conn.execute(
@@ -147,13 +96,7 @@ def get_why_it_matters(conn, article_id, title, source, content, themes):
     if cached:
         return cached, 'cached'
     
-    # 3. Try LLM generation
-    llm_result = get_llm_why_it_matters(article_id, title, source, content)
-    if llm_result:
-        cache_why_it_matters(conn, article_id, llm_result)
-        return llm_result, 'llm_new'
-    
-    # 4. Fallback to v2 pattern matching
+    # 3. Fallback to v2 pattern matching (direct API removed - keys restricted)
     return get_fallback_why_it_matters(title, source, themes), 'fallback'
 
 
@@ -477,11 +420,8 @@ def main():
         print(f"    {theme}: {len(articles_in_theme)} articles")
     
     print("\nGenerating insight newsletter v3...")
-    if KIMI_API_KEY:
-        print("  LLM integration: ENABLED (Kimi API)")
-    else:
-        print("  LLM integration: DISABLED (no API key)")
-        print("  Will use fallback pattern matching")
+    print("  LLM sources: llm_analysis column, cache, fallback patterns")
+    print("  Note: Run run_llm_analysis.py from Hermes context for LLM insights")
     
     newsletter, source_counts = generate_insight_newsletter(articles, theme_groups, article_themes, conn)
     
