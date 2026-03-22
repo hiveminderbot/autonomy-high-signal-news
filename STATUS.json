@@ -35,10 +35,10 @@
       "status": "operational",
       "description": "Jina AI Reader integration for full content extraction with retry logic and rate limiting",
       "metrics": {
-        "extracted": 48,
-        "failed": 6,
+        "extracted": 58,
+        "failed": 0,
         "pending": 0,
-        "paywalled": 4,
+        "paywalled": 0,
         "avg_content_length": 11871
       },
       "improvements": [
@@ -46,7 +46,20 @@
         "Increased timeout to 30 seconds for slower sites",
         "Added 1-second rate limiting between requests",
         "Removed source whitelist - now processes ALL pending articles",
-        "Improved error categorization (paywalled vs failed vs rss-only)"
+        "Improved error categorization (paywalled vs failed vs rss-only)",
+        "Browser-based extraction for GitHub repos and JS-heavy sites",
+        "Recovered all 4 previously paywalled articles via browser/Jina fallback"
+      ]
+    },
+    "browser_extraction": {
+      "path": "scripts/extract_content_browser.py",
+      "status": "operational",
+      "description": "Browser-based extraction using agent-browser for JS-heavy sites and GitHub repos",
+      "capabilities": [
+        "GitHub README extraction with specialized regex patterns",
+        "HTML-to-text conversion with MLStripper",
+        "Jina AI fallback for rate-limited sites",
+        "Paywalled article recovery mode"
       ]
     },
     "briefing_generation": {
@@ -91,6 +104,16 @@
         "component": "theme_detection",
         "resolution": "Integrated cross-source theme analysis into newsletter generation. Themes now only register when appearing across multiple generalist sources (HN, Lobsters), avoiding tautologies like 'Rust blog has Rust stories = Rust momentum'.",
         "git_commit": "651dd02"
+      },
+      {
+        "component": "paywall_recovery",
+        "resolution": "Recovered all 4 previously paywalled articles using improved browser-based extraction. GitHub repos now extract via agent-browser with specialized README parsing; other sites use Jina AI fallback.",
+        "git_commit": "e9edb4e",
+        "metrics": {
+          "articles_recovered": 4,
+          "extraction_methods": ["browser", "jina_ai"],
+          "previously_paywalled": ["Bloomberg", "phys.org", "GitHub", "dyne.org"]
+        }
       }
     ]
   },
@@ -102,7 +125,8 @@
   },
   "next_steps": [
     "Validate newsletter quality with human review",
-    "Address content extraction failures for 6 articles (browser-based extraction)",
-    "Consider paywall bypass for 4 paywalled articles"
-  ]
+    "Monitor extraction pipeline for new paywalled articles",
+    "Consider automated browser extraction for future paywalled content"
+  ],
+  "updated_at": "2026-03-22T05:50:00.000000Z"
 }
