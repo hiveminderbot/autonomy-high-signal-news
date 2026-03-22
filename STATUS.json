@@ -25,7 +25,8 @@
     "rss_aggregation": {
       "path": "scripts/aggregator/",
       "status": "operational",
-      "description": "Feed fetching, content extraction, deduplication pipeline",
+      "description": "Feed fetching, content extraction, deduplication pipeline. Supports RSS, ATOM, SCRAPER, GITHUB_TRENDING, and GITHUB_REPO formats.",
+      "supported_formats": ["RSS", "ATOM", "SCRAPER", "GITHUB_TRENDING", "GITHUB_REPO"],
       "issues": [
         "Content extraction has timeout errors on some articles"
       ]
@@ -84,6 +85,18 @@
     "issues": [],
     "resolved": [
       {
+        "component": "feed_fetcher",
+        "resolution": "Added SCRAPER, GITHUB_TRENDING, and GITHUB_REPO format support to feed_fetcher.py. Resolves 'Unsupported feed format' errors for anthropic-research, trending-python-ml, and awesome-ml sources.",
+        "git_commit": "45ed8bd",
+        "changes": [
+          "fetch_scraper() method using blog_scraper module",
+          "fetch_github_trending() using GitHub search API",
+          "fetch_github_repo() using GitHub repos API",
+          "_build_scrape_config() for URL-pattern based configs",
+          "Unit tests in tests/test_feed_formats.py"
+        ]
+      },
+      {
         "component": "content_extraction",
         "resolution": "Improved extraction script with retry logic, rate limiting, and removed source whitelist. Extraction success rate now 93% (54/58 articles).",
         "git_commit": "e38101b"
@@ -128,5 +141,5 @@
     "Monitor extraction pipeline for new paywalled articles",
     "Consider automated browser extraction for future paywalled content"
   ],
-  "updated_at": "2026-03-22T05:50:00.000000Z"
+  "updated_at": "2026-03-22T17:30:00.000000Z"
 }
