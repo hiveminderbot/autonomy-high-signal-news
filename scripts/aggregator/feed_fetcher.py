@@ -809,6 +809,11 @@ def load_sources_from_catalog(catalog_path: Path) -> list[FeedSource]:
         if isinstance(data, list):
             for item in data:
                 if isinstance(item, dict) and 'url' in item and 'name' in item:
+                    # Skip newsletter sources - these are handled separately by newsletter_ingester
+                    item_type = item.get('type', item.get('format', 'RSS')).upper()
+                    if item_type == 'NEWSLETTER':
+                        continue
+                    
                     # Generate ID from name (slugify)
                     item_id = item['name'].lower().replace(' ', '-').replace('.', '-').replace('/', '-')
                     
