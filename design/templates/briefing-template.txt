@@ -1,0 +1,51 @@
+MORNING BRIEFING - {{DATE}}
+================================
+
+High-signal news for AI practitioners, software developers, and tech investors
+
+---
+
+ARTIFICIAL INTELLIGENCE
+-----------------------
+
+{% for item in ai_items %}
+[{{item.priority_upper}}] {{item.headline}} - {{item.subhead}}
+   Source: {{item.source}} | {{item.url}}
+   {{item.summary}}
+
+{% endfor %}
+
+SOFTWARE DEVELOPMENT
+--------------------
+
+{% for item in dev_items %}
+[{{item.priority_upper}}] {{item.headline}} - {{item.subhead}}
+   Source: {{item.source}} | {{item.url}}
+   {{item.summary}}
+
+{% endfor %}
+
+INVESTMENT & MARKETS
+--------------------
+
+{% for item in investment_items %}
+[{{item.priority_upper}}] {{item.headline}} - {{item.subhead}}
+   Source: {{item.source}} | {{item.url}}
+   {{item.summary}}
+
+{% endfor %}
+
+---
+
+KEY THEMES TODAY
+----------------
+
+{% for theme in themes %}
+- {{theme.name}} ({{theme.story_count}} stories): {{theme.signal}}
+{% endfor %}
+
+---
+
+Generated: {{TIMESTAMP}} | {{total_stories}} stories from {{source_count}} sources
+
+Priority: [BREAKING] Very High Signal | [IMPORTANT] Significant | [REGULAR] Contextual

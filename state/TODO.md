@@ -49,8 +49,24 @@
 
 ## Phase 4: Briefing Generation
 
-- [ ] Design morning briefing format
-- [ ] Implement priority ranking
-- [ ] Build output generators (Markdown, Telegram, Email)
-- [ ] Create scheduling system
-- [ ] Test end-to-end pipeline
+- [x] Design morning briefing format → `design/briefing-format-spec.md`
+  - Five-minute read constraint specification
+  - Visual priority indicators (🔥⭐📰📊)
+  - Section structure (Header, Domain Sections, Key Themes, Footer)
+  - Output format variants (Markdown, Plain text, HTML)
+  - JSON schema for programmatic access
+  - Quality checklist for publication
+- [x] Create templates for output formats → `design/templates/`
+  - Markdown template with Jinja2 syntax
+  - Plain text template for Telegram/Email
+- [x] Implement priority ranking → `scripts/summarizer/relevance_scorer.py`
+- [x] Build output generators → `scripts/briefing/` module
+  - BriefingGenerator: Core generation logic
+  - MarkdownRenderer: Markdown output
+  - HTMLRenderer: HTML output
+  - TextRenderer: Plain text output
+- [x] Create scheduling system → `scripts/scheduler/daily_briefing.py`
+  - Cron-compatible daily runner
+  - Full pipeline orchestration
+  - Error handling and logging
+- [ ] Test end-to-end pipeline (pending final validation)
