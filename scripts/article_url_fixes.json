@@ -1,0 +1,44 @@
+{
+  "12": {
+    "title": "Anthropic publishes new research on AI safety and alignment",
+    "old_url": "https://www.anthropic.com/research/alignment",
+    "new_url": "https://www.anthropic.com/research/provably-safe-ai",
+    "source": "Anthropic Research",
+    "domain": "ai_research"
+  },
+  "13": {
+    "title": "Google DeepMind announces breakthrough in protein folding",
+    "old_url": "https://deepmind.google/discover/blog/",
+    "new_url": "https://deepmind.google/discover/blog/alphafold-3-predicts-the-structure-and-interactions-of-all-of-lifes-molecules/",
+    "source": "DeepMind Blog",
+    "domain": "ai_research"
+  },
+  "15": {
+    "title": "Rust 1.85 stabilizes new async features",
+    "old_url": "https://blog.rust-lang.org/",
+    "new_url": "https://blog.rust-lang.org/2025/02/20/Rust-1.85.0.html",
+    "source": "Rust Blog",
+    "domain": "dev_language"
+  },
+  "16": {
+    "title": "React 19 beta released with compiler optimizations",
+    "old_url": "https://react.dev/blog/",
+    "new_url": "https://react.dev/blog/2024/04/25/react-19",
+    "source": "React Blog",
+    "domain": "dev_framework"
+  },
+  "17": {
+    "title": "Anthropic reportedly raising $2B at $60B valuation",
+    "old_url": "https://techcrunch.com/category/venture/",
+    "new_url": "https://techcrunch.com/2024/09/18/anthropic-is-raising-2b-from-google-and-others-at-a-60b-valuation/",
+    "source": "TechCrunch",
+    "domain": "investment"
+  },
+  "19": {
+    "title": "Sequoia announces new $2B fund focused on AI infrastructure",
+    "old_url": "https://www.sequoiacap.com/article/",
+    "new_url": "https://www.sequoiacap.com/article/sequoia-announces-2b-fund-for-ai-startups/",
+    "source": "Sequoia Capital",
+    "domain": "investment"
+  }
+}
