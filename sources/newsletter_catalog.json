@@ -232,6 +232,137 @@
         "author": "Byrne Hobart",
         "notes": "Business and finance analysis"
       }
+    },
+    {
+      "id": "console-dev",
+      "name": "Console.dev",
+      "provider": "substack_rss",
+      "source_url": "https://console.dev/rss.xml",
+      "category": "Open Source Tools",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Reviews of interesting devtools and beta releases"
+      }
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar",
+      "provider": "substack_rss",
+      "source_url": "https://sidebar.io/feed.xml",
+      "category": "Design & UX",
+      "domain": "design",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Five best design links, every weekday"
+      }
+    },
+    {
+      "id": "carbon-copy",
+      "name": "Carbon Copy",
+      "provider": "substack_rss",
+      "source_url": "https://carboncopy.substack.com/feed",
+      "category": "Climate Tech",
+      "domain": "climate",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Climate tech and energy transition analysis"
+      }
+    },
+    {
+      "id": "sre-weekly",
+      "name": "SRE Weekly",
+      "provider": "substack_rss",
+      "source_url": "https://sreweekly.com/feed/",
+      "category": "Site Reliability Engineering",
+      "domain": "devops",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Weekly digest of SRE articles and incident analyses"
+      }
+    },
+    {
+      "id": "architecture-notes",
+      "name": "Architecture Notes",
+      "provider": "substack_rss",
+      "source_url": "https://architecturenotes.substack.com/feed",
+      "category": "System Architecture",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Deep dives into system design and architecture patterns"
+      }
+    },
+    {
+      "id": "pragmatic-engineer",
+      "name": "The Pragmatic Engineer",
+      "provider": "substack_rss",
+      "source_url": "https://newsletter.pragmaticengineer.com/feed",
+      "category": "Engineering Leadership",
+      "domain": "software_development",
+      "signal_quality": "Very High",
+      "active": true,
+      "config": {
+        "author": "Gergely Orosz",
+        "notes": "Engineering management and Big Tech insights"
+      }
+    },
+    {
+      "id": "refactoring",
+      "name": "Refactoring",
+      "provider": "substack_rss",
+      "source_url": "https://refactoring.fm/feed",
+      "category": "Software Engineering",
+      "domain": "software_development",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Software engineering practices and team culture"
+      }
+    },
+    {
+      "id": "technically",
+      "name": "Technically",
+      "provider": "substack_rss",
+      "source_url": "https://read.technically.dev/feed",
+      "category": "Technology Explained",
+      "domain": "technology",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Tech concepts explained for non-technical audiences"
+      }
+    },
+    {
+      "id": "security-weekly",
+      "name": "Security Weekly",
+      "provider": "substack_rss",
+      "source_url": "https://securityweekly.substack.com/feed",
+      "category": "Cybersecurity",
+      "domain": "security",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Security news, vulnerabilities, and best practices"
+      }
+    },
+    {
+      "id": "mlops-community",
+      "name": "MLOps Community",
+      "provider": "substack_rss",
+      "source_url": "https://mlops.substack.com/feed",
+      "category": "ML Engineering",
+      "domain": "ai",
+      "signal_quality": "High",
+      "active": true,
+      "config": {
+        "notes": "Machine learning operations and production ML systems"
+      }
     }
   ]
 }
