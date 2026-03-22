@@ -17,12 +17,15 @@ OUTPUT_PATH = 'output/insight-newsletter-v2.md'
 
 
 def get_recent_articles(conn, hours=48):
-    """Get recent articles with good content."""
+    """Get recent articles with extracted full content."""
     cursor = conn.execute('''
-        SELECT title, url, source, domain, content, published_at
+        SELECT title, url, source, domain, 
+               COALESCE(full_content, content) as content, 
+               published_at, full_content
         FROM articles
         WHERE source IN ('Hacker News', 'Lobsters', 'This Week in Rust', 'JavaScript Weekly',
                          'Hugging Face Blog', 'Distill.pub')
+          AND (full_content IS NOT NULL OR content IS NOT NULL)
         ORDER BY fetched_at DESC
         LIMIT 30
     ''')
@@ -115,7 +118,7 @@ def group_by_theme(articles):
     article_themes = {}
     
     for article in articles:
-        title, url, source, domain, content, published_at = article
+        title, url, source, domain, content, published_at, full_content = article
         themes = extract_key_themes(title, content)
         article_themes[title] = themes
         
@@ -170,7 +173,7 @@ def generate_insight_newsletter(articles, theme_groups, article_themes):
     # Score and rank articles
     scored_articles = []
     for article in articles:
-        title, url, source, domain, content, published_at = article
+        title, url, source, domain, content, published_at, full_content = article
         themes = article_themes.get(title, [])
         score = score_article_importance(title, source, content, themes)
         scored_articles.append((score, article, themes))
@@ -193,7 +196,7 @@ def generate_insight_newsletter(articles, theme_groups, article_themes):
     lines.append("")
     
     for score, article, themes in scored_articles[:5]:
-        title, url, source, domain, content, published_at = article
+        title, url, source, domain, content, published_at, full_content = article
         why = get_why_it_matters(title, source, themes)
         
         lines.append(f"**{title}**")
@@ -227,7 +230,7 @@ def generate_insight_newsletter(articles, theme_groups, article_themes):
             lines.append("")
             
             for article in theme_articles[:3]:
-                title, url, source, domain, content, published_at = article
+                title, url, source, domain, content, published_at, full_content = article
                 lines.append(f"- **{title}** ({source})")
             lines.append("")
     
@@ -241,7 +244,7 @@ def generate_insight_newsletter(articles, theme_groups, article_themes):
     
     community_articles = [a for a in articles if a[2] in ['Hacker News', 'Lobsters']]
     for article in community_articles[:5]:
-        title, url, source, domain, content, published_at = article
+        title, url, source, domain, content, published_at, full_content = article
         lines.append(f"- **{title}** [{source}]")
     
     lines.append("")
