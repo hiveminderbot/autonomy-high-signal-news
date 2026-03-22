@@ -84,7 +84,16 @@
       {
         "component": "content_extraction",
         "resolution": "Improved extraction script with retry logic, rate limiting, and removed source whitelist. Extraction success rate now 93% (54/58 articles).",
-        "git_commit": "TBD"
+        "git_commit": "e38101b"
+      }
+    ],
+    "in_progress": [
+      {
+        "component": "insight_generation",
+        "severity": "critical",
+        "description": "Newsletter 'Why it matters' is generic pattern matching, not content analysis",
+        "resolution": "v3 generator implemented with LLM integration (autonomy-nn7d). Partial - API key needs verification.",
+        "git_commit": "6cac381"
       }
     ]
   },
