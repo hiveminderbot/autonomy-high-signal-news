@@ -30,6 +30,15 @@ import json
 from datetime import datetime
 from collections import defaultdict
 
+# Import cross-source theme analysis
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from analyze_cross_source_themes import (
+    get_recent_generalist_articles,
+    detect_cross_source_themes,
+    analyze_sentiment,
+    GENERALIST_SOURCES
+)
+
 DB_PATH = 'news.db'
 OUTPUT_PATH = 'output/insight-newsletter-v3.md'
 CACHE_TABLE = 'llm_why_it_matters_cache'
@@ -322,30 +331,49 @@ def generate_insight_newsletter(articles, theme_groups, article_themes, conn):
             lines.append(f"🏷️ Tags: {', '.join(themes)}")
         lines.append("")
     
-    # Theme sections
+    # Theme sections - using cross-source analysis
     lines.append("---")
     lines.append("")
     
-    multi_story_themes = {t: a for t, a in theme_groups.items() if len(a) >= 2}
+    # Get cross-source themes from generalist feeds only
+    cross_source_themes = detect_cross_source_themes(
+        get_recent_generalist_articles(conn)
+    )
     
-    if multi_story_themes:
-        lines.append("## 📊 Trending Themes")
+    if cross_source_themes:
+        lines.append("## 📊 Cross-Source Trending Themes")
         lines.append("")
-        lines.append("Multiple stories indicate industry momentum in these areas:")
+        lines.append("Themes appearing across multiple independent sources (HN + Lobsters):")
+        lines.append("")
+        lines.append("*Unlike naive 'momentum' counting, these themes only register when")
+        lines.append("discussed across generalist communities, avoiding source bias.*")
         lines.append("")
         
-        theme_order = ['llms', 'training', 'inference', 'robotics', 'rust', 'databases', 'web']
-        for theme in theme_order:
-            if theme not in multi_story_themes:
-                continue
+        theme_names = {
+            'llms_ai': '🤖 LLMs & Foundation Models',
+            'ai_safety': '⚠️ AI Safety & Alignment',
+            'training_inference': '🚀 Training & Inference',
+            'robotics': '🦾 Robotics & Embodied AI',
+            'rust_systems': '⚙️ Rust & Systems Programming',
+            'web_platform': '🌐 Web Platform',
+            'databases': '🗄️ Databases & Storage',
+            'security': '🔒 Security',
+            'developer_tools': '🛠️ Developer Tools',
+            'open_source': '📂 Open Source'
+        }
+        
+        for theme_key, data in list(cross_source_themes.items())[:5]:
+            display_name = theme_names.get(theme_key, theme_key.replace('_', ' ').title())
+            article_count = data['article_count']
+            sources = ', '.join(data['sources'])
             
-            theme_articles = multi_story_themes[theme]
-            lines.append(f"### {theme.upper()} ({len(theme_articles)} stories)")
+            lines.append(f"### {display_name}")
             lines.append("")
-            
-            for article in theme_articles[:3]:
-                article_id, title, url, source, domain, content, published_at, full_content = article
-                lines.append(f"- **{title}** ({source})")
+            lines.append(f"**{article_count} articles** across {sources}")
+            lines.append("")
+            lines.append("Key stories:")
+            for article in data['articles'][:3]:
+                lines.append(f"- **{article['title']}** ({article['source']})")
             lines.append("")
     
     # Community highlights
@@ -367,22 +395,33 @@ def generate_insight_newsletter(articles, theme_groups, article_themes, conn):
     lines.append("## 🎯 Action Items for Practitioners")
     lines.append("")
     
-    top_themes = sorted(multi_story_themes.keys(), key=lambda t: len(multi_story_themes[t]), reverse=True)[:3]
+    # Use cross-source themes for action items
+    top_cross_themes = list(cross_source_themes.keys())[:3] if cross_source_themes else []
     
-    for theme in top_themes:
-        if theme == 'llms':
+    for theme in top_cross_themes:
+        if theme == 'llms_ai':
             lines.append("- **AI/LLM:** Evaluate new training and inference optimizations for cost reduction")
+        elif theme == 'training_inference':
+            lines.append("- **AI Infrastructure:** Focus shifting to efficiency - review serving costs and latency")
         elif theme == 'robotics':
             lines.append("- **Robotics:** Follow embedded AI trends - edge deployment becoming practical")
-        elif theme == 'rust':
+        elif theme == 'rust_systems':
             lines.append("- **Rust:** Track ecosystem developments for systems programming decisions")
         elif theme == 'databases':
             lines.append("- **Data:** Review new database tools for upcoming project architecture")
-        elif theme == 'web':
+        elif theme == 'web_platform':
             lines.append("- **Frontend:** Check React/TS ecosystem updates for dependency upgrades")
+        elif theme == 'ai_safety':
+            lines.append("- **AI Safety:** Monitor alignment research - may affect deployment strategies")
+        elif theme == 'security':
+            lines.append("- **Security:** Review dependencies and security posture - active discussions indicate threats")
+        elif theme == 'developer_tools':
+            lines.append("- **DevTools:** Evaluate new tools for workflow improvements")
+        elif theme == 'open_source':
+            lines.append("- **Open Source:** Track license and community changes affecting dependencies")
     
-    if not top_themes:
-        lines.append("- No dominant themes this cycle - good time for deep work on existing stack")
+    if not top_cross_themes:
+        lines.append("- No dominant cross-source themes this cycle - good time for deep work on existing stack")
     
     lines.append("")
     lines.append("---")

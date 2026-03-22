@@ -68,21 +68,7 @@
   "validation_status": {
     "overall": "healthy",
     "last_validation": "2026-03-22",
-    "issues": [
-      {
-        "component": "theme_detection",
-        "severity": "high",
-        "description": "Theme detection is naive - counts per-source rather than cross-source analysis"
-      }
-    ],
-    "resolved": [
-      {
-        "component": "content_extraction",
-        "resolution": "Improved extraction script with retry logic, rate limiting, and removed source whitelist. Extraction success rate now 93% (54/58 articles).",
-        "git_commit": "e38101b"
-      }
-    ],
-    "in_progress": [],
+    "issues": [],
     "resolved": [
       {
         "component": "content_extraction",
@@ -100,6 +86,11 @@
           "paywalled": 4,
           "extraction_failed": 6
         }
+      },
+      {
+        "component": "theme_detection",
+        "resolution": "Integrated cross-source theme analysis into newsletter generation. Themes now only register when appearing across multiple generalist sources (HN, Lobsters), avoiding tautologies like 'Rust blog has Rust stories = Rust momentum'.",
+        "git_commit": "651dd02"
       }
     ]
   },
@@ -110,7 +101,6 @@
     ]
   },
   "next_steps": [
-    "Add cross-source theme detection (replace per-source counting)",
     "Validate newsletter quality with human review",
     "Address content extraction failures for 6 articles (browser-based extraction)",
     "Consider paywall bypass for 4 paywalled articles"
