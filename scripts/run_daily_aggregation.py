@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from aggregator.pipeline_extended import ExtendedAggregationPipeline, ExtendedPipelineResult
 from aggregator.feed_fetcher import FeedCache, load_sources_from_catalog
-from aggregator.newsletter_ingester import NewsletterCache, load_newsletter_sources_from_catalog
+from aggregator.newsletter_ingester import NewsletterCache, NewsletterIngester, load_newsletter_sources_from_catalog
 
 
 # Configuration
@@ -119,9 +119,11 @@ def run_daily_aggregation(
         
         # Create and run pipeline
         logger.info("Initializing aggregation pipeline...")
+        newsletter_ingester = NewsletterIngester(newsletter_cache)
         pipeline = ExtendedAggregationPipeline(
             cache=feed_cache,
             newsletter_cache=newsletter_cache,
+            newsletter_ingester=newsletter_ingester,
             extract_content=extract_content,
         )
         
