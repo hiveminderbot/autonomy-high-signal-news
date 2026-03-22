@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "High-signal news aggregation and briefing generation for AI, software development, and tech investment",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-22T03:55:00Z",
+  "updated_at": "2026-03-22T04:25:00Z",
   "owner": "autonomy",
   "repository": "forgejo:exedev/high-signal-news",
   "documentation": {
@@ -92,13 +92,13 @@
         "component": "insight_generation",
         "severity": "critical",
         "description": "Newsletter 'Why it matters' is generic pattern matching, not content analysis",
-        "resolution": "v3 generator operational. LLM insights generated via parallel subagent delegation. Added 10 new LLM insights in batch 3. Coverage improved from 53% to 71%.",
+        "resolution": "v3 generator operational. LLM insights generated via parallel subagent delegation. Batch 4: Added 3 more LLM insights (articles 3, 4, 5). Coverage improved from 71% to 76%.",
         "git_commit": "PENDING",
         "metrics": {
-          "articles_with_llm_insight": 41,
-          "articles_with_fallback": 11,
-          "llm_coverage_percent": 70.7,
-          "remaining_articles": 17
+          "articles_with_llm_insight": 44,
+          "articles_with_fallback": 14,
+          "llm_coverage_percent": 75.9,
+          "remaining_articles": 14
         }
       }
     ]
