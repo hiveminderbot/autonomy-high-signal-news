@@ -346,11 +346,11 @@ class FeedFetcher:
         return hashlib.sha256(content).hexdigest()[:16]
     
     # Default headers to avoid bot detection
+    # Note: Do NOT set Accept-Encoding - requests library handles decompression automatically
     DEFAULT_HEADERS = {
         'User-Agent': 'HighSignalNews/1.0 (Research Aggregator; https://github.com/exedev/high-signal-news)',
         'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
         'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
     }
