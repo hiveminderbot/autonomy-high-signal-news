@@ -1,0 +1,19 @@
+# <type>(<scope>): <subject>
+#
+# <body - explain WHAT and WHY, not HOW>
+#
+# <footer - breaking changes, issue refs, co-authors>
+#
+# Types: feat, fix, docs, style, refactor, perf, test, chore, ci, build, revert
+# Scopes: newsletter, sources, curator, scoring, docs
+#
+# Rules:
+# - Use imperative mood ("add" not "added")
+# - Don't capitalize first letter
+# - No period at end of subject
+# - Max 72 chars for subject, wrap body at 72
+#
+# Examples:
+# feat(newsletter): add parallel source fetching
+# fix(scoring): correct relevance weighting
+# docs(vc): add commit message template
