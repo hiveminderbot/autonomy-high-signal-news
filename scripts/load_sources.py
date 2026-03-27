@@ -1,188 +1,239 @@
 #!/usr/bin/env python3
-"""Load bootstrapped sources into news.db."""
+"""
+Load RSS sources from sources-v2-bootstrapped.json into news.db.
 
+Usage:
+    python scripts/load_sources.py [--dry-run] [--source-file PATH]
+
+Options:
+    --dry-run       Show what would be inserted without modifying database
+    --source-file   Path to JSON source file (default: sources/sources-v2-bootstrapped.json)
+"""
+
+import argparse
 import json
 import sqlite3
 import sys
 from pathlib import Path
-from datetime import datetime
-
-DB_PATH = Path(__file__).parent.parent / "news.db"
-SOURCES_PATH = Path(__file__).parent.parent / "sources" / "sources-v2-bootstrapped.json"
+from typing import Dict, List, Tuple
 
 
-def load_sources():
-    """Load sources from JSON file."""
-    with open(SOURCES_PATH) as f:
+def get_db_path() -> Path:
+    """Get the path to the news database."""
+    script_dir = Path(__file__).parent.parent
+    db_path = script_dir / "news.db"
+    return db_path
+
+
+def get_source_file_path(custom_path: str = None) -> Path:
+    """Get the path to the sources JSON file."""
+    script_dir = Path(__file__).parent.parent
+    if custom_path:
+        return Path(custom_path)
+    return script_dir / "sources" / "sources-v2-bootstrapped.json"
+
+
+def load_sources_from_json(file_path: Path) -> List[Dict]:
+    """Load and normalize sources from the JSON file."""
+    with open(file_path, 'r') as f:
         data = json.load(f)
     
     sources = []
     
-    # RSS feeds
-    for feed in data.get("rss_feeds", []):
+    # Process RSS feeds
+    for feed in data.get('rss_feeds', []):
         sources.append({
-            "name": feed["name"],
-            "url": feed["url"],
-            "type": "rss",
-            "category": feed["category"],
-            "frequency": feed["frequency"],
-            "quality_score": feed["quality_score"],
-            "notes": feed.get("notes", ""),
-            "enabled": True,
-            "special_handling": json.dumps({})
-        })
-    
-    # Newsletters
-    for nl in data.get("newsletters", []):
-        sources.append({
-            "name": nl["name"],
-            "url": nl.get("rss_url", nl["url"]),
-            "type": "newsletter",
-            "category": nl["category"],
-            "frequency": nl["frequency"],
-            "quality_score": nl["quality_score"],
-            "notes": nl.get("notes", ""),
-            "enabled": True,
-            "special_handling": json.dumps({})
-        })
-    
-    # Special handling sources
-    for sh in data.get("special_handling", []):
-        sources.append({
-            "name": sh["name"],
-            "url": sh.get("rss_url", sh["url"]),
-            "type": sh["type"],
-            "category": sh["category"],
-            "frequency": sh["frequency"],
-            "quality_score": sh["quality_score"],
-            "notes": sh.get("notes", ""),
-            "enabled": sh.get("enabled", True),
-            "special_handling": json.dumps({
-                "min_fetch_interval": sh.get("min_fetch_interval", 0),
-                "rate_limited": sh.get("min_fetch_interval", 0) > 0
+            'name': feed['name'],
+            'rss_url': feed['url'],
+            'domain': feed['category'],
+            'tier': 1 if feed['quality_score'] >= 9 else 2,
+            'category': feed['category'],
+            'frequency': feed['frequency'],
+            'quality_score': feed['quality_score'],
+            'special_handling': json.dumps({
+                'focus': feed.get('focus', ''),
+                'notes': feed.get('notes', ''),
+                'type': feed.get('type', 'rss')
             })
+        })
+    
+    # Process newsletters (use rss_url if available)
+    for newsletter in data.get('newsletters', []):
+        rss_url = newsletter.get('rss_url', newsletter.get('url', ''))
+        sources.append({
+            'name': newsletter['name'],
+            'rss_url': rss_url,
+            'domain': newsletter['category'],
+            'tier': 1 if newsletter['quality_score'] >= 9 else 2,
+            'category': newsletter['category'],
+            'frequency': newsletter['frequency'],
+            'quality_score': newsletter['quality_score'],
+            'special_handling': json.dumps({
+                'focus': newsletter.get('focus', ''),
+                'notes': newsletter.get('notes', ''),
+                'type': newsletter.get('type', 'newsletter'),
+                'original_url': newsletter.get('url', '')
+            })
+        })
+    
+    # Process special handling sources (respect enabled flag)
+    for special in data.get('special_handling', []):
+        # Skip disabled sources
+        if not special.get('enabled', True):
+            continue
+        
+        rss_url = special.get('rss_url', special.get('url', ''))
+        handling = {
+            'focus': special.get('focus', ''),
+            'notes': special.get('notes', ''),
+            'type': special.get('type', 'rss'),
+            'min_fetch_interval': special.get('min_fetch_interval', 5)
+        }
+        
+        sources.append({
+            'name': special['name'],
+            'rss_url': rss_url,
+            'domain': special['category'],
+            'tier': 1 if special['quality_score'] >= 9 else 2,
+            'category': special['category'],
+            'frequency': special['frequency'],
+            'quality_score': special['quality_score'],
+            'special_handling': json.dumps(handling)
         })
     
     return sources
 
 
-def ensure_table(conn):
-    """Ensure sources table exists with proper schema."""
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS sources (
-            id INTEGER PRIMARY KEY,
-            name TEXT,
-            rss_url TEXT UNIQUE,
-            domain TEXT,
-            tier INTEGER,
-            last_fetch TEXT,
-            status TEXT DEFAULT 'active',
-            category TEXT, 
-            frequency TEXT DEFAULT 'daily', 
-            quality_score INTEGER DEFAULT 5, 
-            special_handling TEXT DEFAULT '{}'
-        )
-    """)
-    conn.commit()
+def check_existing_sources(conn: sqlite3.Connection, urls: List[str]) -> Dict[str, int]:
+    """Check which URLs already exist in the database."""
+    cursor = conn.cursor()
+    existing = {}
+    
+    for url in urls:
+        cursor.execute('SELECT id FROM sources WHERE rss_url = ?', (url,))
+        row = cursor.fetchone()
+        if row:
+            existing[url] = row[0]
+    
+    return existing
 
 
-def insert_sources(conn, sources):
-    """Insert or update sources in database."""
+def insert_sources(conn: sqlite3.Connection, sources: List[Dict], dry_run: bool = False) -> Tuple[int, int, int]:
+    """Insert sources into database. Returns (inserted, skipped, failed) counts."""
     cursor = conn.cursor()
     
+    # Check existing sources
+    urls = [s['rss_url'] for s in sources]
+    existing = check_existing_sources(conn, urls)
+    
     inserted = 0
-    updated = 0
+    skipped = 0
+    failed = 0
     
     for source in sources:
-        # Map category to domain for compatibility
-        domain = source.get("category", source.get("domain", "general"))
-        status = "active" if source.get("enabled", True) else "disabled"
-        tier = 1 if source["quality_score"] >= 9 else 2
+        if source['rss_url'] in existing:
+            skipped += 1
+            print(f"  SKIP: {source['name']} (already exists)")
+            continue
         
         try:
-            cursor.execute("""
-                INSERT INTO sources 
-                (name, rss_url, domain, tier, category, frequency, quality_score, status, special_handling)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                source["name"], source["url"], domain, tier,
-                source["category"], source["frequency"], 
-                source["quality_score"], status, source["special_handling"]
-            ))
+            if not dry_run:
+                cursor.execute('''
+                    INSERT INTO sources 
+                    (name, rss_url, domain, tier, category, frequency, quality_score, special_handling, status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')
+                ''', (
+                    source['name'],
+                    source['rss_url'],
+                    source['domain'],
+                    source['tier'],
+                    source['category'],
+                    source['frequency'],
+                    source['quality_score'],
+                    source['special_handling']
+                ))
+                conn.commit()
             inserted += 1
-        except sqlite3.IntegrityError:
-            # Update existing
-            cursor.execute("""
-                UPDATE sources SET
-                    rss_url = ?,
-                    domain = ?,
-                    tier = ?,
-                    category = ?,
-                    frequency = ?,
-                    quality_score = ?,
-                    status = ?,
-                    special_handling = ?
-                WHERE name = ?
-            """, (
-                source["url"], domain, tier,
-                source["category"], source["frequency"],
-                source["quality_score"], status, source["special_handling"], source["name"]
-            ))
-            updated += 1
+            print(f"  {'WOULD INSERT' if dry_run else 'INSERT'}: {source['name']} (score: {source['quality_score']})")
+        except sqlite3.Error as e:
+            failed += 1
+            print(f"  ERROR: {source['name']} - {e}")
     
-    conn.commit()
-    return inserted, updated
+    return inserted, skipped, failed
 
 
 def main():
-    """Main entry point."""
-    print(f"Loading sources from {SOURCES_PATH}")
-    print(f"Database: {DB_PATH}")
+    parser = argparse.ArgumentParser(
+        description='Load RSS sources into news.db from JSON catalog'
+    )
+    parser.add_argument(
+        '--dry-run',
+        action='store_true',
+        help='Show what would be inserted without modifying database'
+    )
+    parser.add_argument(
+        '--source-file',
+        type=str,
+        help='Path to JSON source file (default: sources/sources-v2-bootstrapped.json)'
+    )
     
-    if not SOURCES_PATH.exists():
-        print(f"ERROR: Sources file not found: {SOURCES_PATH}")
+    args = parser.parse_args()
+    
+    # Check database exists
+    db_path = get_db_path()
+    if not db_path.exists():
+        print(f"ERROR: Database not found at {db_path}")
+        print("Run: python scripts/aggregator/init_db.py")
         sys.exit(1)
     
-    sources = load_sources()
-    print(f"Found {len(sources)} sources in catalog")
+    # Check source file exists
+    source_file = get_source_file_path(args.source_file)
+    if not source_file.exists():
+        print(f"ERROR: Source file not found at {source_file}")
+        sys.exit(1)
     
-    conn = sqlite3.connect(DB_PATH)
+    print(f"Database: {db_path}")
+    print(f"Source file: {source_file}")
+    print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
+    print()
+    
+    # Load sources from JSON
     try:
-        ensure_table(conn)
-        inserted, updated = insert_sources(conn, sources)
-        
-        print(f"\nResults:")
-        print(f"  Inserted: {inserted}")
-        print(f"  Updated: {updated}")
-        print(f"  Total: {inserted + updated}")
-        
-        # Show summary by category
-        print("\nSources by category:")
-        cursor = conn.execute("""
-            SELECT category, COUNT(*), SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END)
-            FROM sources
-            GROUP BY category
-            ORDER BY COUNT(*) DESC
-        """)
-        for row in cursor.fetchall():
-            print(f"  {row[0]}: {row[2]}/{row[1]} enabled")
-        
-        # Show high-quality sources
-        print("\nHigh-quality sources (score >= 9):")
-        cursor = conn.execute("""
-            SELECT name, category, quality_score
-            FROM sources
-            WHERE quality_score >= 9 AND status = 'active'
-            ORDER BY quality_score DESC
-        """)
-        for row in cursor.fetchall():
-            print(f"  [{row[2]}] {row[0]} ({row[1]})")
-        
+        sources = load_sources_from_json(source_file)
+        print(f"Loaded {len(sources)} sources from JSON")
+    except json.JSONDecodeError as e:
+        print(f"ERROR: Invalid JSON in source file: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"ERROR: Failed to load sources: {e}")
+        sys.exit(1)
+    
+    # Connect to database and insert sources
+    conn = sqlite3.connect(db_path)
+    try:
+        inserted, skipped, failed = insert_sources(conn, sources, dry_run=args.dry_run)
     finally:
         conn.close()
     
-    print("\nDone. Run fetch script to test sources.")
+    # Print summary
+    print()
+    print("=" * 50)
+    print("SUMMARY")
+    print("=" * 50)
+    print(f"Total sources in JSON: {len(sources)}")
+    print(f"Inserted: {inserted}")
+    print(f"Skipped (existing): {skipped}")
+    print(f"Failed: {failed}")
+    
+    if args.dry_run:
+        print()
+        print("DRY RUN complete - no changes made")
+        print("Run without --dry-run to insert sources")
+    
+    # Exit with error if any failed
+    if failed > 0:
+        sys.exit(1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
