@@ -43,7 +43,7 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
     start_time = datetime.now()
     
     # Build command
-    cmd = [sys.executable, "-m", "scripts.aggregator.pipeline", "--full"]
+    cmd = [sys.executable, "-m", "scripts.aggregator.pipeline", "--verbose", "--json"]
     if retry_disabled:
         cmd.append("--retry-disabled")
     
@@ -100,45 +100,59 @@ def check_source_health() -> dict:
     logger.info("Checking source health...")
     
     try:
-        from scripts.aggregator.storage import AggregatorStorage
+        import sqlite3
         
-        storage = AggregatorStorage()
-        stats = storage.get_stats()
+        parent_dir = Path(__file__).parent.parent
+        db_path = parent_dir / "news.db"
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
         
-        # Get sources with high error rates
+        # Get basic stats
+        cursor.execute("SELECT COUNT(*) FROM articles")
+        total_articles = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM feed_entries")
+        total_entries = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM sources")
+        total_sources = cursor.fetchone()[0]
+        
+        # Get sources with high error rates from fetch_log
         error_threshold = 3
         unhealthy_sources = []
         
-        # Query for sources with consecutive errors
-        import sqlite3
-        conn = sqlite3.connect(storage.db_path)
-        cursor = conn.cursor()
-        
-        cursor.execute("""
-            SELECT source_id, COUNT(*) as error_count, MAX(fetched_at)
-            FROM fetch_log
-            WHERE success = 0 AND fetched_at > datetime('now', '-7 days')
-            GROUP BY source_id
-            HAVING error_count >= ?
-            ORDER BY error_count DESC
-        """, (error_threshold,))
-        
-        for row in cursor.fetchall():
-            unhealthy_sources.append({
-                "source_id": row[0],
-                "error_count": row[1],
-                "last_error": row[2]
-            })
+        # Check if fetch_log table exists and has data
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='fetch_log'")
+        if cursor.fetchone():
+            cursor.execute("""
+                SELECT source_id, COUNT(*) as error_count, MAX(fetched_at)
+                FROM fetch_log
+                WHERE success = 0 AND fetched_at > datetime('now', '-7 days')
+                GROUP BY source_id
+                HAVING error_count >= ?
+                ORDER BY error_count DESC
+            """, (error_threshold,))
+            
+            for row in cursor.fetchall():
+                unhealthy_sources.append({
+                    "source_id": row[0],
+                    "error_count": row[1],
+                    "last_error": row[2]
+                })
         
         conn.close()
         
         health_status = {
-            "total_entries": stats.get("total_entries", 0),
+            "total_articles": total_articles,
+            "total_entries": total_entries,
+            "total_sources": total_sources,
             "sources_with_errors": len(unhealthy_sources),
             "unhealthy_sources": unhealthy_sources
         }
         
-        logger.info(f"Total entries in database: {health_status['total_entries']}")
+        logger.info(f"Total articles: {total_articles}")
+        logger.info(f"Total feed entries: {total_entries}")
+        logger.info(f"Total sources: {total_sources}")
         logger.info(f"Unhealthy sources: {len(unhealthy_sources)}")
         for src in unhealthy_sources:
             logger.warning(f"  - {src['source_id']}: {src['error_count']} errors")
