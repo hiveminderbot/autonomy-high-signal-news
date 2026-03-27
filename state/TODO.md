@@ -5,7 +5,7 @@
 ### AI Domain
 - [x] Identify top RSS feeds for AI research (arXiv, Papers with Code, etc.) → `sources/sources-ai.json`
 - [x] Evaluate high-signal AI newsletters (Import AI, The Batch, etc.) → `sources/sources-ai.json`
-- [ ] Curate AI-focused Twitter/X accounts
+- [x] Curate AI-focused Twitter/X accounts → `sources/sources-ai-twitter.json`
 - [x] Find AI-related GitHub trending repositories → `sources/sources-ai.json`
 - [x] Document inclusion criteria for AI sources → `design/inclusion-criteria.md`
 

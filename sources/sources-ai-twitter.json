@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-03-27T22:53:07.187776",
+  "description": "High-signal AI-focused Twitter/X accounts for news aggregation",
+  "inclusion_criteria": {
+    "primary": "High signal-to-noise ratio in AI/ML content",
+    "secondary": [
+      "Regular sharing of research insights, not just links",
+      "Original commentary or analysis",
+      "Track record of accurate predictions or analysis",
+      "Active in past 3 months"
+    ],
+    "exclusion": [
+      "Pure marketing accounts",
+      "High volume of off-topic content",
+      "Primarily promotional (courses, products)",
+      "Aggregator accounts without original insight"
+    ]
+  },
+  "categories": {
+    "ai_research": {
+      "description": "Active AI researchers sharing paper insights and research directions",
+      "accounts": [
+        {
+          "name": "Andrej Karpathy",
+          "handle": "@karpathy",
+          "focus": "LLMs, AI engineering, educational content",
+          "signal_quality": "high",
+          "notes": "Ex-Tesla AI Director, OpenAI founder. Known for clear technical explanations."
+        },
+        {
+          "name": "Yann LeCun",
+          "handle": "@ylecun",
+          "focus": "Deep learning, AI architecture, Meta AI research",
+          "signal_quality": "high",
+          "notes": "Meta Chief AI Scientist, Turing Award winner. Often contrarian takes on AI trends."
+        },
+        {
+          "name": "Fran\u00e7ois Chollet",
+          "handle": "@fchollet",
+          "focus": "Deep learning, Keras, reasoning systems",
+          "signal_quality": "high",
+          "notes": "Keras creator, Google. Focuses on reasoning and generalization in AI."
+        },
+        {
+          "name": "Sebastian Raschka",
+          "handle": "@rasbt",
+          "focus": "LLMs, deep learning education, research explainers",
+          "signal_quality": "high",
+          "notes": "Author, researcher. Exceptional thread-length paper explanations."
+        },
+        {
+          "name": "Chelsea Finn",
+          "handle": "@chelseabfinn",
+          "focus": "Robotics, imitation learning, foundation models",
+          "signal_quality": "high",
+          "notes": "Stanford professor, Google DeepMind. Research on robot learning."
+        },
+        {
+          "name": "Sergey Karayev",
+          "handle": "@sergeykarayev",
+          "focus": "Computer vision, AI products, research applications",
+          "signal_quality": "high",
+          "notes": "Turns AI research into accessible commentary on applications."
+        },
+        {
+          "name": "Nathan Lambert",
+          "handle": "@natolambert",
+          "focus": "RLHF, open-source LLMs, AI policy",
+          "signal_quality": "high",
+          "notes": "Allen Institute for AI. Deep RLHF expertise, writes extensively."
+        },
+        {
+          "name": "Lilian Weng",
+          "handle": "@lilianweng",
+          "focus": "AI safety, LLM agents, OpenAI research",
+          "signal_quality": "high",
+          "notes": "OpenAI Head of Safety Systems. Long-form technical blog posts."
+        }
+      ]
+    },
+    "ai_industry": {
+      "description": "Industry leaders and startup founders building AI products",
+      "accounts": [
+        {
+          "name": "Sam Altman",
+          "handle": "@sama",
+          "focus": "OpenAI strategy, AGI trajectory",
+          "signal_quality": "high",
+          "notes": "OpenAI CEO. Strategic direction, occasional product announcements."
+        },
+        {
+          "name": "Demis Hassabis",
+          "handle": "@demishassabis",
+          "focus": "Google DeepMind, AGI research, scientific AI",
+          "signal_quality": "high",
+          "notes": "DeepMind CEO. Research breakthroughs (AlphaFold, etc.)"
+        },
+        {
+          "name": "Emad Mostaque",
+          "handle": "@EMostaque",
+          "focus": "Stability AI, open-source AI, generative models",
+          "signal_quality": "medium-high",
+          "notes": "Former Stability AI CEO. Strong opinions on open vs closed AI."
+        },
+        {
+          "name": "Noam Shazeer",
+          "handle": "@noamshazeer",
+          "focus": "Transformer architecture, character.ai, LLM scaling",
+          "signal_quality": "high",
+          "notes": "Transformer co-author, Character.AI founder. Technical depth."
+        },
+        {
+          "name": "Aidan Clark",
+          "handle": "@aidanclark",
+          "focus": "Anthropic, interpretability, AI capabilities",
+          "signal_quality": "high",
+          "notes": "Anthropic researcher. Deep technical threads on model behavior."
+        },
+        {
+          "name": "Simon Willison",
+          "handle": "@simonw",
+          "focus": "LLM tools, practical AI, datasette",
+          "signal_quality": "high",
+          "notes": "Co-creator Django. Exceptional practical LLM tooling experiments."
+        }
+      ]
+    },
+    "ai_policy_safety": {
+      "description": "AI safety researchers, policy experts, and ethicists",
+      "accounts": [
+        {
+          "name": "Stuart Russell",
+          "handle": "@profstuartrussell",
+          "focus": "AI safety, beneficial AI, policy",
+          "signal_quality": "high",
+          "notes": "Berkeley professor, 'Human Compatible' author. Long-term safety focus."
+        },
+        {
+          "name": "Meredith Whittaker",
+          "handle": "@mer__edith",
+          "focus": "AI ethics, labor, surveillance",
+          "signal_quality": "high",
+          "notes": "Signal Foundation president. Critical perspective on AI industry."
+        },
+        {
+          "name": "Timnit Gebru",
+          "handle": "@timnitgebru",
+          "focus": "AI ethics, algorithmic justice, DAIR Institute",
+          "signal_quality": "high",
+          "notes": "DAIR Institute founder. Essential critical voice on AI development."
+        },
+        {
+          "name": "Max Tegmark",
+          "handle": "@tegmark",
+          "focus": "AI safety, existential risk, FLI",
+          "signal_quality": "medium-high",
+          "notes": "MIT professor, FLI founder. Focus on long-term AI risk."
+        },
+        {
+          "name": "Connor Leahy",
+          "handle": "@AIConnor",
+          "focus": "AI safety, Conjecture, pause advocacy",
+          "signal_quality": "medium-high",
+          "notes": "Conjecture CEO. Vocal advocate for AI safety regulations."
+        }
+      ]
+    },
+    "ml_engineering": {
+      "description": "ML engineers and practitioners sharing practical knowledge",
+      "accounts": [
+        {
+          "name": "Chip Huyen",
+          "handle": "@chipro",
+          "focus": "ML systems, production ML, MLOps",
+          "signal_quality": "high",
+          "notes": "Author of 'Designing Machine Learning Systems'. Practical production focus."
+        },
+        {
+          "name": "Eugene Yan",
+          "handle": "@eugeneyan",
+          "focus": "ML systems, recsys, engineering practices",
+          "signal_quality": "high",
+          "notes": "Exceptional long-form writing on ML engineering."
+        },
+        {
+          "name": "Jeremy Howard",
+          "handle": "@jeremyphoward",
+          "focus": "Fast.ai, practical deep learning, LLMs",
+          "signal_quality": "high",
+          "notes": "Fast.ai founder. Makes cutting-edge AI accessible."
+        },
+        {
+          "name": "Sasha Rush",
+          "handle": "@srush_nlp",
+          "focus": "NLP, transformers, academic-to-industry",
+          "signal_quality": "high",
+          "notes": "Cornell professor. Technical depth on modern NLP architectures."
+        },
+        {
+          "name": "Shreya Shankar",
+          "handle": "@sh_reya",
+          "focus": "Data-centric AI, ML pipelines, operationalizing",
+          "signal_quality": "high",
+          "notes": "Berkeley PhD. Focus on data quality and pipeline debugging."
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "total_accounts": 29,
+    "last_updated": "2026-03-27T22:53:07.187804",
+    "update_frequency": "monthly_review",
+    "signal_quality_distribution": {
+      "high": 24,
+      "medium-high": 5
+    }
+  }
+}
