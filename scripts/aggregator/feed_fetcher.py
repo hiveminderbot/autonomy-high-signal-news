@@ -89,6 +89,7 @@ class FeedCache:
     def _init_db(self):
         """Initialize the database schema."""
         with sqlite3.connect(self.db_path) as conn:
+            # Create base tables first (without indexes that depend on optional columns)
             conn.executescript("""
                 CREATE TABLE IF NOT EXISTS feed_entries (
                     id TEXT PRIMARY KEY,
@@ -114,10 +115,6 @@ class FeedCache:
                     ON feed_entries(published_at DESC);
                 CREATE INDEX IF NOT EXISTS idx_entries_fetched 
                     ON feed_entries(fetched_at DESC);
-                CREATE INDEX IF NOT EXISTS idx_entries_cluster 
-                    ON feed_entries(cluster_id);
-                CREATE INDEX IF NOT EXISTS idx_entries_relevance 
-                    ON feed_entries(relevance_score DESC);
                 
                 CREATE VIRTUAL TABLE IF NOT EXISTS feed_entries_fts USING fts5(
                     title, summary, content,
@@ -150,6 +147,46 @@ class FeedCache:
                     response_time_ms INTEGER
                 );
             """)
+        
+        # Run migrations to handle schema updates on existing databases
+        self._migrate_db()
+    
+    def _migrate_db(self):
+        """Migrate existing database schema to add missing columns and indexes."""
+        with sqlite3.connect(self.db_path) as conn:
+            # Get existing columns in feed_entries table
+            cursor = conn.execute("PRAGMA table_info(feed_entries)")
+            existing_columns = {row[1] for row in cursor.fetchall()}
+            
+            # Define columns to add: (column_name, column_type)
+            columns_to_add = [
+                ("cluster_id", "TEXT"),
+                ("relevance_score", "REAL"),
+                ("relevance_tier", "TEXT"),
+                ("entities", "TEXT"),
+                ("generated_summary", "TEXT"),
+            ]
+            
+            for col_name, col_type in columns_to_add:
+                if col_name not in existing_columns:
+                    try:
+                        conn.execute(f"ALTER TABLE feed_entries ADD COLUMN {col_name} {col_type}")
+                    except sqlite3.OperationalError:
+                        # Column might already exist (race condition or partial migration)
+                        pass
+            
+            # Create indexes for columns that now exist
+            indexes_to_create = [
+                ("idx_entries_cluster", "cluster_id"),
+                ("idx_entries_relevance", "relevance_score"),
+            ]
+            
+            for index_name, column_name in indexes_to_create:
+                try:
+                    conn.execute(f"CREATE INDEX IF NOT EXISTS {index_name} ON feed_entries({column_name})")
+                except sqlite3.OperationalError:
+                    # Index might already exist or column might not exist
+                    pass
     
     def save_source(self, source: FeedSource):
         """Save or update a feed source configuration."""
