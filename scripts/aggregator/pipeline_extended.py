@@ -14,15 +14,15 @@ from pathlib import Path
 from typing import Optional
 
 # Import base pipeline
-from aggregator.pipeline import (
+from .pipeline import (
     AggregationPipeline, PipelineResult, run_pipeline_command
 )
-from aggregator.feed_fetcher import FeedCache, FeedEntry
-from aggregator.content_extractor import ContentExtractor
-from aggregator.deduplicator import Deduplicator
+from .feed_fetcher import FeedCache, FeedEntry
+from .content_extractor import ContentExtractor
+from .deduplicator import Deduplicator
 
 # Import newsletter components
-from aggregator.newsletter_ingester import (
+from .newsletter_ingester import (
     NewsletterCache, NewsletterIngester, NewsletterSource,
     load_newsletter_sources_from_catalog as load_newsletter_catalog
 )
@@ -247,7 +247,7 @@ def run_extended_pipeline(
     
     # Load RSS sources
     if feed_catalog_path.exists():
-        from aggregator.feed_fetcher import load_sources_from_catalog
+        from .feed_fetcher import load_sources_from_catalog
         feed_sources = load_sources_from_catalog(feed_catalog_path)
         for source in feed_sources:
             feed_cache.save_source(source)

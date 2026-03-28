@@ -17,10 +17,10 @@ from pathlib import Path
 from typing import Optional
 
 # Import base pipeline components
-from aggregator.pipeline import AggregationPipeline, PipelineResult, run_pipeline_command
-from aggregator.feed_fetcher import FeedCache, FeedFetcher, FeedSource, FeedEntry
-from aggregator.content_extractor import ContentExtractor
-from aggregator.deduplicator import Deduplicator
+from .pipeline import AggregationPipeline, PipelineResult, run_pipeline_command
+from .feed_fetcher import FeedCache, FeedFetcher, FeedSource, FeedEntry
+from .content_extractor import ContentExtractor
+from .deduplicator import Deduplicator
 
 # Import summarization modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -413,7 +413,7 @@ def run_pipeline_with_summarization(
     
     # Load RSS sources from catalog into cache
     if catalog_path.exists():
-        from aggregator.feed_fetcher import load_sources_from_catalog
+        from .feed_fetcher import load_sources_from_catalog
         sources = load_sources_from_catalog(catalog_path)
         for source in sources:
             cache.save_source(source)

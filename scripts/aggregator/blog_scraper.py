@@ -235,7 +235,7 @@ class BlogScraper:
         Returns:
             List of BlogEntry objects with full content
         """
-        from aggregator.content_extractor import ContentExtractor
+        from .content_extractor import ContentExtractor
         
         # First get the list of articles
         entries = self.scrape_blog_list(source)

@@ -1097,7 +1097,7 @@ def main():
     
     # Handle validation mode
     if args.validate_source:
-        from aggregator.health_monitor import FeedHealthMonitor
+        from .health_monitor import FeedHealthMonitor
         monitor = FeedHealthMonitor(db_path)
         result = monitor.validate_feed(args.validate_source)
         print(json.dumps(result, indent=2))
@@ -1114,7 +1114,7 @@ def main():
         sources = load_sources_from_catalog(catalog_path)
         
         # Validate sources before adding if health_monitor available
-        from aggregator.health_monitor import FeedHealthMonitor
+        from .health_monitor import FeedHealthMonitor
         monitor = FeedHealthMonitor(db_path)
         
         valid_sources = []
@@ -1135,7 +1135,7 @@ def main():
     
     # Initialize health monitor if available
     try:
-        from aggregator.health_monitor import FeedHealthMonitor
+        from .health_monitor import FeedHealthMonitor
         health_monitor = FeedHealthMonitor(db_path)
     except ImportError:
         health_monitor = None

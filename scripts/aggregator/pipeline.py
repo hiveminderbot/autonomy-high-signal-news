@@ -14,13 +14,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-# Import aggregator modules
-from aggregator.feed_fetcher import FeedCache, FeedFetcher, FeedSource, FeedEntry, load_sources_from_catalog
-from aggregator.content_extractor import ContentExtractor, ExtractedContent
-from aggregator.rate_limited_extractor import RateLimitedContentExtractor, create_rate_limited_extractor
-from aggregator.deduplicator import Deduplicator, DuplicateResult
-from aggregator.blog_scraper import BlogScraper, BlogEntry, load_blog_sources_from_catalog
-from aggregator.newsletter_ingester import NewsletterIngester, NewsletterCache, load_newsletter_sources_from_catalog
+# Import aggregator modules (relative imports for package usage)
+from .feed_fetcher import FeedCache, FeedFetcher, FeedSource, FeedEntry, load_sources_from_catalog
+from .content_extractor import ContentExtractor, ExtractedContent
+from .rate_limited_extractor import RateLimitedContentExtractor, create_rate_limited_extractor
+from .deduplicator import Deduplicator, DuplicateResult
+from .blog_scraper import BlogScraper, BlogEntry, load_blog_sources_from_catalog
+from .newsletter_ingester import NewsletterIngester, NewsletterCache, load_newsletter_sources_from_catalog
 
 
 @dataclass

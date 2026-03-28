@@ -29,10 +29,10 @@ from typing import Optional
 # Add parent scripts directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from aggregator.pipeline import AggregationPipeline, PipelineResult
-from aggregator.feed_fetcher import FeedCache, load_sources_from_catalog
-from aggregator.deduplicator import Deduplicator
-from aggregator.storage import ArticleStorage
+from .pipeline import AggregationPipeline, PipelineResult
+from .feed_fetcher import FeedCache, load_sources_from_catalog
+from .deduplicator import Deduplicator
+from .storage import ArticleStorage
 
 
 # Default paths

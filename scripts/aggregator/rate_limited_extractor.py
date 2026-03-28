@@ -16,7 +16,7 @@ from urllib.parse import urlparse
 from collections import defaultdict
 
 # Import base extractor
-from aggregator.content_extractor import ContentExtractor, ExtractedContent, REQUESTS_AVAILABLE, BS4_AVAILABLE
+from .content_extractor import ContentExtractor, ExtractedContent, REQUESTS_AVAILABLE, BS4_AVAILABLE
 
 if REQUESTS_AVAILABLE:
     import requests

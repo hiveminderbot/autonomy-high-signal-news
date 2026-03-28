@@ -341,7 +341,7 @@ class NewsletterIngester:
         """
         try:
             # Import here to avoid circular dependencies
-            from aggregator.feed_fetcher import FeedSource, FeedFetcher, FeedCache
+            from .feed_fetcher import FeedSource, FeedFetcher, FeedCache
             
             # Create a FeedSource from the NewsletterSource
             feed_source = FeedSource(
