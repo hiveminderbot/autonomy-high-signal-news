@@ -24,8 +24,8 @@
 - [x] Document inclusion criteria for investment sources → included in sources-investment.json metadata
 
 ### Cross-Domain
-- [ ] Research RSS aggregation tools (FreshRSS, Miniflux, etc.)
-- [ ] Evaluate newsletter-to-RSS converters (Kill the Newsletter)
+- [x] Research RSS aggregation tools (FreshRSS, Miniflux, etc.) → `research/rss-aggregation-tools.md`
+- [x] Evaluate newsletter-to-RSS converters (Kill the Newsletter) → `research/rss-aggregation-tools.md`
 - [ ] Test content extraction tools for newsletters
 - [ ] Design source quality scoring system
 
