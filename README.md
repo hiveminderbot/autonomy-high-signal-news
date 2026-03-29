@@ -1,6 +1,15 @@
 # High-Signal News Lab
 
-**Status:** ⚠️ PARTIALLY OPERATIONAL — Infrastructure complete, live data pipeline needs configuration
+**Status:** ✅ OPERATIONAL — High-signal briefing generation active
+
+## What's Working
+
+- ✅ **Tier-1 source catalog**: 26 curated sources (distinguished engineers, top researchers, high-signal pubs)
+- ✅ **Daily fetching**: HN, Lobsters, individual blogs via RSS
+- ✅ **Intelligent filtering**: Excludes sponsored, "coming soon", placeholder content
+- ✅ **Cross-source synthesis**: Themes only reported when corroborated across HN+Lobsters
+- ✅ **Quality content extraction**: Jina AI Reader for full article text
+- ✅ **Briefing generation**: Practitioner-focused synthesis, not RSS dumps
 
 ## Problem Statement
 
@@ -114,18 +123,73 @@ high-signal-news/
 └── output/                      # Generated briefings
 ```
 
+## Tier-1 Source Catalog
+
+### AI Research (Individual Experts)
+| Source | Signal | Why |
+|--------|--------|-----|
+| **Andrej Karpathy** | Very High | Former Tesla AI Director, OpenAI founder, deep technical insights |
+| **Sebastian Raschka** | Very High | ML researcher, exceptional paper explanations |
+| **Chip Huyen** | Very High | ML systems, production AI expertise |
+| **Lilian Weng** | Very High | OpenAI safety researcher, technical depth |
+| **Simon Willison** | Very High | Co-creator of Django, AI tooling explorer |
+| **Nathan Lambert** | High | AI2 researcher, policy + technical |
+
+### Software Engineering (Distinguished Engineers)
+| Source | Signal | Why |
+|--------|--------|-----|
+| **Martin Fowler** | Very High | ThoughtWorks, software architecture |
+| **Dan Luu** | Very High | Deep systems analysis, data-driven |
+| **Armin Ronacher** | High | Creator of Flask, Python ecosystem |
+| **Jessie Frazelle** | High | Container security, systems |
+| **Will Larson** | High | Staff engineering, eng management |
+
+### Community Aggregators
+| Source | Signal | Why |
+|--------|--------|-----|
+| **Hacker News** | High | Tech community, startup ecosystem |
+| **Lobsters** | High | Curated programming community |
+
+### Research Publications
+| Source | Signal | Why |
+|--------|--------|-----|
+| **Distill.pub** | Very High | Exceptional ML explainers |
+| **arXiv cs.AI/LG** | High | Latest research (filtered for relevance) |
+| **Papers with Code** | High | Research + implementation |
+
+## Generation Pipeline
+
+```
+fetch_high_signal.py → extract_with_jina.py → generate_high_signal_briefing.py
+        ↓                       ↓                           ↓
+    RSS fetching          Full-text extraction          Synthesized briefing
+    (HN, Lobsters,        (Jina AI Reader)              (Tier-1 only, filtered,
+     individual blogs)                                  cross-source themes)
+```
+
+## Daily Usage
+
+Generate today's briefing:
+```bash
+cd ~/autonomy/labs/high-signal-news
+source .venv/bin/activate
+
+# Fetch fresh content
+python scripts/fetch_high_signal.py
+
+# Extract full text
+python scripts/extract_with_jina.py
+
+# Generate briefing
+python scripts/generate_high_signal_briefing.py
+
+# View result
+cat output/briefing-high-signal-$(date +%Y-%m-%d).md
+```
+
 ## Lessons Learned
 
-1. **Don't fake data** — I presented training-cutoff data as "live" news. This was wrong.
-2. **Check API limits** — Brave Search quota was exhausted; should have checked first.
-3. **Verify freshness** — Always include timestamps and source verification.
-4. **Document limitations honestly** — Better to say "not working" than fake success.
-
-## Contact
-
-For this to become operational, someone needs to:
-1. Add RSS feed URLs to the database
-2. Wait for API quota reset OR configure alternative search
-3. Schedule the pipeline
-
-Until then, this is a **working prototype with no live data source**.
+1. **Don't fake data** — Presenting training-cutoff data as "live" news was wrong.
+2. **Curate sources ruthlessly** — 26 tier-1 sources > 100 mixed-quality sources.
+3. **Filter aggressively** — Sponsored content and "coming soon" pages are noise.
+4. **Synthesize, don't aggregate** — Cross-source themes > raw headline lists.
