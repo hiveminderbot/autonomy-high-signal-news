@@ -62,10 +62,10 @@ def run_pipeline():
     print("[2/3] Skipping extraction (using available content)...")
     # Extraction is slow and rate-limited; we'll use titles/URLs for the briefing
     
-    # Step 3: Generate themes with sources
-    print("[3/3] Generating themes with sources...")
+    # Step 3: Generate proper briefing with reading
+    print("[3/3] Generating properly-read briefing...")
     result = subprocess.run(
-        [sys.executable, "scripts/generate_themes_with_sources.py"],
+        [sys.executable, "scripts/generate_proper_briefing.py"],
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent
