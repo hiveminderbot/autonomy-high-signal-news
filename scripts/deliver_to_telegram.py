@@ -62,10 +62,10 @@ def run_pipeline():
     print("[2/3] Skipping extraction (using available content)...")
     # Extraction is slow and rate-limited; we'll use titles/URLs for the briefing
     
-    # Step 3: Generate sweet spot briefing
-    print("[3/3] Generating sweet spot briefing...")
+    # Step 3: Generate themes with sources
+    print("[3/3] Generating themes with sources...")
     result = subprocess.run(
-        [sys.executable, "scripts/generate_sweet_spot_briefing.py"],
+        [sys.executable, "scripts/generate_themes_with_sources.py"],
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent
