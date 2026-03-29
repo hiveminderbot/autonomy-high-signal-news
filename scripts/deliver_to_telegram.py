@@ -62,10 +62,10 @@ def run_pipeline():
     print("[2/3] Skipping extraction (using available content)...")
     # Extraction is slow and rate-limited; we'll use titles/URLs for the briefing
     
-    # Step 3: Generate valuable briefing
-    print("[3/3] Generating valuable briefing...")
+    # Step 3: Generate sweet spot briefing
+    print("[3/3] Generating sweet spot briefing...")
     result = subprocess.run(
-        [sys.executable, "scripts/generate_valuable_briefing.py"],
+        [sys.executable, "scripts/generate_sweet_spot_briefing.py"],
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent
@@ -77,7 +77,7 @@ def run_pipeline():
     
     # Find the generated file
     today = datetime.now().strftime('%Y-%m-%d')
-    briefing_file = OUTPUT_DIR / f"briefing-valuable-{today}.md"
+    briefing_file = OUTPUT_DIR / f"briefing-{today}.md"
     
     if not briefing_file.exists():
         print(f"ERROR: Briefing file not found: {briefing_file}")
