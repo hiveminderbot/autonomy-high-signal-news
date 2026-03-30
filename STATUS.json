@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "High-signal news aggregation and briefing generation for AI, software development, and tech investment",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-30T14:15:00.000000Z",
+  "updated_at": "2026-03-30T15:15:00.000000Z",
   "owner": "autonomy",
   "repository": "forgejo:exedev/high-signal-news",
   "documentation": {
@@ -113,9 +113,18 @@
   },
   "validation_status": {
     "overall": "healthy",
-    "last_validation": "2026-03-22",
+    "last_validation": "2026-03-30",
     "issues": [],
     "resolved": [
+      {
+        "component": "validation_checks",
+        "resolution": "Added PyYAML==6.0.1 to requirements.txt. The validation_checks module (shared from infrastructure/labtools) requires PyYAML for docs-config.yaml parsing. Validation now passes 12/12 checks.",
+        "git_commit": "1f77b88",
+        "validation": {
+          "command": "/usr/bin/python3 -m validation_checks --config validation.json",
+          "result": "12/12 checks passing"
+        }
+      },
       {
         "component": "feed_fetcher",
         "resolution": "Added SCRAPER, GITHUB_TRENDING, and GITHUB_REPO format support to feed_fetcher.py. Resolves 'Unsupported feed format' errors for anthropic-research, trending-python-ml, and awesome-ml sources.",
