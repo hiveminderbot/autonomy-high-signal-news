@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "High-signal news aggregation and briefing generation for AI, software development, and tech investment",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-22T04:45:00.000000Z",
+  "updated_at": "2026-03-30T14:15:00.000000Z",
   "owner": "autonomy",
   "repository": "forgejo:exedev/high-signal-news",
   "documentation": {
@@ -77,6 +77,38 @@
       "path": "systemd/",
       "status": "active",
       "description": "Scheduled aggregation runs via systemd timers"
+    },
+    "experimental_approaches": {
+      "path": "scripts/approach_*.py",
+      "status": "ready",
+      "description": "Four experimental newsletter formats for practitioner-focused delivery",
+      "approaches": [
+        {
+          "name": "Breakthrough Only (A)",
+          "file": "scripts/approach_a_breakthrough_only.py",
+          "format": "Max 5 stories, only genuine breakthroughs/counter-intuitive findings",
+          "status": "ready"
+        },
+        {
+          "name": "Synthesis-Based (B)",
+          "file": "scripts/approach_b_synthesis.py",
+          "format": "Cross-domain patterns, not categories (max 2 patterns, 3 stories each)",
+          "status": "ready"
+        },
+        {
+          "name": "Action-Oriented (C)",
+          "file": "scripts/approach_c_action.py",
+          "format": "What to DO differently (Do/Stop/Watch format, max 5 actions)",
+          "status": "ready"
+        },
+        {
+          "name": "Single Deep Dive (D)",
+          "file": "scripts/approach_d_single_deep.py",
+          "format": "One deep analysis + 2-3 'Also Worth Your Time' links",
+          "status": "ready"
+        }
+      ],
+      "git_commit": "bd85b0a"
     }
   },
   "validation_status": {
