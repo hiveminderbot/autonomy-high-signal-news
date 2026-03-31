@@ -42,10 +42,10 @@ Use search APIs **once** (or periodically) to discover high-signal sources. Then
 - [x] Categorize by quality_score and frequency
 - [x] Document special handling requirements
 
-### Phase 2: Database Load
-- [ ] Create `load_sources.py` script
-- [ ] Insert sources into `news.db`
-- [ ] Mark disabled sources (rate-limited, partial content)
+### Phase 2: Database Load (Complete)
+- [x] Create `load_sources.py` script
+- [x] Insert sources into `news.db` (22 sources loaded, 21 active, 1 disabled)
+- [x] Mark disabled sources (AI Alignment Forum rate-limited)
 
 ### Phase 3: Aggregation Schedule
 - [ ] Morning run (7 AM): arXiv + newsletters + tech news
