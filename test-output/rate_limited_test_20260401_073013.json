@@ -1,0 +1,106 @@
+{
+  "timestamp": "2026-04-01T07:30:13.746370",
+  "duration_seconds": 29.335495710372925,
+  "sources_tested": [
+    "hacker-news",
+    "bbc-technology",
+    "hugging-face-blog"
+  ],
+  "total_entries": 15,
+  "successful": 14,
+  "failed": 1,
+  "skipped": 0,
+  "success_rate": 93.33333333333333,
+  "metrics": {
+    "total_domains": 7,
+    "total_requests": 15,
+    "overall_success_rate": 93.33333333333333,
+    "domains_with_low_success": [],
+    "domain_details": {
+      "ccunpacked.dev": {
+        "domain": "ccunpacked.dev",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 472.11456298828125,
+        "last_request_at": "2026-04-01T07:29:45.097926",
+        "last_error": null
+      },
+      "science.org": {
+        "domain": "science.org",
+        "total_requests": 1,
+        "successful_requests": 0,
+        "failed_requests": 1,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 0.0,
+        "average_latency_ms": 78.8266658782959,
+        "last_request_at": "2026-04-01T07:29:45.677267",
+        "last_error": "Request failed: 403 Client Error: Forbidden for url: https://www.science.org/content/article/neanderthals-survived-knife-s-edge-350-000-years"
+      },
+      "blog.calif.io": {
+        "domain": "blog.calif.io",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 323.1351375579834,
+        "last_request_at": "2026-04-01T07:29:46.502369",
+        "last_error": null
+      },
+      "dbpro.app": {
+        "domain": "dbpro.app",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 197.7524757385254,
+        "last_request_at": "2026-04-01T07:29:47.200487",
+        "last_error": null
+      },
+      "arxiv.org": {
+        "domain": "arxiv.org",
+        "total_requests": 1,
+        "successful_requests": 1,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 194.05102729797363,
+        "last_request_at": "2026-04-01T07:29:47.894899",
+        "last_error": null
+      },
+      "bbc.com": {
+        "domain": "bbc.com",
+        "total_requests": 5,
+        "successful_requests": 5,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 255.4551124572754,
+        "last_request_at": "2026-04-01T07:29:51.911332",
+        "last_error": null
+      },
+      "huggingface.co": {
+        "domain": "huggingface.co",
+        "total_requests": 5,
+        "successful_requests": 5,
+        "failed_requests": 0,
+        "rate_limited_count": 0,
+        "timeout_count": 0,
+        "success_rate": 100.0,
+        "average_latency_ms": 3693.548345565796,
+        "last_request_at": "2026-04-01T07:30:13.244084",
+        "last_error": null
+      }
+    }
+  }
+}
