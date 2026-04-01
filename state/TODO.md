@@ -44,8 +44,8 @@
 - [x] Build entity extraction → `scripts/summarizer/entity_extractor.py`
 - [x] Create relevance scoring → `scripts/summarizer/relevance_scorer.py`
 - [x] Design cross-domain connection detection → `story_clusterer.find_cross_domain_clusters()`
-- [ ] Add tests for summarization modules
-- [ ] Integrate summarization into aggregation pipeline
+- [x] Add tests for summarization modules (52 tests, all passing)
+- [x] Integrate summarization into aggregation pipeline (daily_runner now uses pipeline_with_summarization)
 
 ## Phase 4: Briefing Generation
 
