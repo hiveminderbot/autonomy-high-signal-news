@@ -42,8 +42,8 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
     
     start_time = datetime.now()
     
-    # Build command
-    cmd = [sys.executable, "-m", "scripts.aggregator.pipeline", "--verbose", "--json"]
+    # Build command - using pipeline with summarization integration
+    cmd = [sys.executable, "-m", "scripts.aggregator.pipeline_with_summarization", "--verbose", "--json"]
     if retry_disabled:
         cmd.append("--retry-disabled")
     
@@ -67,17 +67,29 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
     # Extract entry counts if available
     entries_fetched = 0
     entries_stored = 0
-    for line in output.split('\n'):
-        if 'entries fetched' in line.lower():
-            try:
-                entries_fetched = int(''.join(filter(str.isdigit, line)))
-            except:
-                pass
-        if 'entries stored' in line.lower() or 'stored in database' in line.lower():
-            try:
-                entries_stored = int(''.join(filter(str.isdigit, line)))
-            except:
-                pass
+    summarization_metrics = {}
+    
+    # Try to parse JSON output first (preferred)
+    try:
+        json_output = json.loads(result.stdout)
+        entries_fetched = json_output.get('entries_fetched', 0)
+        entries_stored = json_output.get('entries_stored', 0)
+        # Extract summarization metrics if available
+        if 'summarization' in json_output:
+            summarization_metrics = json_output['summarization']
+    except (json.JSONDecodeError, KeyError):
+        # Fall back to parsing text output
+        for line in output.split('\n'):
+            if 'entries fetched' in line.lower():
+                try:
+                    entries_fetched = int(''.join(filter(str.isdigit, line)))
+                except:
+                    pass
+            if 'entries stored' in line.lower() or 'stored in database' in line.lower():
+                try:
+                    entries_stored = int(''.join(filter(str.isdigit, line)))
+                except:
+                    pass
     
     status = {
         "timestamp": start_time.isoformat(),
@@ -86,11 +98,14 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
         "return_code": result.returncode,
         "entries_fetched": entries_fetched,
         "entries_stored": entries_stored,
+        "summarization": summarization_metrics,
         "log_file": str(log_file)
     }
     
     logger.info(f"Pipeline completed in {duration:.1f}s")
     logger.info(f"Success: {success}, Entries: {entries_fetched} fetched, {entries_stored} stored")
+    if summarization_metrics:
+        logger.info(f"Summarization: {summarization_metrics}")
     
     return status
 
