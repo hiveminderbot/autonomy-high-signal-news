@@ -19,10 +19,10 @@ from summarizer.story_clusterer import (
 def test_tokenize():
     """Test text tokenization."""
     clusterer = StoryClusterer()
-    
+
     text = "OpenAI releases GPT-5 with amazing capabilities!"
     tokens = clusterer._tokenize(text)
-    
+
     assert 'openai' in tokens, f"Expected 'openai' in tokens, got {tokens}"
     assert 'releases' in tokens, f"Expected 'releases' in tokens"
     assert 'gpt' in tokens, f"Expected 'gpt' in tokens"
@@ -34,10 +34,10 @@ def test_tokenize():
 def test_compute_word_frequencies():
     """Test word frequency computation."""
     clusterer = StoryClusterer()
-    
+
     text = "machine machine learning code code code"
     freqs = clusterer._compute_word_frequencies(text)
-    
+
     assert 'machine' in freqs, f"Expected 'machine' in frequencies"
     assert 'code' in freqs, f"Expected 'code' in frequencies"
     assert freqs['machine'] == 2/6, f"Expected machine freq 2/6, got {freqs['machine']}"
@@ -47,10 +47,10 @@ def test_compute_word_frequencies():
 def test_compute_similarity_identical():
     """Test similarity of identical texts is 1.0."""
     clusterer = StoryClusterer()
-    
+
     text = "OpenAI announces new model capabilities"
     similarity = clusterer._compute_similarity(text, text)
-    
+
     assert similarity == 1.0, f"Expected similarity 1.0 for identical text, got {similarity}"
     print("✅ test_compute_similarity_identical passed")
 
@@ -58,11 +58,11 @@ def test_compute_similarity_identical():
 def test_compute_similarity_different():
     """Test similarity of completely different texts is low."""
     clusterer = StoryClusterer()
-    
+
     text1 = "OpenAI GPT-5 machine learning neural networks"
     text2 = "Rust programming language memory safety systems"
     similarity = clusterer._compute_similarity(text1, text2)
-    
+
     assert similarity < 0.5, f"Expected low similarity for different texts, got {similarity}"
     print("✅ test_compute_similarity_different passed")
 
@@ -70,11 +70,11 @@ def test_compute_similarity_different():
 def test_compute_similarity_related():
     """Test similarity of related texts is moderate to high."""
     clusterer = StoryClusterer()
-    
+
     text1 = "OpenAI releases GPT-5 with improved reasoning"
     text2 = "GPT-5 from OpenAI features better reasoning capabilities"
     similarity = clusterer._compute_similarity(text1, text2)
-    
+
     assert similarity > 0.3, f"Expected moderate similarity for related texts, got {similarity}"
     print("✅ test_compute_similarity_related passed")
 
@@ -82,14 +82,14 @@ def test_compute_similarity_related():
 def test_extract_keywords():
     """Test keyword extraction from stories."""
     clusterer = StoryClusterer()
-    
+
     stories = [
         {'title': 'GPT-5 Released', 'content': 'OpenAI announced GPT-5 today with amazing features'},
         {'title': 'GPT-5 Analysis', 'content': 'The new GPT-5 model from OpenAI shows impressive results'}
     ]
-    
+
     keywords = clusterer._extract_keywords(stories, top_n=3)
-    
+
     assert len(keywords) <= 3, f"Expected at most 3 keywords, got {len(keywords)}"
     assert 'gpt' in keywords or 'openai' in keywords, f"Expected 'gpt' or 'openai' in keywords, got {keywords}"
     print("✅ test_extract_keywords passed")
@@ -98,9 +98,9 @@ def test_extract_keywords():
 def test_cluster_stories_empty():
     """Test clustering empty list returns empty result."""
     clusterer = StoryClusterer()
-    
+
     result = clusterer.cluster_stories([])
-    
+
     assert result.total_stories == 0, f"Expected 0 stories, got {result.total_stories}"
     assert result.cluster_count == 0, f"Expected 0 clusters, got {result.cluster_count}"
     print("✅ test_cluster_stories_empty passed")
@@ -109,7 +109,7 @@ def test_cluster_stories_empty():
 def test_cluster_stories_single():
     """Test clustering single story with min_cluster_size=1 creates cluster."""
     clusterer = StoryClusterer(min_cluster_size=1)  # Allow single-story clusters
-    
+
     stories = [
         {
             'id': '1',
@@ -119,9 +119,9 @@ def test_cluster_stories_single():
             'domain': 'ai'
         }
     ]
-    
+
     result = clusterer.cluster_stories(stories)
-    
+
     assert result.total_stories == 1, f"Expected 1 story, got {result.total_stories}"
     assert result.cluster_count == 1, f"Expected 1 cluster, got {result.cluster_count}"
     assert result.singleton_count == 0, f"Expected 0 unclustered, got {result.singleton_count}"
@@ -131,7 +131,7 @@ def test_cluster_stories_single():
 def test_cluster_stories_similar():
     """Test clustering similar stories into same cluster."""
     clusterer = StoryClusterer(similarity_threshold=0.2, min_cluster_size=2)
-    
+
     stories = [
         {
             'id': '1',
@@ -150,9 +150,9 @@ def test_cluster_stories_similar():
             'published_at': '2026-03-21T11:00:00Z'
         }
     ]
-    
+
     result = clusterer.cluster_stories(stories)
-    
+
     assert result.cluster_count >= 1, f"Expected at least 1 cluster, got {result.cluster_count}"
     assert result.clusters[0].cluster_size == 2, f"Expected cluster size 2, got {result.clusters[0].cluster_size}"
     print("✅ test_cluster_stories_similar passed")
@@ -161,7 +161,7 @@ def test_cluster_stories_similar():
 def test_cluster_stories_different():
     """Test clustering dissimilar stories - no clusters formed with high threshold."""
     clusterer = StoryClusterer(similarity_threshold=0.5, min_cluster_size=2)
-    
+
     stories = [
         {
             'id': '1',
@@ -178,9 +178,9 @@ def test_cluster_stories_different():
             'domain': 'software_development'
         }
     ]
-    
+
     result = clusterer.cluster_stories(stories)
-    
+
     # With high threshold and min_cluster_size=2, no clusters should form
     assert result.cluster_count == 0, f"Expected 0 clusters (dissimilar), got {result.cluster_count}"
     # Note: singleton_count may be 0 because stories are marked clustered before min_cluster_size check
@@ -190,7 +190,7 @@ def test_cluster_stories_different():
 def test_find_cross_domain_clusters():
     """Test finding clusters that span multiple domains."""
     clusterer = StoryClusterer(similarity_threshold=0.2, min_cluster_size=2)
-    
+
     stories = [
         {
             'id': '1',
@@ -214,10 +214,10 @@ def test_find_cross_domain_clusters():
             'domain': 'investment'
         }
     ]
-    
+
     result = clusterer.cluster_stories(stories)
     cross_domain = clusterer.find_cross_domain_clusters(result)
-    
+
     # The cluster should span multiple domains
     if result.clusters:
         assert len(cross_domain) >= 1, f"Expected at least 1 cross-domain cluster, got {len(cross_domain)}"
@@ -228,7 +228,7 @@ def test_find_cross_domain_clusters():
 def test_cluster_preserves_metadata():
     """Test that clustering preserves story metadata."""
     clusterer = StoryClusterer(similarity_threshold=0.2, min_cluster_size=2)
-    
+
     stories = [
         {
             'id': 'story-1',
@@ -247,9 +247,9 @@ def test_cluster_preserves_metadata():
             'published_at': '2026-03-21T11:00:00Z'
         }
     ]
-    
+
     result = clusterer.cluster_stories(stories)
-    
+
     if result.clusters:
         cluster = result.clusters[0]
         assert 'Source A' in cluster.sources, f"Expected 'Source A' in sources"
@@ -281,5 +281,5 @@ if __name__ == "__main__":
     test_find_cross_domain_clusters()
     test_cluster_preserves_metadata()
     test_stop_words_defined()
-    
+
     print("\n✅ All story clusterer tests passed!")

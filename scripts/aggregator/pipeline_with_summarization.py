@@ -48,7 +48,7 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
     - Relevance scoring for prioritization
     - Summary generation for output
     """
-    
+
     def __init__(
         self,
         cache: FeedCache,
@@ -81,22 +81,22 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
             enable_newsletter_ingestion=enable_newsletter_ingestion,
             newsletter_catalog_path=newsletter_catalog_path,
         )
-        
+
         # Initialize summarization components
         self.enable_clustering = enable_clustering
         self.enable_entity_extraction = enable_entity_extraction
         self.enable_relevance_scoring = enable_relevance_scoring
         self.enable_summarization = enable_summarization
-        
+
         self.clusterer = StoryClusterer(
             similarity_threshold=cluster_similarity_threshold,
             min_cluster_size=min_cluster_size
         ) if enable_clustering else None
-        
+
         self.entity_extractor = EntityExtractor() if enable_entity_extraction else None
         self.relevance_scorer = RelevanceScorer() if enable_relevance_scoring else None
         self.summarizer = ContentSummarizer() if enable_summarization else None
-        
+
         self.summarization_stats = SummarizationResult(
             stories_clustered=0,
             clusters_formed=0,
@@ -104,7 +104,7 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
             stories_scored=0,
             summaries_generated=0
         )
-    
+
     def run(
         self,
         sources: Optional[list[FeedSource]] = None,
@@ -115,7 +115,7 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
     ) -> PipelineResult:
         """
         Run the pipeline with summarization.
-        
+
         Steps:
         1. Run base aggregation pipeline
         2. Apply story clustering to stored entries
@@ -131,45 +131,45 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
             verbose=verbose,
             include_disabled=include_disabled,
         )
-        
+
         if result.entries_stored == 0:
             if verbose:
                 print("\nNo entries to process for summarization.")
             return result
-        
+
         # Step 2-5: Apply summarization to newly stored entries
         if verbose:
             print(f"\n{'='*50}")
             print("Phase 3: Summarization Processing")
             print(f"{'='*50}")
-        
+
         # Get recent entries that need summarization
         recent_entries = self._get_recent_entries(limit=1000)
-        
+
         if not recent_entries:
             if verbose:
                 print("No recent entries found for summarization.")
             return result
-        
+
         if verbose:
             print(f"Processing {len(recent_entries)} entries for summarization...")
-        
+
         # Step 2: Story Clustering
         if self.enable_clustering and self.clusterer:
             self._apply_clustering(recent_entries, verbose)
-        
+
         # Step 3: Entity Extraction
         if self.enable_entity_extraction and self.entity_extractor:
             self._apply_entity_extraction(recent_entries, verbose)
-        
+
         # Step 4: Relevance Scoring
         if self.enable_relevance_scoring and self.relevance_scorer:
             self._apply_relevance_scoring(recent_entries, verbose)
-        
+
         # Step 5: Summary Generation
         if self.enable_summarization and self.summarizer:
             self._apply_summarization(recent_entries, verbose)
-        
+
         if verbose:
             print(f"\n{'='*50}")
             print("Summarization Complete")
@@ -179,23 +179,23 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
             print(f"Entities extracted: {self.summarization_stats.entities_extracted}")
             print(f"Stories scored: {self.summarization_stats.stories_scored}")
             print(f"Summaries generated: {self.summarization_stats.summaries_generated}")
-        
+
         return result
-    
+
     def _get_recent_entries(self, limit: int = 1000) -> list[FeedEntry]:
         """Get recent entries from the cache that need summarization."""
         import sqlite3
-        
+
         entries = []
         with sqlite3.connect(self.cache.db_path) as conn:
             conn.row_factory = sqlite3.Row
             rows = conn.execute("""
-                SELECT * FROM feed_entries 
+                SELECT * FROM feed_entries
                 WHERE fetched_at > datetime('now', '-24 hours')
                 ORDER BY published_at DESC
                 LIMIT ?
             """, (limit,)).fetchall()
-            
+
             for row in rows:
                 entry = FeedEntry(
                     id=row['id'],
@@ -214,14 +214,14 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
                     generated_summary=row['generated_summary'],
                 )
                 entries.append(entry)
-        
+
         return entries
-    
+
     def _apply_clustering(self, entries: list[FeedEntry], verbose: bool):
         """Apply story clustering to entries."""
         if verbose:
             print("\n  → Clustering stories...")
-        
+
         # Convert entries to story format for clusterer
         stories = []
         for entry in entries:
@@ -235,54 +235,54 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
                 'published_at': entry.published_at.isoformat() if entry.published_at else None,
             }
             stories.append(story)
-        
+
         # Run clustering
         cluster_result = self.clusterer.cluster_stories(stories)
-        
+
         # Update entries with cluster IDs
         cluster_map = {}
         for cluster in cluster_result.clusters:
             for story in cluster.stories:
                 cluster_map[story.get('id')] = cluster.id
-        
+
         updated_entries = []
         for entry in entries:
             if entry.id in cluster_map:
                 entry.cluster_id = cluster_map[entry.id]
                 updated_entries.append(entry)
-        
+
         # Save updated entries
         if updated_entries:
             self.cache.save_entries(updated_entries)
-        
+
         self.summarization_stats.stories_clustered = len(updated_entries)
         self.summarization_stats.clusters_formed = len(cluster_result.clusters)
-        
+
         if verbose:
             print(f"    ✓ Clustered {len(updated_entries)} stories into {len(cluster_result.clusters)} clusters")
-    
+
     def _apply_entity_extraction(self, entries: list[FeedEntry], verbose: bool):
         """Extract entities from entry content."""
         if verbose:
             print("\n  → Extracting entities...")
-        
+
         updated_entries = []
         total_entities = 0
-        
+
         for entry in entries:
             if entry.entities:  # Skip if already has entities
                 continue
-            
+
             content = entry.content or entry.summary or ''
             if not content:
                 continue
-            
+
             entities = self.entity_extractor.extract_entities(
                 title=entry.title,
                 content=content,
                 source=entry.source_id
             )
-            
+
             if entities:
                 # Store as JSON
                 entry.entities = json.dumps([
@@ -296,29 +296,29 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
                 ])
                 updated_entries.append(entry)
                 total_entities += len(entities)
-        
+
         # Save updated entries
         if updated_entries:
             self.cache.save_entries(updated_entries)
-        
+
         self.summarization_stats.entities_extracted = total_entities
-        
+
         if verbose:
             print(f"    ✓ Extracted {total_entities} entities from {len(updated_entries)} stories")
-    
+
     def _apply_relevance_scoring(self, entries: list[FeedEntry], verbose: bool):
         """Apply relevance scoring to entries."""
         if verbose:
             print("\n  → Scoring relevance...")
-        
+
         updated_entries = []
-        
+
         for entry in entries:
             if entry.relevance_score is not None:  # Skip if already scored
                 continue
-            
+
             content = entry.content or entry.summary or ''
-            
+
             story = {
                 'id': entry.id,
                 'title': entry.title,
@@ -327,19 +327,19 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
                 'source': entry.source_id,
                 'published_at': entry.published_at.isoformat() if entry.published_at else None,
             }
-            
+
             score = self.relevance_scorer.score_story(story)
-            
+
             entry.relevance_score = score.overall_score
             entry.relevance_tier = score.ranking_tier
             updated_entries.append(entry)
-        
+
         # Save updated entries
         if updated_entries:
             self.cache.save_entries(updated_entries)
-        
+
         self.summarization_stats.stories_scored = len(updated_entries)
-        
+
         if verbose:
             tier_counts = {}
             for entry in updated_entries:
@@ -348,40 +348,40 @@ class AggregationPipelineWithSummarization(AggregationPipeline):
             print(f"    ✓ Scored {len(updated_entries)} stories")
             for tier, count in sorted(tier_counts.items()):
                 print(f"      - {tier}: {count}")
-    
+
     def _apply_summarization(self, entries: list[FeedEntry], verbose: bool):
         """Generate summaries for entries."""
         if verbose:
             print("\n  → Generating summaries...")
-        
+
         updated_entries = []
-        
+
         for entry in entries:
             if entry.generated_summary:  # Skip if already has summary
                 continue
-            
+
             content = entry.content or entry.summary or ''
             if len(content) < 200:  # Skip short content
                 continue
-            
+
             summary_result = self.summarizer.summarize(
                 content=content,
                 title=entry.title
             )
-            
+
             if summary_result.summary:
                 entry.generated_summary = summary_result.summary
                 updated_entries.append(entry)
-        
+
         # Save updated entries
         if updated_entries:
             self.cache.save_entries(updated_entries)
-        
+
         self.summarization_stats.summaries_generated = len(updated_entries)
-        
+
         if verbose:
             print(f"    ✓ Generated {len(updated_entries)} summaries")
-    
+
     def get_summarization_stats(self) -> dict:
         """Get summarization statistics."""
         return asdict(self.summarization_stats)
@@ -410,7 +410,7 @@ def run_pipeline_with_summarization(
     """
     # Initialize components
     cache = FeedCache(db_path)
-    
+
     # Load RSS sources from catalog into cache
     if catalog_path.exists():
         from .feed_fetcher import load_sources_from_catalog
@@ -419,7 +419,7 @@ def run_pipeline_with_summarization(
             cache.save_source(source)
         if verbose:
             print(f"Loaded {len(sources)} RSS sources from catalog")
-    
+
     # Handle retry-disabled mode
     if retry_disabled:
         disabled = cache.get_disabled_sources()
@@ -430,7 +430,7 @@ def run_pipeline_with_summarization(
             print()
         else:
             print("No disabled sources to retry.")
-    
+
     # Create and run pipeline with summarization
     pipeline = AggregationPipelineWithSummarization(
         cache=cache,
@@ -444,20 +444,20 @@ def run_pipeline_with_summarization(
         enable_relevance_scoring=enable_relevance_scoring,
         enable_summarization=enable_summarization,
     )
-    
+
     result = pipeline.run(
         domain_filter=domain,
         limit_sources=limit,
         verbose=verbose,
         include_disabled=retry_disabled,
     )
-    
+
     return result
 
 
 if __name__ == '__main__':
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description='High-Signal News Aggregation Pipeline with Summarization'
     )
@@ -534,12 +534,12 @@ if __name__ == '__main__':
         action='store_true',
         help='Skip summary generation'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Ensure data directory exists
     args.db.parent.mkdir(parents=True, exist_ok=True)
-    
+
     result = run_pipeline_with_summarization(
         catalog_path=args.catalog,
         db_path=args.db,
@@ -555,7 +555,7 @@ if __name__ == '__main__':
         enable_relevance_scoring=not args.no_relevance_scoring,
         enable_summarization=not args.no_summarization,
     )
-    
+
     if args.json:
         import json
         print(json.dumps(result.to_dict(), indent=2))

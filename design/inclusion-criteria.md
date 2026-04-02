@@ -1,7 +1,7 @@
 # Source Inclusion Criteria
 
-**Version:** 1.0.0  
-**Created:** 2026-03-21  
+**Version:** 1.0.0
+**Created:** 2026-03-21
 **Applies to:** High-Signal News aggregation pipeline
 
 ## Overview

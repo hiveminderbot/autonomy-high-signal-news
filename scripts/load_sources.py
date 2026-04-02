@@ -37,9 +37,9 @@ def load_sources_from_json(file_path: Path) -> List[Dict]:
     """Load and normalize sources from the JSON file."""
     with open(file_path, 'r') as f:
         data = json.load(f)
-    
+
     sources = []
-    
+
     # Process RSS feeds
     for feed in data.get('rss_feeds', []):
         sources.append({
@@ -56,7 +56,7 @@ def load_sources_from_json(file_path: Path) -> List[Dict]:
                 'type': feed.get('type', 'rss')
             })
         })
-    
+
     # Process newsletters (use rss_url if available)
     for newsletter in data.get('newsletters', []):
         rss_url = newsletter.get('rss_url', newsletter.get('url', ''))
@@ -75,13 +75,13 @@ def load_sources_from_json(file_path: Path) -> List[Dict]:
                 'original_url': newsletter.get('url', '')
             })
         })
-    
+
     # Process special handling sources (respect enabled flag)
     for special in data.get('special_handling', []):
         # Skip disabled sources
         if not special.get('enabled', True):
             continue
-        
+
         rss_url = special.get('rss_url', special.get('url', ''))
         handling = {
             'focus': special.get('focus', ''),
@@ -89,7 +89,7 @@ def load_sources_from_json(file_path: Path) -> List[Dict]:
             'type': special.get('type', 'rss'),
             'min_fetch_interval': special.get('min_fetch_interval', 5)
         }
-        
+
         sources.append({
             'name': special['name'],
             'rss_url': rss_url,
@@ -100,7 +100,7 @@ def load_sources_from_json(file_path: Path) -> List[Dict]:
             'quality_score': special['quality_score'],
             'special_handling': json.dumps(handling)
         })
-    
+
     return sources
 
 
@@ -108,38 +108,38 @@ def check_existing_sources(conn: sqlite3.Connection, urls: List[str]) -> Dict[st
     """Check which URLs already exist in the database."""
     cursor = conn.cursor()
     existing = {}
-    
+
     for url in urls:
         cursor.execute('SELECT id FROM sources WHERE rss_url = ?', (url,))
         row = cursor.fetchone()
         if row:
             existing[url] = row[0]
-    
+
     return existing
 
 
 def insert_sources(conn: sqlite3.Connection, sources: List[Dict], dry_run: bool = False) -> Tuple[int, int, int]:
     """Insert sources into database. Returns (inserted, skipped, failed) counts."""
     cursor = conn.cursor()
-    
+
     # Check existing sources
     urls = [s['rss_url'] for s in sources]
     existing = check_existing_sources(conn, urls)
-    
+
     inserted = 0
     skipped = 0
     failed = 0
-    
+
     for source in sources:
         if source['rss_url'] in existing:
             skipped += 1
             print(f"  SKIP: {source['name']} (already exists)")
             continue
-        
+
         try:
             if not dry_run:
                 cursor.execute('''
-                    INSERT INTO sources 
+                    INSERT INTO sources
                     (name, rss_url, domain, tier, category, frequency, quality_score, special_handling, status)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')
                 ''', (
@@ -158,7 +158,7 @@ def insert_sources(conn: sqlite3.Connection, sources: List[Dict], dry_run: bool 
         except sqlite3.Error as e:
             failed += 1
             print(f"  ERROR: {source['name']} - {e}")
-    
+
     return inserted, skipped, failed
 
 
@@ -176,27 +176,27 @@ def main():
         type=str,
         help='Path to JSON source file (default: sources/sources-v2-bootstrapped.json)'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Check database exists
     db_path = get_db_path()
     if not db_path.exists():
         print(f"ERROR: Database not found at {db_path}")
         print("Run: python scripts/aggregator/init_db.py")
         sys.exit(1)
-    
+
     # Check source file exists
     source_file = get_source_file_path(args.source_file)
     if not source_file.exists():
         print(f"ERROR: Source file not found at {source_file}")
         sys.exit(1)
-    
+
     print(f"Database: {db_path}")
     print(f"Source file: {source_file}")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")
     print()
-    
+
     # Load sources from JSON
     try:
         sources = load_sources_from_json(source_file)
@@ -207,14 +207,14 @@ def main():
     except Exception as e:
         print(f"ERROR: Failed to load sources: {e}")
         sys.exit(1)
-    
+
     # Connect to database and insert sources
     conn = sqlite3.connect(db_path)
     try:
         inserted, skipped, failed = insert_sources(conn, sources, dry_run=args.dry_run)
     finally:
         conn.close()
-    
+
     # Print summary
     print()
     print("=" * 50)
@@ -224,12 +224,12 @@ def main():
     print(f"Inserted: {inserted}")
     print(f"Skipped (existing): {skipped}")
     print(f"Failed: {failed}")
-    
+
     if args.dry_run:
         print()
         print("DRY RUN complete - no changes made")
         print("Run without --dry-run to insert sources")
-    
+
     # Exit with error if any failed
     if failed > 0:
         sys.exit(1)

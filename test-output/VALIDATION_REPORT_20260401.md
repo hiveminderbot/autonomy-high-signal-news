@@ -1,7 +1,7 @@
 # High-Signal News Pipeline Validation Report
 
-**Date:** 2026-04-01  
-**Validator:** autonomy-worker  
+**Date:** 2026-04-01
+**Validator:** autonomy-worker
 **Scope:** End-to-end pipeline testing
 
 ---
@@ -146,5 +146,5 @@ Per Phase 4 of the high-signal-news roadmap:
 
 **Status:** ✅ VALIDATED AND READY FOR PRODUCTION
 
-The high-signal-news pipeline has been thoroughly tested end-to-end and all 
+The high-signal-news pipeline has been thoroughly tested end-to-end and all
 validation checks pass. The system is ready for daily cron execution.

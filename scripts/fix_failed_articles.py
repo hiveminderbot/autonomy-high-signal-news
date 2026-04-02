@@ -67,18 +67,18 @@ def extract_with_jina(url):
                 'Accept': 'text/plain, text/markdown'
             }
         )
-        
+
         with urllib.request.urlopen(req, timeout=30) as response:
             content = response.read().decode('utf-8', errors='ignore')
-            
+
             if len(content) < 200:
                 return None, "Content too short"
-            
+
             if '404' in content and 'Not Found' in content:
                 return None, "404 Not Found"
-            
+
             return content[:15000], None
-            
+
     except Exception as e:
         return None, str(e)
 
@@ -86,21 +86,21 @@ def extract_with_jina(url):
 def update_article_and_extract(conn, article_id, fix_data):
     """Update article URL and re-extract content."""
     cursor = conn.cursor()
-    
+
     # Update URL
     cursor.execute('''
         UPDATE articles
         SET url = ?, source = ?, domain = ?
         WHERE id = ?
     ''', (fix_data['new_url'], fix_data['source'], fix_data['domain'], article_id))
-    
+
     conn.commit()
     print(f"  ✓ Updated URL to: {fix_data['new_url']}")
-    
+
     # Extract new content
     print(f"  → Extracting content with Jina AI...")
     content, error = extract_with_jina(fix_data['new_url'])
-    
+
     if content:
         cursor.execute('''
             UPDATE articles
@@ -128,31 +128,31 @@ def update_article_and_extract(conn, article_id, fix_data):
 def main():
     print("Fixing Failed Article Extractions")
     print("=" * 60)
-    
+
     conn = sqlite3.connect(DB_PATH)
-    
+
     success_count = 0
     fail_count = 0
-    
+
     for article_id, fix_data in ARTICLE_FIXES.items():
         print(f"\n[{article_id}] {fix_data['title']}")
         print("-" * 60)
-        
+
         # Get current URL
         cursor = conn.execute("SELECT url FROM articles WHERE id = ?", (article_id,))
         row = cursor.fetchone()
         if row:
             print(f"  Old URL: {row[0]}")
-        
+
         # Update and extract
         if update_article_and_extract(conn, article_id, fix_data):
             success_count += 1
         else:
             fail_count += 1
-    
+
     print(f"\n{'='*60}")
     print(f"Results: {success_count} fixed, {fail_count} still failed")
-    
+
     # Show final status
     print("\nFinal article status:")
     cursor = conn.execute('''
@@ -161,11 +161,11 @@ def main():
         WHERE id IN (12, 13, 15, 16, 17, 19)
         ORDER BY id
     ''')
-    
+
     for row in cursor.fetchall():
         status_icon = "✓" if row[2] == 'extracted' and row[3] and row[3] > 500 else "✗"
         print(f"  {status_icon} [{row[0]}] {row[1][:50]}... ({row[2]}, {row[3] or 0} chars)")
-    
+
     conn.close()
     return 0 if fail_count == 0 else 1
 

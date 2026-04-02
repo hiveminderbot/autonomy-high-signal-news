@@ -1,7 +1,7 @@
 # Morning Briefing Format Specification
 
-**Version:** 1.0.0  
-**Created:** 2026-03-22  
+**Version:** 1.0.0
+**Created:** 2026-03-22
 **Applies to:** High-Signal News daily briefing generation
 
 ## Overview

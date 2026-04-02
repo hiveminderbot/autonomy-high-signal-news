@@ -39,14 +39,14 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
     if retry_disabled:
         logger.info("Mode: Retry disabled sources")
     logger.info("=" * 60)
-    
+
     start_time = datetime.now()
-    
+
     # Build command - using pipeline with summarization integration
     cmd = [sys.executable, "-m", "scripts.aggregator.pipeline_with_summarization", "--verbose", "--json"]
     if retry_disabled:
         cmd.append("--retry-disabled")
-    
+
     # Run the pipeline
     result = subprocess.run(
         cmd,
@@ -54,21 +54,21 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
         text=True,
         cwd=Path(__file__).parent.parent
     )
-    
+
     end_time = datetime.now()
     duration = (end_time - start_time).total_seconds()
-    
+
     # Parse results from output
     output = result.stdout + result.stderr
-    
+
     # Check for success indicators
     success = result.returncode == 0 and "error" not in output.lower()
-    
+
     # Extract entry counts if available
     entries_fetched = 0
     entries_stored = 0
     summarization_metrics = {}
-    
+
     # Try to parse JSON output first (preferred)
     try:
         json_output = json.loads(result.stdout)
@@ -90,7 +90,7 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
                     entries_stored = int(''.join(filter(str.isdigit, line)))
                 except:
                     pass
-    
+
     status = {
         "timestamp": start_time.isoformat(),
         "duration_seconds": duration,
@@ -101,41 +101,41 @@ def run_pipeline(retry_disabled: bool = False) -> dict:
         "summarization": summarization_metrics,
         "log_file": str(log_file)
     }
-    
+
     logger.info(f"Pipeline completed in {duration:.1f}s")
     logger.info(f"Success: {success}, Entries: {entries_fetched} fetched, {entries_stored} stored")
     if summarization_metrics:
         logger.info(f"Summarization: {summarization_metrics}")
-    
+
     return status
 
 
 def check_source_health() -> dict:
     """Check the health of feed sources."""
     logger.info("Checking source health...")
-    
+
     try:
         import sqlite3
-        
+
         parent_dir = Path(__file__).parent.parent
         db_path = parent_dir / "news.db"
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         # Get basic stats
         cursor.execute("SELECT COUNT(*) FROM articles")
         total_articles = cursor.fetchone()[0]
-        
+
         cursor.execute("SELECT COUNT(*) FROM feed_entries")
         total_entries = cursor.fetchone()[0]
-        
+
         cursor.execute("SELECT COUNT(*) FROM sources")
         total_sources = cursor.fetchone()[0]
-        
+
         # Get sources with high error rates from fetch_log
         error_threshold = 3
         unhealthy_sources = []
-        
+
         # Check if fetch_log table exists and has data
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='fetch_log'")
         if cursor.fetchone():
@@ -147,16 +147,16 @@ def check_source_health() -> dict:
                 HAVING error_count >= ?
                 ORDER BY error_count DESC
             """, (error_threshold,))
-            
+
             for row in cursor.fetchall():
                 unhealthy_sources.append({
                     "source_id": row[0],
                     "error_count": row[1],
                     "last_error": row[2]
                 })
-        
+
         conn.close()
-        
+
         health_status = {
             "total_articles": total_articles,
             "total_entries": total_entries,
@@ -164,16 +164,16 @@ def check_source_health() -> dict:
             "sources_with_errors": len(unhealthy_sources),
             "unhealthy_sources": unhealthy_sources
         }
-        
+
         logger.info(f"Total articles: {total_articles}")
         logger.info(f"Total feed entries: {total_entries}")
         logger.info(f"Total sources: {total_sources}")
         logger.info(f"Unhealthy sources: {len(unhealthy_sources)}")
         for src in unhealthy_sources:
             logger.warning(f"  - {src['source_id']}: {src['error_count']} errors")
-        
+
         return health_status
-        
+
     except Exception as e:
         logger.error(f"Failed to check source health: {e}")
         return {"error": str(e)}
@@ -183,7 +183,7 @@ def save_run_history(status: dict, health: dict):
     """Save run history to JSON file."""
     history_file = Path(__file__).parent.parent / "data" / "run_history.json"
     history_file.parent.mkdir(exist_ok=True)
-    
+
     history = []
     if history_file.exists():
         try:
@@ -191,7 +191,7 @@ def save_run_history(status: dict, health: dict):
                 history = json.load(f)
         except:
             pass
-    
+
     history.append({
         "timestamp": status["timestamp"],
         "success": status["success"],
@@ -200,35 +200,35 @@ def save_run_history(status: dict, health: dict):
         "entries_stored": status["entries_stored"],
         "sources_with_errors": health.get("sources_with_errors", 0)
     })
-    
+
     # Keep only last 30 runs
     history = history[-30:]
-    
+
     with open(history_file, 'w') as f:
         json.dump(history, f, indent=2)
-    
+
     logger.info(f"Run history saved to {history_file}")
 
 
 def main():
     """Main entry point."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Daily runner for High-Signal News aggregation')
     parser.add_argument('--retry-disabled', action='store_true',
                         help='Retry disabled sources and re-enable if successful')
     args = parser.parse_args()
-    
+
     try:
         # Run pipeline
         status = run_pipeline(retry_disabled=args.retry_disabled)
-        
+
         # Check health
         health = check_source_health()
-        
+
         # Save history
         save_run_history(status, health)
-        
+
         # Exit with appropriate code
         if status["success"]:
             logger.info("Daily run completed successfully")
@@ -236,7 +236,7 @@ def main():
         else:
             logger.error("Daily run failed")
             return 1
-            
+
     except Exception as e:
         logger.exception("Unexpected error in daily runner")
         return 1

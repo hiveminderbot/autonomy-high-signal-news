@@ -28,7 +28,7 @@ class BriefingSection:
     name: str
     emoji: str
     stories: list = field(default_factory=list)
-    
+
     def to_dict(self) -> dict:
         return {
             'name': self.name,
@@ -48,7 +48,7 @@ class BriefingItem:
     urgency: str = "normal"  # breaking, urgent, normal
     url: Optional[str] = None
     published: Optional[str] = None
-    
+
     def to_dict(self) -> dict:
         return {
             'title': self.title,
@@ -72,7 +72,7 @@ class BriefingMetadata:
     contextual_count: int
     sources_used: int
     reading_time_minutes: int
-    
+
     def to_dict(self) -> dict:
         return asdict(self)
 
@@ -82,7 +82,7 @@ class BriefingResult:
     """Complete briefing result."""
     metadata: BriefingMetadata
     sections: list[BriefingSection]
-    
+
     def to_dict(self) -> dict:
         return {
             'metadata': self.metadata.to_dict(),
@@ -93,13 +93,13 @@ class BriefingResult:
 class BriefingGenerator:
     """
     Generates a morning briefing from aggregated and scored stories.
-    
+
     Organizes content by:
     - Domain sections (AI, Software, Investment)
     - Priority tiers (Must Read, Important, Contextual)
     - Urgency markers (Breaking, Urgent, Normal)
     """
-    
+
     # Domain classification keywords
     DOMAIN_KEYWORDS = {
         'AI': [
@@ -124,7 +124,7 @@ class BriefingGenerator:
             'economy', 'inflation', 'fed', 'interest rate'
         ]
     }
-    
+
     def __init__(
         self,
         max_items_per_section: int = 10,
@@ -136,28 +136,28 @@ class BriefingGenerator:
         self.max_must_read_total = max_must_read_total
         self.max_important_total = max_important_total
         self.target_reading_time = target_reading_time
-    
+
     def classify_domain(self, story: dict) -> str:
         """Classify a story into a domain based on content."""
         text = f"{story.get('title', '')} {story.get('summary', '')} {story.get('content', '')}".lower()
-        
+
         scores = {}
         for domain, keywords in self.DOMAIN_KEYWORDS.items():
             score = sum(1 for kw in keywords if kw.lower() in text)
             scores[domain] = score
-        
+
         # Return domain with highest score, or 'General' if no matches
         if max(scores.values()) == 0:
             return 'General'
         return max(scores, key=scores.get)
-    
+
     def create_briefing_item(self, story: dict) -> BriefingItem:
         """Convert a story dict into a BriefingItem."""
         # Extract tier from relevance score if available
         tier = story.get('tier', 'contextual')
         if isinstance(tier, str) and tier not in ['must_read', 'important', 'contextual']:
             tier = 'contextual'
-        
+
         return BriefingItem(
             title=story.get('title', 'Untitled'),
             summary=story.get('summary', story.get('content', '')[:500]),
@@ -168,19 +168,19 @@ class BriefingGenerator:
             url=story.get('url'),
             published=story.get('published'),
         )
-    
+
     def organize_by_tier(self, items: list[BriefingItem]) -> tuple[list[BriefingItem], list[BriefingItem], list[BriefingItem]]:
         """Organize items by priority tier."""
         must_read = [i for i in items if i.tier == 'must_read']
         important = [i for i in items if i.tier == 'important']
         contextual = [i for i in items if i.tier == 'contextual']
-        
+
         # Apply limits
         must_read = must_read[:self.max_must_read_total]
         important = important[:self.max_important_total]
-        
+
         return must_read, important, contextual
-    
+
     def generate(
         self,
         stories: list[dict],
@@ -188,18 +188,18 @@ class BriefingGenerator:
     ) -> BriefingResult:
         """
         Generate a briefing from a list of stories.
-        
+
         Args:
             stories: List of story dicts with title, summary, tier, etc.
             include_domains: List of domains to include (default: all)
-        
+
         Returns:
             BriefingResult with organized sections and metadata
         """
         # Default to all domains
         if include_domains is None:
             include_domains = ['AI', 'Software', 'Investment', 'General']
-        
+
         # Classify and convert stories
         classified = {domain: [] for domain in include_domains}
         for story in stories:
@@ -207,22 +207,22 @@ class BriefingGenerator:
             if domain in classified:
                 item = self.create_briefing_item(story)
                 classified[domain].append(item)
-        
+
         # Create sections with tier organization
         sections = []
         all_items = []
-        
+
         for domain in include_domains:
             items = classified.get(domain, [])
             if not items:
                 continue
-            
+
             must_read, important, contextual = self.organize_by_tier(items)
-            
+
             # Combine in priority order
             domain_items = must_read + important + contextual
             domain_items = domain_items[:self.max_items_per_section]
-            
+
             if domain_items:
                 emoji = {
                     'AI': '🤖',
@@ -230,26 +230,26 @@ class BriefingGenerator:
                     'Investment': '💰',
                     'General': '📰'
                 }.get(domain, '📰')
-                
+
                 sections.append(BriefingSection(
                     name=domain,
                     emoji=emoji,
                     stories=[i.to_dict() for i in domain_items]
                 ))
                 all_items.extend(domain_items)
-        
+
         # Calculate metadata
         must_read_count = sum(1 for i in all_items if i.tier == 'must_read')
         important_count = sum(1 for i in all_items if i.tier == 'important')
         contextual_count = sum(1 for i in all_items if i.tier == 'contextual')
-        
+
         # Estimate reading time (average 200 words per minute)
         total_words = sum(
             len(i.title.split()) + len(i.summary.split())
             for i in all_items
         )
         reading_time = max(1, total_words // 200)
-        
+
         metadata = BriefingMetadata(
             generated_at=datetime.now().isoformat(),
             total_stories=len(all_items),
@@ -261,9 +261,9 @@ class BriefingGenerator:
             )),
             reading_time_minutes=min(reading_time, self.target_reading_time),
         )
-        
+
         return BriefingResult(metadata=metadata, sections=sections)
-    
+
     def generate_from_pipeline_output(
         self,
         pipeline_output_path: Path,
@@ -271,17 +271,17 @@ class BriefingGenerator:
     ) -> tuple[str, BriefingResult]:
         """
         Generate a briefing from pipeline output file.
-        
+
         Args:
             pipeline_output_path: Path to pipeline output JSON
             output_format: Desired output format
-        
+
         Returns:
             Tuple of (formatted_briefing_string, briefing_result)
         """
         with open(pipeline_output_path) as f:
             data = json.load(f)
-        
+
         # Extract stories from pipeline output
         stories = data.get('stories', [])
         if not stories and 'clusters' in data:
@@ -294,10 +294,10 @@ class BriefingGenerator:
                     rep = cluster_stories[0].copy()
                     rep['sources'] = [s.get('source', 'Unknown') for s in cluster_stories]
                     stories.append(rep)
-        
+
         # Generate briefing
         result = self.generate(stories)
-        
+
         # Format output
         if output_format == BriefingFormat.MARKDOWN:
             from briefing.renderer import MarkdownRenderer
@@ -310,7 +310,7 @@ class BriefingGenerator:
             renderer = TextRenderer()
         else:
             return json.dumps(result.to_dict(), indent=2), result
-        
+
         formatted = renderer.render(result)
         return formatted, result
 
@@ -318,7 +318,7 @@ class BriefingGenerator:
 def generate_briefing_command():
     """CLI command to generate a briefing from pipeline output."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Generate morning briefing')
     parser.add_argument('input', help='Path to pipeline output JSON')
     parser.add_argument('-o', '--output', help='Output file path')
@@ -326,26 +326,26 @@ def generate_briefing_command():
                        default='markdown', help='Output format')
     parser.add_argument('--max-must-read', type=int, default=5)
     parser.add_argument('--max-important', type=int, default=10)
-    
+
     args = parser.parse_args()
-    
+
     generator = BriefingGenerator(
         max_must_read_total=args.max_must_read,
         max_important_total=args.max_important,
     )
-    
+
     format_map = {
         'markdown': BriefingFormat.MARKDOWN,
         'html': BriefingFormat.HTML,
         'text': BriefingFormat.TEXT,
         'json': BriefingFormat.JSON,
     }
-    
+
     formatted, result = generator.generate_from_pipeline_output(
         Path(args.input),
         format_map[args.format]
     )
-    
+
     if args.output:
         with open(args.output, 'w') as f:
             f.write(formatted)

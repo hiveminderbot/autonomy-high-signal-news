@@ -32,7 +32,7 @@ def test_extracted_content_dataclass():
         is_paywalled=False,
         extraction_error=None
     )
-    
+
     assert content.url == "https://example.com/article"
     assert content.title == "Test Article"
     assert content.author == "John Doe"
@@ -44,7 +44,7 @@ def test_extracted_content_dataclass():
 def test_content_extractor_initialization():
     """Test that ContentExtractor initializes with correct defaults."""
     extractor = ContentExtractor()
-    
+
     assert extractor.request_timeout == 30
     assert extractor.min_fetch_interval == 1.0
     assert extractor.respect_robots_txt == True
@@ -60,7 +60,7 @@ def test_content_extractor_custom_params():
         respect_robots_txt=False,
         user_agent="CustomBot/1.0"
     )
-    
+
     assert extractor.request_timeout == 60
     assert extractor.min_fetch_interval == 2.5
     assert extractor.respect_robots_txt == False
@@ -71,9 +71,9 @@ def test_content_extractor_custom_params():
 def test_paywall_detection():
     """Test paywall detection with mock HTML."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     # Test HTML with paywall indicator
     html_with_paywall = """
     <html>
@@ -87,7 +87,7 @@ def test_paywall_detection():
     """
     soup = BeautifulSoup(html_with_paywall, 'html.parser')
     assert extractor._detect_paywall(soup) == True
-    
+
     # Test HTML without paywall
     html_without_paywall = """
     <html>
@@ -100,16 +100,16 @@ def test_paywall_detection():
     """
     soup = BeautifulSoup(html_without_paywall, 'html.parser')
     assert extractor._detect_paywall(soup) == False
-    
+
     print("✅ test_paywall_detection passed")
 
 
 def test_title_extraction():
     """Test title extraction from various HTML structures."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     # Test h1.article-title
     html = """
     <html>
@@ -120,7 +120,7 @@ def test_title_extraction():
     """
     soup = BeautifulSoup(html, 'html.parser')
     assert extractor._extract_title(soup) == "Test Article Title"
-    
+
     # Test og:title meta tag
     html = """
     <html>
@@ -135,7 +135,7 @@ def test_title_extraction():
     soup = BeautifulSoup(html, 'html.parser')
     # Should prefer h1 over meta
     assert extractor._extract_title(soup) == "Wrong Title"
-    
+
     # Test page title fallback
     html = """
     <html>
@@ -145,16 +145,16 @@ def test_title_extraction():
     """
     soup = BeautifulSoup(html, 'html.parser')
     assert extractor._extract_title(soup) == "Page Title"
-    
+
     print("✅ test_title_extraction passed")
 
 
 def test_author_extraction():
     """Test author extraction from various HTML structures."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     # Test rel=author
     html = """
     <html>
@@ -165,7 +165,7 @@ def test_author_extraction():
     """
     soup = BeautifulSoup(html, 'html.parser')
     assert extractor._extract_author(soup) == "John Doe"
-    
+
     # Test author meta tag
     html = """
     <html>
@@ -177,7 +177,7 @@ def test_author_extraction():
     """
     soup = BeautifulSoup(html, 'html.parser')
     assert extractor._extract_author(soup) == "Jane Smith"
-    
+
     # Test byline class
     html = """
     <html>
@@ -188,16 +188,16 @@ def test_author_extraction():
     """
     soup = BeautifulSoup(html, 'html.parser')
     assert extractor._extract_author(soup) == "By Bob Writer"
-    
+
     print("✅ test_author_extraction passed")
 
 
 def test_date_extraction():
     """Test date extraction from various HTML structures."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     # Test time[datetime]
     html = """
     <html>
@@ -212,7 +212,7 @@ def test_date_extraction():
     assert result.year == 2024
     assert result.month == 3
     assert result.day == 15
-    
+
     # Test article:published_time meta
     html = """
     <html>
@@ -228,16 +228,16 @@ def test_date_extraction():
     assert result.year == 2024
     assert result.month == 1
     assert result.day == 20
-    
+
     print("✅ test_date_extraction passed")
 
 
 def test_content_extraction():
     """Test content extraction with noise removal."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     html = """
     <html>
         <body>
@@ -256,18 +256,18 @@ def test_content_extraction():
     """
     soup = BeautifulSoup(html, 'html.parser')
     text, html_content = extractor._extract_content(soup)
-    
+
     # Should contain article content
     assert "Article Title" in text
     assert "First paragraph" in text
     assert "Second paragraph" in text
-    
+
     # Should not contain navigation/header/footer
     assert "Navigation links" not in text
     assert "Site header" not in text
     assert "Site footer" not in text
     assert "console.log" not in text
-    
+
     print("✅ test_content_extraction passed")
 
 
@@ -286,25 +286,25 @@ def test_extracted_content_metrics():
         reading_time_minutes=0,
         extracted_at=datetime.now()
     )
-    
+
     # Verify word count calculation
     actual_word_count = len(content.content_text.split())
     expected_word_count = len(content_text.split())
     assert actual_word_count == expected_word_count, f"Expected {expected_word_count} words, got {actual_word_count}"
-    
+
     # Reading time should be at least 1 minute (for < 200 words)
     expected_reading_time = max(1, actual_word_count // 200)
     assert expected_reading_time == 1, f"Expected 1 min reading time, got {expected_reading_time}"
-    
+
     print("✅ test_extracted_content_metrics passed")
 
 
 def test_excerpt_generation():
     """Test excerpt generation from content text."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     # Test with long content
     html = """
     <html>
@@ -315,27 +315,27 @@ def test_excerpt_generation():
         </body>
     </html>
     """.format("This is a very long paragraph. " * 50)  # Long content
-    
+
     soup = BeautifulSoup(html, 'html.parser')
     text, _ = extractor._extract_content(soup)
-    
+
     # Generate excerpt (first 300 chars, truncated at word boundary)
     excerpt = text[:300].strip()
     if len(text) > 300:
         excerpt = excerpt.rsplit(' ', 1)[0] + '...'
-    
+
     assert len(excerpt) <= 304  # 300 + "..."
     assert excerpt.endswith('...')
-    
+
     print("✅ test_excerpt_generation passed")
 
 
 def test_content_selectors_fallback():
     """Test that content extraction falls back when selectors don't match."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     # HTML without article/main tags
     html = """
     <html>
@@ -349,34 +349,34 @@ def test_content_selectors_fallback():
     """
     soup = BeautifulSoup(html, 'html.parser')
     text, html_content = extractor._extract_content(soup)
-    
+
     # Should still extract something
     assert "Page Title" in text or "Content in a div" in text
-    
+
     print("✅ test_content_selectors_fallback passed")
 
 
 def test_empty_html_handling():
     """Test handling of empty or minimal HTML."""
     from bs4 import BeautifulSoup
-    
+
     extractor = ContentExtractor()
-    
+
     # Empty HTML
     html = "<html><body></body></html>"
     soup = BeautifulSoup(html, 'html.parser')
-    
+
     title = extractor._extract_title(soup)
     author = extractor._extract_author(soup)
     date = extractor._extract_published_date(soup)
     text, html_content = extractor._extract_content(soup)
-    
+
     # Should handle gracefully
     assert title is None
     assert author is None
     assert date is None
     assert text == "" or text.strip() == ""
-    
+
     print("✅ test_empty_html_handling passed")
 
 
@@ -396,14 +396,14 @@ def run_all_tests():
         test_content_selectors_fallback,
         test_empty_html_handling,
     ]
-    
+
     passed = 0
     failed = 0
-    
+
     print("\n" + "=" * 60)
     print("Running Content Extractor Tests")
     print("=" * 60 + "\n")
-    
+
     for test in tests:
         try:
             test()
@@ -411,11 +411,11 @@ def run_all_tests():
         except Exception as e:
             print(f"❌ {test.__name__} FAILED: {e}")
             failed += 1
-    
+
     print("\n" + "=" * 60)
     print(f"Results: {passed} passed, {failed} failed")
     print("=" * 60)
-    
+
     return failed == 0
 
 

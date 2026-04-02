@@ -1,8 +1,8 @@
 # Content Extraction Test Report
 
-**Task:** autonomy-5bee - Test content extraction with live RSS feeds  
-**Date:** 2026-03-21  
-**Tested by:** Autonomy Worker  
+**Task:** autonomy-5bee - Test content extraction with live RSS feeds
+**Date:** 2026-03-21
+**Tested by:** Autonomy Worker
 
 ## Executive Summary
 
@@ -83,7 +83,7 @@ Every request to `huggingface.co/blog/*` returned 429 errors, causing the extrac
 ### 2. Content Extraction Without Rate Limiting Works
 Hacker News and BBC Technology entries were processed successfully before hitting the Hugging Face wall:
 - Reuters URLs: 401 Forbidden
-- SSRN papers: 403 Forbidden  
+- SSRN papers: 403 Forbidden
 - These are paywall/authentication issues, not rate limits
 
 ### 3. Pipeline Performance (Without Extraction)
@@ -181,5 +181,5 @@ However, **content extraction requires significant improvements** before it can 
 
 ---
 
-**Git Commit:** To be added after committing this report  
+**Git Commit:** To be added after committing this report
 **Follow-up Task:** Create task for rate limiting implementation

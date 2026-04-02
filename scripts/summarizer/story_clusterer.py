@@ -38,18 +38,18 @@ class ClusterResult:
 
 class StoryClusterer:
     """Cluster related news stories by content similarity."""
-    
+
     def __init__(self, similarity_threshold: float = 0.35, min_cluster_size: int = 2):
         """
         Initialize the clusterer.
-        
+
         Args:
             similarity_threshold: Minimum cosine similarity to consider stories related (0-1)
             min_cluster_size: Minimum number of stories to form a cluster
         """
         self.similarity_threshold = similarity_threshold
         self.min_cluster_size = min_cluster_size
-        
+
     def _tokenize(self, text: str) -> list[str]:
         """Simple tokenization for similarity comparison."""
         # Lowercase and extract words
@@ -59,49 +59,49 @@ class StoryClusterer:
         # Split and filter short words
         words = [w for w in text.split() if len(w) > 2]
         return words
-    
+
     def _compute_word_frequencies(self, text: str) -> dict[str, float]:
         """Compute normalized word frequencies for a document."""
         words = self._tokenize(text)
         if not words:
             return {}
-        
+
         freq = defaultdict(int)
         for word in words:
             freq[word] += 1
-        
+
         # Normalize by document length
         total = len(words)
         return {word: count / total for word, count in freq.items()}
-    
+
     def _compute_similarity(self, text1: str, text2: str) -> float:
         """
         Compute cosine similarity between two texts using word frequencies.
-        
+
         Returns similarity score between 0 and 1.
         """
         # Combine title and content for comparison
         freq1 = self._compute_word_frequencies(text1)
         freq2 = self._compute_word_frequencies(text2)
-        
+
         if not freq1 or not freq2:
             return 0.0
-        
+
         # Get all unique words
         all_words = set(freq1.keys()) | set(freq2.keys())
-        
+
         # Compute dot product
         dot_product = sum(freq1.get(word, 0) * freq2.get(word, 0) for word in all_words)
-        
+
         # Compute magnitudes
         mag1 = sum(f ** 2 for f in freq1.values()) ** 0.5
         mag2 = sum(f ** 2 for f in freq2.values()) ** 0.5
-        
+
         if mag1 == 0 or mag2 == 0:
             return 0.0
-        
+
         return dot_product / (mag1 * mag2)
-    
+
     def _extract_keywords(self, stories: list[dict], top_n: int = 5) -> list[str]:
         """Extract top keywords from a cluster of stories."""
         # Combine all text
@@ -109,60 +109,60 @@ class StoryClusterer:
             f"{s.get('title', '')} {s.get('content', '')}"
             for s in stories
         ])
-        
+
         words = self._tokenize(all_text)
-        
+
         # Count word frequencies
         freq = defaultdict(int)
         for word in words:
             # Skip common stop words
             if word not in STOP_WORDS:
                 freq[word] += 1
-        
+
         # Return top N by frequency
         sorted_words = sorted(freq.items(), key=lambda x: x[1], reverse=True)
         return [word for word, _ in sorted_words[:top_n]]
-    
+
     def cluster_stories(self, stories: list[dict]) -> ClusterResult:
         """
         Cluster stories by content similarity.
-        
+
         Args:
             stories: List of story dicts with 'id', 'title', 'content', 'source', 'domain'
-        
+
         Returns:
             ClusterResult with clusters and unclustered stories
         """
         if not stories:
             return ClusterResult()
-        
+
         # Track which stories have been clustered
         clustered = set()
         clusters = []
-        
+
         # Build similarity graph
         for i, story_i in enumerate(stories):
             if story_i['id'] in clustered:
                 continue
-            
+
             # Start a new cluster with this story
             cluster_stories = [story_i]
             clustered.add(story_i['id'])
-            
+
             # Find similar stories
             text_i = f"{story_i.get('title', '')} {story_i.get('content', '')[:500]}"
-            
+
             for j, story_j in enumerate(stories[i+1:], start=i+1):
                 if story_j['id'] in clustered:
                     continue
-                
+
                 text_j = f"{story_j.get('title', '')} {story_j.get('content', '')[:500]}"
                 similarity = self._compute_similarity(text_i, text_j)
-                
+
                 if similarity >= self.similarity_threshold:
                     cluster_stories.append(story_j)
                     clustered.add(story_j['id'])
-            
+
             # Create cluster if it meets minimum size
             if len(cluster_stories) >= self.min_cluster_size:
                 # Sort by published date (newest first) if available
@@ -170,13 +170,13 @@ class StoryClusterer:
                     key=lambda s: s.get('published_at', ''),
                     reverse=True
                 )
-                
+
                 # Get representative story (first one, typically most recent)
                 rep = cluster_stories[0]
-                
+
                 # Extract keywords
                 keywords = self._extract_keywords(cluster_stories)
-                
+
                 cluster = StoryCluster(
                     id=f"cluster-{len(clusters)}",
                     stories=cluster_stories,
@@ -189,13 +189,13 @@ class StoryClusterer:
                     cluster_size=len(cluster_stories)
                 )
                 clusters.append(cluster)
-        
+
         # Collect unclustered stories
         unclustered = [
-            s for s in stories 
+            s for s in stories
             if s['id'] not in clustered
         ]
-        
+
         return ClusterResult(
             clusters=clusters,
             unclustered=unclustered,
@@ -203,11 +203,11 @@ class StoryClusterer:
             cluster_count=len(clusters),
             singleton_count=len(unclustered)
         )
-    
+
     def find_cross_domain_clusters(self, cluster_result: ClusterResult) -> list[StoryCluster]:
         """
         Find clusters that span multiple domains (AI, dev, investment).
-        
+
         These represent stories with broad relevance across domains.
         """
         cross_domain = []
@@ -275,21 +275,21 @@ if __name__ == "__main__":
             'published_at': '2026-03-21T09:00:00Z'
         }
     ]
-    
+
     clusterer = StoryClusterer(similarity_threshold=0.25)
     result = clusterer.cluster_stories(test_stories)
-    
+
     print(f"Total stories: {result.total_stories}")
     print(f"Clusters formed: {result.cluster_count}")
     print(f"Unclustered: {result.singleton_count}")
     print()
-    
+
     for cluster in result.clusters:
         print(f"\nCluster: {cluster.representative_title}")
         print(f"  Keywords: {', '.join(cluster.keywords)}")
         print(f"  Domains: {', '.join(cluster.domains)}")
         print(f"  Sources: {', '.join(cluster.sources)}")
         print(f"  Size: {cluster.cluster_size}")
-    
+
     cross_domain = clusterer.find_cross_domain_clusters(result)
     print(f"\nCross-domain clusters: {len(cross_domain)}")

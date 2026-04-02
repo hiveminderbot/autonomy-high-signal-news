@@ -87,7 +87,7 @@ log_error() {
 
 uninstall_service() {
     log_info "Uninstalling High-Signal News service..."
-    
+
     # Stop and disable timer
     if [[ "$USER_MODE" == true ]]; then
         systemctl --user stop "${SERVICE_NAME}.timer" 2>/dev/null || true
@@ -98,17 +98,17 @@ uninstall_service() {
         sudo systemctl disable "${SERVICE_NAME}.timer" 2>/dev/null || true
         sudo systemctl stop "${SERVICE_NAME}.service" 2>/dev/null || true
     fi
-    
+
     # Remove files
     rm -f "$SERVICE_FILE" "$TIMER_FILE"
-    
+
     # Reload systemd
     if [[ "$USER_MODE" == true ]]; then
         systemctl --user daemon-reload
     else
         sudo systemctl daemon-reload
     fi
-    
+
     log_success "Service uninstalled successfully"
 }
 
@@ -116,20 +116,20 @@ install_service() {
     log_info "Installing High-Signal News aggregation service..."
     log_info "Lab root: $LAB_ROOT"
     log_info "Mode: $([[ "$USER_MODE" == true ]] && echo 'user' || echo 'system')"
-    
+
     # Check if lab directory exists
     if [[ ! -d "$LAB_ROOT" ]]; then
         log_error "Lab directory not found: $LAB_ROOT"
         exit 1
     fi
-    
+
     # Create systemd directory if needed
     mkdir -p "$SYSTEMD_DIR"
-    
+
     # Get current user info
     local current_user
     current_user="${USER:-$(whoami)}"
-    
+
     # Determine Python path
     local python_path
     if [[ -f "${LAB_ROOT}/.venv/bin/python" ]]; then
@@ -140,9 +140,9 @@ install_service() {
         log_error "Python not found"
         exit 1
     fi
-    
+
     log_info "Using Python: $python_path"
-    
+
     # Create service file
     log_info "Creating service file..."
     cat > "$SERVICE_FILE" << EOF
@@ -181,9 +181,9 @@ ReadWritePaths=${LAB_ROOT}/data \\
 [Install]
 WantedBy=multi-user.target
 EOF
-    
+
     log_success "Created ${SERVICE_FILE}"
-    
+
     # Create timer file
     log_info "Creating timer file..."
     cat > "$TIMER_FILE" << EOF
@@ -204,9 +204,9 @@ Persistent=true
 [Install]
 WantedBy=timers.target
 EOF
-    
+
     log_success "Created ${TIMER_FILE}"
-    
+
     # Create environment file template if it doesn't exist
     if [[ ! -f "$ENV_FILE" ]]; then
         log_info "Creating environment file template..."
@@ -232,10 +232,10 @@ HN_BRIEFING_CHAT_ID=your_chat_id_here
 EOF
         log_warn "Created ${ENV_FILE} - please edit with your configuration"
     fi
-    
+
     # Create required directories
     mkdir -p "${LAB_ROOT}/data" "${LAB_ROOT}/output" "${LAB_ROOT}/logs" "${LAB_ROOT}/state"
-    
+
     # Reload systemd
     log_info "Reloading systemd..."
     if [[ "$USER_MODE" == true ]]; then
@@ -243,9 +243,9 @@ EOF
     else
         sudo systemctl daemon-reload
     fi
-    
+
     log_success "Systemd configuration reloaded"
-    
+
     # Enable timer
     log_info "Enabling timer..."
     if [[ "$USER_MODE" == true ]]; then
@@ -253,9 +253,9 @@ EOF
     else
         sudo systemctl enable "${SERVICE_NAME}.timer"
     fi
-    
+
     log_success "Timer enabled"
-    
+
     # Show status
     echo ""
     echo "========================================"
@@ -278,7 +278,7 @@ EOF
         echo "  Run now:        sudo systemctl start ${SERVICE_NAME}.service"
     fi
     echo ""
-    
+
     if [[ ! -f "$ENV_FILE" ]] || grep -q "your_bot_token_here" "$ENV_FILE" 2>/dev/null; then
         log_warn "Telegram not configured - edit ${ENV_FILE} to enable delivery"
     fi
@@ -290,7 +290,7 @@ main() {
     echo "High-Signal News Systemd Installer"
     echo "========================================"
     echo ""
-    
+
     if [[ "$UNINSTALL" == true ]]; then
         uninstall_service
     else

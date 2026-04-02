@@ -34,7 +34,7 @@ class ExtendedPipelineResult(PipelineResult):
     newsletter_sources_processed: int = 0
     newsletter_entries_fetched: int = 0
     newsletter_entries_stored: int = 0
-    
+
     def to_dict(self) -> dict:
         base = super().to_dict()
         base.update({
@@ -49,7 +49,7 @@ class ExtendedAggregationPipeline(AggregationPipeline):
     """
     Extended pipeline that supports both RSS feeds and newsletters.
     """
-    
+
     def __init__(
         self,
         cache: FeedCache,
@@ -71,7 +71,7 @@ class ExtendedAggregationPipeline(AggregationPipeline):
         )
         self.newsletter_cache = newsletter_cache
         self.newsletter_ingester = newsletter_ingester
-    
+
     def run_with_newsletters(
         self,
         feed_sources=None,
@@ -83,7 +83,7 @@ class ExtendedAggregationPipeline(AggregationPipeline):
     ) -> ExtendedPipelineResult:
         """
         Run pipeline with both feeds and newsletters.
-        
+
         Args:
             feed_sources: RSS feed sources
             newsletter_sources: Newsletter sources
@@ -91,61 +91,61 @@ class ExtendedAggregationPipeline(AggregationPipeline):
             limit_feed_sources: Max feed sources
             limit_newsletter_sources: Max newsletter sources
             verbose: Print progress
-            
+
         Returns:
             ExtendedPipelineResult with combined statistics
         """
         started_at = datetime.now()
         self.errors = []
-        
+
         # Run base feed pipeline
         if verbose:
             print("\n--- Phase 1: RSS Feed Processing ---")
-        
+
         feed_result = self.run(
             sources=feed_sources,
             domain_filter=domain_filter,
             limit_sources=limit_feed_sources,
             verbose=verbose,
         )
-        
+
         # Process newsletters if cache and ingester available
         newsletter_entries_fetched = 0
         newsletter_entries_stored = 0
         newsletter_sources_processed = 0
-        
+
         if self.newsletter_cache and self.newsletter_ingester and newsletter_sources is not None:
             if verbose:
                 print("\n--- Phase 2: Newsletter Processing ---")
-            
+
             if domain_filter:
                 newsletter_sources = [
-                    s for s in newsletter_sources 
+                    s for s in newsletter_sources
                     if s.domain == domain_filter
                 ]
-            
+
             if limit_newsletter_sources:
                 newsletter_sources = newsletter_sources[:limit_newsletter_sources]
-            
+
             for source in newsletter_sources:
                 if not source.active:
                     continue
-                    
+
                 try:
                     if verbose:
                         print(f"  Processing: {source.name} ({source.id})")
-                    
+
                     # Ingest newsletter
                     entries = self.newsletter_ingester.ingest_source(source)
                     newsletter_entries_fetched += len(entries)
                     newsletter_sources_processed += 1
-                    
+
                     # Process entries through deduplication
                     for entry in entries:
                         try:
                             # Convert to feed entry format for deduplication
                             feed_entry_data = self.newsletter_ingester.convert_to_feed_entries([entry])[0]
-                            
+
                             # Check for duplicates
                             dup_check = self.deduplicator.check_duplicate(
                                 feed_entry_data['id'],
@@ -153,13 +153,13 @@ class ExtendedAggregationPipeline(AggregationPipeline):
                                 feed_entry_data['title'],
                                 feed_entry_data.get('summary') or feed_entry_data['title']
                             )
-                            
+
                             if dup_check.is_duplicate:
                                 feed_result.entries_deduplicated += 1
                                 if verbose:
                                     print(f"    ⚠ Duplicate skipped: {feed_entry_data['title'][:50]}...")
                                 continue
-                            
+
                             # Add to deduplicator
                             self.deduplicator.add(
                                 feed_entry_data['id'],
@@ -167,7 +167,7 @@ class ExtendedAggregationPipeline(AggregationPipeline):
                                 feed_entry_data['title'],
                                 feed_entry_data.get('summary') or feed_entry_data['title']
                             )
-                            
+
                             # Save to feed cache (convert format)
                             feed_entry = FeedEntry(
                                 id=feed_entry_data['id'],
@@ -182,24 +182,24 @@ class ExtendedAggregationPipeline(AggregationPipeline):
                             )
                             self.cache.save_entries([feed_entry])
                             newsletter_entries_stored += 1
-                            
+
                         except Exception as e:
                             err_msg = f"Error processing newsletter entry {entry.id}: {e}"
                             self.errors.append(err_msg)
                             if verbose:
                                 print(f"    ✗ {err_msg}")
-                    
+
                     if verbose and entries:
                         print(f"    ✓ Stored {len(entries)} newsletter entries")
-                        
+
                 except Exception as e:
                     err_msg = f"Error processing newsletter source {source.id}: {e}"
                     self.errors.append(err_msg)
                     if verbose:
                         print(f"  ✗ {err_msg}")
-        
+
         completed_at = datetime.now()
-        
+
         return ExtendedPipelineResult(
             started_at=started_at,
             completed_at=completed_at,
@@ -227,7 +227,7 @@ def run_extended_pipeline(
 ) -> ExtendedPipelineResult:
     """
     Run the extended pipeline with both feeds and newsletters.
-    
+
     Args:
         feed_catalog_path: Path to RSS sources catalog
         newsletter_catalog_path: Path to newsletter sources catalog
@@ -237,14 +237,14 @@ def run_extended_pipeline(
         limit_newsletters: Max newsletter sources
         extract: Whether to extract full content
         verbose: Print progress
-        
+
     Returns:
         ExtendedPipelineResult
     """
     # Initialize caches
     feed_cache = FeedCache(db_path)
     newsletter_cache = NewsletterCache(db_path)
-    
+
     # Load RSS sources
     if feed_catalog_path.exists():
         from .feed_fetcher import load_sources_from_catalog
@@ -255,7 +255,7 @@ def run_extended_pipeline(
             print(f"Loaded {len(feed_sources)} RSS sources from catalog")
     else:
         feed_sources = []
-    
+
     # Load newsletter sources
     if newsletter_catalog_path.exists():
         newsletter_sources = load_newsletter_catalog(newsletter_catalog_path)
@@ -265,10 +265,10 @@ def run_extended_pipeline(
             print(f"Loaded {len(newsletter_sources)} newsletter sources from catalog")
     else:
         newsletter_sources = []
-    
+
     # Create ingester
     newsletter_ingester = NewsletterIngester(newsletter_cache)
-    
+
     # Create and run extended pipeline
     pipeline = ExtendedAggregationPipeline(
         cache=feed_cache,
@@ -276,7 +276,7 @@ def run_extended_pipeline(
         newsletter_ingester=newsletter_ingester,
         extract_content=extract,
     )
-    
+
     result = pipeline.run_with_newsletters(
         feed_sources=feed_sources,
         newsletter_sources=newsletter_sources,
@@ -285,14 +285,14 @@ def run_extended_pipeline(
         limit_newsletter_sources=limit_newsletters,
         verbose=verbose,
     )
-    
+
     return result
 
 
 def main():
     """CLI entry point."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description='Extended High-Signal News Aggregation Pipeline (with Newsletters)'
     )
@@ -343,12 +343,12 @@ def main():
         action='store_true',
         help='Output results as JSON'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Ensure data directory exists
     args.db.parent.mkdir(parents=True, exist_ok=True)
-    
+
     result = run_extended_pipeline(
         feed_catalog_path=args.feed_catalog,
         newsletter_catalog_path=args.newsletter_catalog,
@@ -359,7 +359,7 @@ def main():
         extract=not args.no_extract,
         verbose=args.verbose,
     )
-    
+
     if args.json:
         print(json.dumps(result.to_dict(), indent=2))
     else:

@@ -11,7 +11,7 @@ _Theme description_
 **[Story Title](URL)** — *Source*
 > Why it matters (insight)
 
-**[Story Title](URL)** — *Source*  
+**[Story Title](URL)** — *Source*
 > Why it matters (insight)
 
 3 themes max, 2-3 stories per theme.
@@ -30,9 +30,9 @@ def get_recent_articles(days=14):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
-    
+
     cutoff = (datetime.now() - timedelta(days=days)).isoformat()
-    
+
     cursor.execute("""
         SELECT a.id, a.title, a.url, a.source, a.domain,
                a.llm_insight, a.llm_summary,
@@ -45,7 +45,7 @@ def get_recent_articles(days=14):
         ORDER BY s.quality_score DESC, a.published_at DESC
         LIMIT 30
     """, (cutoff,))
-    
+
     articles = [dict(row) for row in cursor.fetchall()]
     conn.close()
     return articles
@@ -60,13 +60,13 @@ def detect_themes(articles):
     """Detect themes with representative stories."""
     themes = []
     used = set()
-    
+
     theme_defs = [
         {
             'name': 'AI/ML Infrastructure',
-            'kws': ['inference', 'throughput', 'latency', 'scaling', 'optimization', 
+            'kws': ['inference', 'throughput', 'latency', 'scaling', 'optimization',
                    'efficiency', 'tokens', 'training', 'deployment', 'model', 'llm', 'agent'],
-            'sources': ['Hugging Face Blog', 'Anthropic Research', 'DeepMind Blog', 'OpenAI Blog', 
+            'sources': ['Hugging Face Blog', 'Anthropic Research', 'DeepMind Blog', 'OpenAI Blog',
                        'arXiv cs.AI', 'arXiv cs.LG', 'Import AI', 'The Batch'],
             'desc': 'Production AI systems getting faster, leaner, and more cost-effective'
         },
@@ -85,43 +85,43 @@ def detect_themes(articles):
             'desc': 'The plumbing that makes modern AI possible'
         },
     ]
-    
+
     for tdef in theme_defs:
         matches = []
         for art in articles:
             if art['id'] in used:
                 continue
             text = (get_insight(art) + ' ' + art['title']).lower()
-            
+
             # Check keyword match
             keyword_match = any(kw in text for kw in tdef['kws'])
-            
+
             # Check source match (prioritize AI sources)
             source_match = art['source'] in tdef.get('sources', [])
-            
+
             # Require keyword match, boost if source also matches
             if keyword_match:
                 art['_score'] = art.get('quality_score', 5)
                 if source_match:
                     art['_score'] += 3  # Boost for preferred sources
                 matches.append(art)
-        
+
         if len(matches) >= 1:
             matches.sort(key=lambda x: x['_score'], reverse=True)
             reps = matches[:2]  # Max 2 per theme
-            
+
             for r in reps:
                 used.add(r['id'])
-            
+
             themes.append({
                 'name': tdef['name'],
                 'desc': tdef['desc'],
                 'articles': reps
             })
-        
+
         if len(themes) >= 3:
             break
-    
+
     return themes, used
 
 
@@ -130,26 +130,26 @@ def format_why(art, max_len=130):
     insight = get_insight(art)
     if not insight:
         return None
-    
+
     # First sentence, clean
     sent = insight.split('. ')[0].strip()
     sent = sent.replace('**', '').replace('*', '')
-    
+
     if len(sent) > max_len:
         sent = sent[:max_len-3] + '...'
-    
+
     return sent
 
 
 def generate_briefing():
     """Generate themes with sources briefing."""
     articles = get_recent_articles(days=2)
-    
+
     if not articles:
         return None, 0
-    
+
     today = datetime.now().strftime('%Y-%m-%d')
-    
+
     lines = [
         f"# 🎯 High-Signal Briefing — {today}",
         "",
@@ -162,46 +162,46 @@ def generate_briefing():
         "*Patterns across sources worth your attention:*",
         "",
     ]
-    
+
     themes, used = detect_themes(articles)
-    
+
     for theme in themes:
         lines.append(f"### {theme['name']}")
         lines.append(f"_{theme['desc']}_")
         lines.append("")
-        
+
         for art in theme['articles']:
             why = format_why(art)
             if why:
                 lines.append(f"**[{art['title']}]({art['url']})** — *{art['source']}*")
                 lines.append(f"> {why}")
                 lines.append("")
-    
+
     # Count total
     total = sum(len(t['articles']) for t in themes)
-    
+
     lines.append("---")
     lines.append("")
     lines.append(f"*{total} stories | Sources: HN, Lobsters, Hugging Face, arXiv, individual blogs*")
     lines.append(f"*Generated: {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}*")
-    
+
     return '\n'.join(lines), total
 
 
 def main():
     print("Generating themes with sources...")
-    
+
     content, count = generate_briefing()
     if not content:
         print("No content")
         return
-    
+
     OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
     outfile = OUTPUT_PATH / f"briefing-{datetime.now().strftime('%Y-%m-%d')}.md"
-    
+
     with open(outfile, 'w') as f:
         f.write(content)
-    
+
     print(f"Generated: {outfile}")
     print(f"Stories: {count}")
     print(f"Length: {len(content)} chars")

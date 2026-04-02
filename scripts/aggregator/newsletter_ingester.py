@@ -49,11 +49,11 @@ class NewsletterEntry:
 
 class NewsletterCache:
     """SQLite-based cache for newsletter entries and metadata."""
-    
+
     def __init__(self, db_path: Path):
         self.db_path = db_path
         self._init_db()
-    
+
     def _init_db(self):
         """Initialize the database schema."""
         with sqlite3.connect(self.db_path) as conn:
@@ -70,7 +70,7 @@ class NewsletterCache:
                     config TEXT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
-                
+
                 CREATE TABLE IF NOT EXISTS newsletter_entries (
                     id TEXT PRIMARY KEY,
                     title TEXT NOT NULL,
@@ -84,12 +84,12 @@ class NewsletterCache:
                     fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     UNIQUE(url, newsletter_id)
                 );
-                
-                CREATE INDEX IF NOT EXISTS idx_nl_entries_newsletter 
+
+                CREATE INDEX IF NOT EXISTS idx_nl_entries_newsletter
                     ON newsletter_entries(newsletter_id);
-                CREATE INDEX IF NOT EXISTS idx_nl_entries_published 
+                CREATE INDEX IF NOT EXISTS idx_nl_entries_published
                     ON newsletter_entries(published_at DESC);
-                
+
                 CREATE TABLE IF NOT EXISTS newsletter_ingestion_log (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     newsletter_id TEXT,
@@ -99,18 +99,18 @@ class NewsletterCache:
                     error_message TEXT
                 );
             """)
-    
+
     def save_source(self, source: NewsletterSource):
         """Save or update a newsletter source configuration."""
         with sqlite3.connect(self.db_path) as conn:
             conn.execute("""
-                INSERT OR REPLACE INTO newsletter_sources 
+                INSERT OR REPLACE INTO newsletter_sources
                 (id, name, provider, source_url, category, domain, signal_quality, active, config)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (source.id, source.name, source.provider, source.source_url,
                   source.category, source.domain, source.signal_quality,
                   source.active, source.config))
-    
+
     def get_sources(self, domain: Optional[str] = None, active_only: bool = True) -> list[NewsletterSource]:
         """Get configured newsletter sources."""
         with sqlite3.connect(self.db_path) as conn:
@@ -121,12 +121,12 @@ class NewsletterCache:
             if domain:
                 query += " AND domain = ?"
                 params.append(domain)
-            
+
             rows = conn.execute(query, params).fetchall()
             columns = [desc[0] for desc in conn.execute(
                 "SELECT * FROM newsletter_sources LIMIT 0"
             ).description]
-            
+
             sources = []
             for row in rows:
                 data = dict(zip(columns, row))
@@ -142,26 +142,26 @@ class NewsletterCache:
                     config=data['config']
                 ))
             return sources
-    
+
     def save_entries(self, entries: list[NewsletterEntry]):
         """Save newsletter entries to cache."""
         with sqlite3.connect(self.db_path) as conn:
             for entry in entries:
                 conn.execute("""
-                    INSERT OR REPLACE INTO newsletter_entries 
-                    (id, title, url, newsletter_id, published_at, author, 
+                    INSERT OR REPLACE INTO newsletter_entries
+                    (id, title, url, newsletter_id, published_at, author,
                      content_html, content_text, links, fetched_at)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (entry.id, entry.title, entry.url, entry.newsletter_id,
                       entry.published_at, entry.author, entry.content_html,
                       entry.content_text, json.dumps(entry.links), entry.fetched_at))
-    
-    def log_ingestion(self, newsletter_id: str, entries_count: int, 
+
+    def log_ingestion(self, newsletter_id: str, entries_count: int,
                       success: bool, error_message: Optional[str] = None):
         """Log an ingestion attempt."""
         with sqlite3.connect(self.db_path) as conn:
             conn.execute("""
-                INSERT INTO newsletter_ingestion_log 
+                INSERT INTO newsletter_ingestion_log
                 (newsletter_id, entries_count, success, error_message)
                 VALUES (?, ?, ?, ?)
             """, (newsletter_id, entries_count, success, error_message))
@@ -169,7 +169,7 @@ class NewsletterCache:
 
 class NewsletterParser:
     """Parse newsletter HTML/text content into structured data."""
-    
+
     @staticmethod
     def extract_links_from_html(html: str) -> list[dict]:
         """Extract all links from HTML content."""
@@ -185,7 +185,7 @@ class NewsletterParser:
                     'title': title[:200] if title else url[:100]
                 })
         return links
-    
+
     @staticmethod
     def html_to_text(html: str) -> str:
         """Convert HTML to plain text."""
@@ -204,7 +204,7 @@ class NewsletterParser:
         # Normalize whitespace
         text = re.sub(r'\n\s*\n', '\n\n', text)
         return text.strip()
-    
+
     @staticmethod
     def parse_substack_export(file_path: Path) -> list[NewsletterEntry]:
         """Parse Substack export JSON/HTML files."""
@@ -212,19 +212,19 @@ class NewsletterParser:
         entries = []
         if not file_path.exists():
             return entries
-        
+
         content = file_path.read_text(encoding='utf-8')
-        
+
         # Extract newsletter issues from Substack export
         # Each post is typically wrapped in a known structure
         issue_pattern = r'<div class="post">.*?<h1[^>]*>(.*?)</h1>.*?<div class="body">(.*?)</div>.*?</div>'
-        
+
         for idx, match in enumerate(re.finditer(issue_pattern, content, re.DOTALL | re.IGNORECASE)):
             title = NewsletterParser.html_to_text(match.group(1))
             html_content = match.group(2)
             text_content = NewsletterParser.html_to_text(html_content)
             links = NewsletterParser.extract_links_from_html(html_content)
-            
+
             entry = NewsletterEntry(
                 id=f"substack-{file_path.stem}-{idx}",
                 title=title[:200] if title else f"Issue {idx+1}",
@@ -238,29 +238,29 @@ class NewsletterParser:
                 fetched_at=datetime.now()
             )
             entries.append(entry)
-        
+
         return entries
 
 
 class NewsletterIngester:
     """Main class for ingesting newsletters from various sources."""
-    
+
     def __init__(self, cache: NewsletterCache):
         self.cache = cache
         self.parser = NewsletterParser()
-    
+
     def ingest_source(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """
         Ingest newsletters from a single source.
-        
+
         Args:
             source: NewsletterSource configuration
-            
+
         Returns:
             List of NewsletterEntry objects
         """
         entries = []
-        
+
         try:
             if source.provider == 'file':
                 entries = self._ingest_file_source(source)
@@ -272,27 +272,27 @@ class NewsletterIngester:
                 entries = self._ingest_buttondown_rss(source)
             else:
                 raise ValueError(f"Unknown provider: {source.provider}")
-            
+
             # Save to cache
             if entries:
                 self.cache.save_entries(entries)
-            
+
             self.cache.log_ingestion(source.id, len(entries), True)
-            
+
         except Exception as e:
             self.cache.log_ingestion(source.id, 0, False, str(e))
             raise
-        
+
         return entries
-    
+
     def _ingest_file_source(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """Ingest from file-based source (JSON, HTML)."""
         entries = []
         path = Path(source.source_url.replace('file://', ''))
-        
+
         if not path.exists():
             return entries
-        
+
         if path.suffix == '.json':
             data = json.loads(path.read_text())
             # Expect array of newsletter issues
@@ -310,39 +310,39 @@ class NewsletterIngester:
                     fetched_at=datetime.now()
                 )
                 entries.append(entry)
-        
+
         return entries
-    
+
     def _ingest_substack_export(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """Ingest from Substack export file."""
         path = Path(source.source_url.replace('file://', ''))
         return self.parser.parse_substack_export(path)
-    
+
     def _ingest_substack_rss(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """Ingest from Substack RSS feed."""
         return self._ingest_rss_feed(source)
-    
+
     def _ingest_buttondown_rss(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """Ingest from Buttondown RSS feed."""
         return self._ingest_rss_feed(source)
-    
+
     def _ingest_rss_feed(self, source: NewsletterSource) -> list[NewsletterEntry]:
         """
         Ingest from any RSS feed URL.
-        
+
         Uses FeedFetcher to fetch and parse the RSS feed, then converts
         FeedEntry objects to NewsletterEntry objects.
-        
+
         Args:
             source: NewsletterSource with RSS feed URL
-            
+
         Returns:
             List of NewsletterEntry objects
         """
         try:
             # Import here to avoid circular dependencies
             from .feed_fetcher import FeedSource, FeedFetcher, FeedCache
-            
+
             # Create a FeedSource from the NewsletterSource
             feed_source = FeedSource(
                 id=source.id,
@@ -354,15 +354,15 @@ class NewsletterIngester:
                 signal_quality=source.signal_quality,
                 active=source.active
             )
-            
+
             # Use the newsletter cache's db_path for FeedCache
             feed_cache = FeedCache(self.cache.db_path)
             feed_cache.save_source(feed_source)
-            
+
             # Fetch the RSS feed
             fetcher = FeedFetcher(feed_cache, min_fetch_interval_seconds=1)
             feed_entries = fetcher.fetch_rss(feed_source)
-            
+
             # Convert FeedEntry objects to NewsletterEntry objects
             newsletter_entries = []
             for feed_entry in feed_entries:
@@ -370,7 +370,7 @@ class NewsletterIngester:
                 links = []
                 if feed_entry.content:
                     links = self.parser.extract_links_from_html(feed_entry.content)
-                
+
                 # Create NewsletterEntry
                 entry = NewsletterEntry(
                     id=f"{source.id}-{feed_entry.id}",
@@ -385,9 +385,9 @@ class NewsletterIngester:
                     fetched_at=feed_entry.fetched_at
                 )
                 newsletter_entries.append(entry)
-            
+
             return newsletter_entries
-            
+
         except ImportError as e:
             # FeedFetcher not available
             raise RuntimeError(f"RSS ingestion requires feed_fetcher module: {e}")
@@ -395,7 +395,7 @@ class NewsletterIngester:
             # Log error and return empty list
             self.cache.log_ingestion(source.id, 0, False, str(e))
             raise
-    
+
     def _get_author_from_config(self, source: NewsletterSource) -> Optional[str]:
         """Extract author name from source config if available."""
         if source.config:
@@ -405,11 +405,11 @@ class NewsletterIngester:
             except json.JSONDecodeError:
                 pass
         return None
-    
+
     def convert_to_feed_entries(self, newsletter_entries: list[NewsletterEntry]) -> list:
         """
         Convert NewsletterEntry objects to FeedEntry objects for pipeline integration.
-        
+
         Returns:
             List of FeedEntry-compatible dicts (import FeedEntry from feed_fetcher for full objects)
         """
@@ -417,7 +417,7 @@ class NewsletterIngester:
         for entry in newsletter_entries:
             # Use first link as primary URL if available, else newsletter URL
             primary_url = entry.links[0]['url'] if entry.links else entry.url
-            
+
             feed_entries.append({
                 'id': entry.id,
                 'title': entry.title,
@@ -429,7 +429,7 @@ class NewsletterIngester:
                 'content': entry.content_text,
                 'fetched_at': entry.fetched_at
             })
-        
+
         return feed_entries
 
 
@@ -437,10 +437,10 @@ def load_newsletter_sources_from_catalog(catalog_path: Path) -> list[NewsletterS
     """Load newsletter sources from a JSON catalog file."""
     if not catalog_path.exists():
         return []
-    
+
     data = json.loads(catalog_path.read_text())
     sources = []
-    
+
     for item in data.get('newsletters', []):
         sources.append(NewsletterSource(
             id=item['id'],
@@ -453,20 +453,20 @@ def load_newsletter_sources_from_catalog(catalog_path: Path) -> list[NewsletterS
             active=item.get('active', True),
             config=json.dumps(item.get('config', {}))
         ))
-    
+
     return sources
 
 
 if __name__ == '__main__':
     # Simple CLI for testing
     import tempfile
-    
+
     with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
         db_path = Path(f.name)
-    
+
     cache = NewsletterCache(db_path)
     ingester = NewsletterIngester(cache)
-    
+
     # Example: Create a sample newsletter source
     sample_source = NewsletterSource(
         id='sample-newsletter',
@@ -477,7 +477,7 @@ if __name__ == '__main__':
         domain='ai',
         signal_quality='High'
     )
-    
+
     print(f"Newsletter ingestion system initialized")
     print(f"Database: {db_path}")
     print(f"Sources configured: {len(cache.get_sources())}")

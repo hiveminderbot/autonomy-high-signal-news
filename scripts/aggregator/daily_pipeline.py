@@ -46,10 +46,10 @@ def setup_logging(verbose: bool = False, log_dir: Optional[Path] = None) -> logg
     """Configure logging for the pipeline run."""
     logger = logging.getLogger("daily_pipeline")
     logger.setLevel(logging.DEBUG if verbose else logging.INFO)
-    
+
     # Clear existing handlers
     logger.handlers = []
-    
+
     # Console handler
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.DEBUG if verbose else logging.INFO)
@@ -58,7 +58,7 @@ def setup_logging(verbose: bool = False, log_dir: Optional[Path] = None) -> logg
     )
     ch.setFormatter(formatter)
     logger.addHandler(ch)
-    
+
     # File handler if log_dir specified
     if log_dir:
         log_dir.mkdir(parents=True, exist_ok=True)
@@ -68,7 +68,7 @@ def setup_logging(verbose: bool = False, log_dir: Optional[Path] = None) -> logg
         fh.setLevel(logging.DEBUG)
         fh.setFormatter(formatter)
         logger.addHandler(fh)
-    
+
     return logger
 
 
@@ -84,7 +84,7 @@ def run_pipeline(
 ) -> dict:
     """
     Run the complete aggregation pipeline.
-    
+
     Args:
         db_path: Path to SQLite database
         catalog_path: Path to sources catalog JSON
@@ -94,24 +94,24 @@ def run_pipeline(
         domain_filter: Filter to specific domain (e.g., 'ai', 'dev')
         dry_run: If True, don't write to database
         verbose: Enable verbose logging
-        
+
     Returns:
         Dictionary with pipeline results
     """
     logger = setup_logging(verbose, output_dir / "logs" if not dry_run else None)
-    
+
     start_time = datetime.now()
     logger.info(f"Starting daily pipeline at {start_time.isoformat()}")
     logger.info(f"Mode: {'DRY RUN' if dry_run else 'LIVE'}")
-    
+
     try:
         # Initialize components
         logger.info("Initializing pipeline components...")
-        
+
         # Ensure db_path is a Path object
         if isinstance(db_path, str):
             db_path = Path(db_path)
-        
+
         if dry_run:
             # Create temp files for dry run that will be cleaned up
             import tempfile
@@ -123,30 +123,30 @@ def run_pipeline(
         else:
             cache = FeedCache(db_path=db_path)
             storage = ArticleStorage(db_path=db_path)
-        
+
         pipeline = AggregationPipeline(
             cache=cache,
             deduplicator=Deduplicator(simhash_threshold=dedup_threshold),
             extract_content=extract_content,
         )
-        
+
         # Load sources
         if not catalog_path.exists():
             logger.error(f"Catalog not found: {catalog_path}")
             return {"success": False, "error": f"Catalog not found: {catalog_path}"}
-            
+
         sources = load_sources_from_catalog(str(catalog_path))
         logger.info(f"Loaded {len(sources)} sources from {catalog_path}")
-        
+
         # Run pipeline
         logger.info("Running aggregation pipeline...")
         result: PipelineResult = pipeline.run(
             sources=sources,
             domain_filter=domain_filter,
         )
-        
+
         duration = (datetime.now() - start_time).total_seconds()
-        
+
         # Build result summary
         summary = {
             "success": len(result.errors) == 0,
@@ -162,17 +162,17 @@ def run_pipeline(
             "errors": result.errors[:10],  # Limit errors in summary
             "dry_run": dry_run,
         }
-        
+
         logger.info(f"Pipeline completed in {duration:.2f}s")
         logger.info(f"Fetched: {result.entries_fetched}, Stored: {result.entries_stored}")
-        
+
         if result.errors:
             logger.warning(f"Pipeline completed with {len(result.errors)} errors")
             for error in result.errors[:5]:
                 logger.warning(f"  - {error}")
-        
+
         return summary
-        
+
     except Exception as e:
         logger.exception("Pipeline failed with exception")
         return {
@@ -197,7 +197,7 @@ Examples:
   %(prog)s --json                   # Output results as JSON
         """
     )
-    
+
     parser.add_argument(
         "--db", "--database",
         type=Path,
@@ -248,9 +248,9 @@ Examples:
         action="store_true",
         help="Output results as JSON"
     )
-    
+
     args = parser.parse_args()
-    
+
     # Run pipeline
     result = run_pipeline(
         db_path=args.db,
@@ -262,7 +262,7 @@ Examples:
         dry_run=args.dry_run,
         verbose=args.verbose,
     )
-    
+
     # Output results
     if args.json:
         print(json.dumps(result, indent=2))
@@ -279,7 +279,7 @@ Examples:
         print(f"Errors: {result.get('error_count', 0)}")
         if result.get('dry_run'):
             print("\n[DRY RUN - No changes written]")
-    
+
     # Exit with appropriate code
     sys.exit(0 if result['success'] else 1)
 

@@ -13,42 +13,42 @@ from pathlib import Path
 
 def migrate_sources(db_path: Path):
     """Migrate sources from sources table to feed_sources table."""
-    
+
     with sqlite3.connect(db_path) as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         # Get all sources from the sources table
         cursor.execute("SELECT * FROM sources WHERE status = 'active'")
         sources = cursor.fetchall()
-        
+
         print(f"Found {len(sources)} active sources to migrate")
-        
+
         migrated = 0
         skipped = 0
-        
+
         for source in sources:
             # Generate ID from name
             source_id = source['name'].lower().replace(' ', '-').replace('.', '-').replace('/', '-')
-            
+
             # Check if already in feed_sources
             cursor.execute("SELECT id FROM feed_sources WHERE id = ?", (source_id,))
             if cursor.fetchone():
                 print(f"  SKIP: {source['name']} (already in feed_sources)")
                 skipped += 1
                 continue
-            
+
             # Parse special_handling to get type info
             special_handling = {}
             try:
                 special_handling = json.loads(source['special_handling'] or '{}')
             except json.JSONDecodeError:
                 pass
-            
+
             # Determine format based on URL and special_handling
             rss_url = source['rss_url'] or ''
             source_type = special_handling.get('type', 'rss').upper()
-            
+
             # Map type to format
             if source_type == 'NEWSLETTER':
                 format_type = 'RSS'  # Newsletters have RSS feeds
@@ -64,7 +64,7 @@ def migrate_sources(db_path: Path):
                 format_type = 'RSS'
             else:
                 format_type = 'RSS'  # Default assumption
-            
+
             # Skip sources without valid RSS URLs
             if not rss_url or rss_url.startswith('http'):
                 pass  # Valid URL
@@ -72,12 +72,12 @@ def migrate_sources(db_path: Path):
                 print(f"  SKIP: {source['name']} (invalid URL: {rss_url[:30]}...)")
                 skipped += 1
                 continue
-            
+
             # Insert into feed_sources
             try:
                 cursor.execute("""
-                    INSERT INTO feed_sources 
-                    (id, name, url, format, category, domain, signal_quality, active, 
+                    INSERT INTO feed_sources
+                    (id, name, url, format, category, domain, signal_quality, active,
                      fetch_interval_minutes, error_count)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
@@ -98,21 +98,21 @@ def migrate_sources(db_path: Path):
             except sqlite3.Error as e:
                 print(f"  ERROR: {source['name']} - {e}")
                 skipped += 1
-        
+
         return migrated, skipped
 
 
 def main():
     db_path = Path(__file__).parent.parent / 'news.db'
-    
+
     print(f"Database: {db_path}")
     print("=" * 50)
-    
+
     migrated, skipped = migrate_sources(db_path)
-    
+
     print("=" * 50)
     print(f"Migration complete: {migrated} migrated, {skipped} skipped")
-    
+
     # Verify
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()

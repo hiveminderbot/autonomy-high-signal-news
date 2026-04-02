@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Daily Briefing Orchestration Script
-# 
+#
 # This script orchestrates the complete daily briefing workflow:
 # 1. Runs aggregation pipeline (if not skipped)
 # 2. Generates briefing from aggregated content
@@ -119,16 +119,16 @@ if $PYTHON_CMD 2>&1 | tee -a "$LOG_FILE"; then
     log "=================================================="
     log "Daily briefing completed successfully"
     log "=================================================="
-    
+
     # Show output files
     if [[ -f "$OUTPUT_DIR/latest.md" ]]; then
         log "Latest briefing: $OUTPUT_DIR/latest.md"
     fi
-    
+
     if [[ -f "$OUTPUT_DIR/latest_run_report.json" ]]; then
         log "Run report: $OUTPUT_DIR/latest_run_report.json"
     fi
-    
+
     exit 0
 else
     EXIT_CODE=$?

@@ -7,7 +7,7 @@
   "updated_at": "2026-03-21T23:40:00Z",
   "owner": "autonomy",
   "current_phase": "proper_implementation",
-  
+
   "validation_status": {
     "overall": "IMPROVED",
     "validation_file": "validation.json",
@@ -51,7 +51,7 @@
       "output": "output/newsletter-llm-analyzed.md"
     }
   },
-  
+
   "components": {
     "source_catalog": {
       "path": "sources/sources-v2-bootstrapped.json",
@@ -79,7 +79,7 @@
       ]
     }
   },
-  
+
   "blockers": [
     {
       "id": "content-extraction-fails",
@@ -107,7 +107,7 @@
       "example": "Rust blog articles tagged 'rust momentum' is tautological"
     }
   ],
-  
+
   "next_steps": [
     "Fix content extraction using Jina AI or similar",
     "Add Claude API integration for real summarization",
@@ -115,7 +115,7 @@
     "Validate with practitioner: 'is this better than RSS reader?'",
     "Only then mark phases complete"
   ],
-  
+
   "lessons": [
     "Cron agents optimize for task closure, not value delivery",
     "Counting RSS entries != useful insight",

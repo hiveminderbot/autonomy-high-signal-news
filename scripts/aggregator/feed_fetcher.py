@@ -81,11 +81,11 @@ class FeedSource:
 
 class FeedCache:
     """SQLite-based cache for feed entries and metadata."""
-    
+
     def __init__(self, db_path: Path):
         self.db_path = db_path
         self._init_db()
-    
+
     def _init_db(self):
         """Initialize the database schema."""
         with sqlite3.connect(self.db_path) as conn:
@@ -108,20 +108,20 @@ class FeedCache:
                     generated_summary TEXT,
                     UNIQUE(url, source_id)
                 );
-                
-                CREATE INDEX IF NOT EXISTS idx_entries_source 
+
+                CREATE INDEX IF NOT EXISTS idx_entries_source
                     ON feed_entries(source_id);
-                CREATE INDEX IF NOT EXISTS idx_entries_published 
+                CREATE INDEX IF NOT EXISTS idx_entries_published
                     ON feed_entries(published_at DESC);
-                CREATE INDEX IF NOT EXISTS idx_entries_fetched 
+                CREATE INDEX IF NOT EXISTS idx_entries_fetched
                     ON feed_entries(fetched_at DESC);
-                
+
                 CREATE VIRTUAL TABLE IF NOT EXISTS feed_entries_fts USING fts5(
                     title, summary, content,
                     content='feed_entries',
                     content_rowid='rowid'
                 );
-                
+
                 CREATE TABLE IF NOT EXISTS feed_sources (
                     id TEXT PRIMARY KEY,
                     name TEXT NOT NULL,
@@ -136,7 +136,7 @@ class FeedCache:
                     error_count INTEGER DEFAULT 0,
                     last_error TEXT
                 );
-                
+
                 CREATE TABLE IF NOT EXISTS fetch_log (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     source_id TEXT,
@@ -147,17 +147,17 @@ class FeedCache:
                     response_time_ms INTEGER
                 );
             """)
-        
+
         # Run migrations to handle schema updates on existing databases
         self._migrate_db()
-    
+
     def _migrate_db(self):
         """Migrate existing database schema to add missing columns and indexes."""
         with sqlite3.connect(self.db_path) as conn:
             # Get existing columns in feed_entries table
             cursor = conn.execute("PRAGMA table_info(feed_entries)")
             existing_columns = {row[1] for row in cursor.fetchall()}
-            
+
             # Define columns to add: (column_name, column_type)
             columns_to_add = [
                 ("cluster_id", "TEXT"),
@@ -166,7 +166,7 @@ class FeedCache:
                 ("entities", "TEXT"),
                 ("generated_summary", "TEXT"),
             ]
-            
+
             for col_name, col_type in columns_to_add:
                 if col_name not in existing_columns:
                     try:
@@ -174,31 +174,31 @@ class FeedCache:
                     except sqlite3.OperationalError:
                         # Column might already exist (race condition or partial migration)
                         pass
-            
+
             # Create indexes for columns that now exist
             indexes_to_create = [
                 ("idx_entries_cluster", "cluster_id"),
                 ("idx_entries_relevance", "relevance_score"),
             ]
-            
+
             for index_name, column_name in indexes_to_create:
                 try:
                     conn.execute(f"CREATE INDEX IF NOT EXISTS {index_name} ON feed_entries({column_name})")
                 except sqlite3.OperationalError:
                     # Index might already exist or column might not exist
                     pass
-    
+
     def save_source(self, source: FeedSource):
         """Save or update a feed source configuration."""
         with sqlite3.connect(self.db_path) as conn:
             conn.execute("""
-                INSERT OR REPLACE INTO feed_sources 
+                INSERT OR REPLACE INTO feed_sources
                 (id, name, url, format, category, domain, signal_quality, active, fetch_interval_minutes)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (source.id, source.name, source.url, source.format, 
+            """, (source.id, source.name, source.url, source.format,
                   source.category, source.domain, source.signal_quality,
                   source.active, source.fetch_interval_minutes))
-    
+
     def get_sources(self, domain: Optional[str] = None, active_only: bool = True) -> list[FeedSource]:
         """Get configured feed sources."""
         with sqlite3.connect(self.db_path) as conn:
@@ -209,12 +209,12 @@ class FeedCache:
             if domain:
                 query += " AND domain = ?"
                 params.append(domain)
-            
+
             rows = conn.execute(query, params).fetchall()
             columns = [desc[0] for desc in conn.execute(
                 "SELECT * FROM feed_sources LIMIT 0"
             ).description]
-            
+
             sources = []
             for row in rows:
                 data = dict(zip(columns, row))
@@ -230,30 +230,30 @@ class FeedCache:
                     fetch_interval_minutes=data['fetch_interval_minutes']
                 ))
             return sources
-    
+
     def should_fetch(self, source_id: str) -> bool:
         """Check if a source should be fetched based on its interval."""
         with sqlite3.connect(self.db_path) as conn:
             row = conn.execute(
-                """SELECT last_fetched, fetch_interval_minutes 
-                   FROM feed_sources WHERE id = ?""", 
+                """SELECT last_fetched, fetch_interval_minutes
+                   FROM feed_sources WHERE id = ?""",
                 (source_id,)
             ).fetchone()
-            
+
             if not row or row[0] is None:
                 return True
-            
+
             last_fetched = datetime.fromisoformat(row[0])
             interval = timedelta(minutes=row[1])
             return datetime.now() - last_fetched >= interval
-    
+
     def save_entries(self, entries: list[FeedEntry]):
         """Save feed entries to the database."""
         with sqlite3.connect(self.db_path) as conn:
             for entry in entries:
                 try:
                     conn.execute("""
-                        INSERT OR REPLACE INTO feed_entries 
+                        INSERT OR REPLACE INTO feed_entries
                         (id, title, url, source_id, published_at, summary, author, content, fetched_at,
                          cluster_id, relevance_score, relevance_tier, entities, generated_summary)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -267,8 +267,8 @@ class FeedCache:
                     ))
                 except sqlite3.IntegrityError:
                     pass  # Duplicate entry, ignore
-    
-    def log_fetch(self, source_id: str, entries_count: int, success: bool, 
+
+    def log_fetch(self, source_id: str, entries_count: int, success: bool,
                   error_message: Optional[str] = None, response_time_ms: int = 0):
         """Log a fetch operation."""
         with sqlite3.connect(self.db_path) as conn:
@@ -276,7 +276,7 @@ class FeedCache:
                 INSERT INTO fetch_log (source_id, entries_count, success, error_message, response_time_ms)
                 VALUES (?, ?, ?, ?, ?)
             """, (source_id, entries_count, success, error_message, response_time_ms))
-            
+
             # Update source's last_fetched and error tracking
             if success:
                 conn.execute(
@@ -285,12 +285,12 @@ class FeedCache:
                 )
             else:
                 conn.execute(
-                    """UPDATE feed_sources 
-                       SET error_count = error_count + 1, last_error = ? 
+                    """UPDATE feed_sources
+                       SET error_count = error_count + 1, last_error = ?
                        WHERE id = ?""",
                     (error_message, source_id)
                 )
-    
+
     def disable_source(self, source_id: str, reason: str = ""):
         """Disable a source and log the action."""
         with sqlite3.connect(self.db_path) as conn:
@@ -303,7 +303,7 @@ class FeedCache:
                 INSERT INTO fetch_log (source_id, entries_count, success, error_message, response_time_ms)
                 VALUES (?, 0, 0, ?, 0)
             """, (source_id, f"AUTO_DISABLED: {reason}"))
-    
+
     def get_source_error_count(self, source_id: str) -> int:
         """Get the current error count for a source."""
         with sqlite3.connect(self.db_path) as conn:
@@ -312,18 +312,18 @@ class FeedCache:
                 (source_id,)
             ).fetchone()
             return row[0] if row else 0
-    
+
     def get_disabled_sources(self) -> list[FeedSource]:
         """Get all disabled (inactive) sources."""
         with sqlite3.connect(self.db_path) as conn:
             rows = conn.execute(
                 "SELECT * FROM feed_sources WHERE active = 0"
             ).fetchall()
-            
+
             columns = [desc[0] for desc in conn.execute(
                 "SELECT * FROM feed_sources LIMIT 0"
             ).description]
-            
+
             sources = []
             for row in rows:
                 data = dict(zip(columns, row))
@@ -339,7 +339,7 @@ class FeedCache:
                     fetch_interval_minutes=data['fetch_interval_minutes']
                 ))
             return sources
-    
+
     def reenable_source(self, source_id: str):
         """Re-enable a source and reset its error count."""
         with sqlite3.connect(self.db_path) as conn:
@@ -351,11 +351,11 @@ class FeedCache:
 
 class FeedFetcher:
     """Main feed fetcher with rate limiting, caching, and health monitoring."""
-    
+
     # Error threshold for automatic source disabling
     ERROR_THRESHOLD = 5
-    
-    def __init__(self, cache: FeedCache, min_fetch_interval_seconds: int = 5, 
+
+    def __init__(self, cache: FeedCache, min_fetch_interval_seconds: int = 5,
                  health_monitor=None, auto_disable: bool = True):
         self.cache = cache
         self.min_fetch_interval = min_fetch_interval_seconds
@@ -363,16 +363,16 @@ class FeedFetcher:
         self.last_source_fetch_time: dict[str, float] = {}  # Per-source rate limiting
         self.health_monitor = health_monitor
         self.auto_disable = auto_disable
-    
+
     def _rate_limit(self, source_id: str = None, min_interval: int = None):
         """Enforce minimum interval between fetches.
-        
+
         Args:
             source_id: Optional source ID for per-source rate limiting
             min_interval: Optional override for minimum interval in seconds
         """
         interval = min_interval if min_interval is not None else self.min_fetch_interval
-        
+
         if source_id:
             # Per-source rate limiting
             last_time = self.last_source_fetch_time.get(source_id)
@@ -390,12 +390,12 @@ class FeedFetcher:
                 if elapsed < interval:
                     time.sleep(interval - elapsed)
             self.last_fetch_time = time.time()
-    
+
     def _generate_entry_id(self, url: str, title: str) -> str:
         """Generate a stable ID for a feed entry."""
         content = f"{url}:{title}".encode('utf-8')
         return hashlib.sha256(content).hexdigest()[:16]
-    
+
     # Default headers to avoid bot detection
     # Note: Do NOT set Accept-Encoding - requests library handles decompression automatically
     DEFAULT_HEADERS = {
@@ -405,11 +405,11 @@ class FeedFetcher:
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
     }
-    
+
     # Retry configuration
     MAX_RETRIES = 3
     RETRY_DELAY_BASE = 1  # Base delay in seconds (1s, 2s, 4s)
-    
+
     # RSSHub instances for Cloudflare-protected feeds
     # These are public RSSHub instances that can proxy feeds
     RSSHUB_INSTANCES = [
@@ -417,42 +417,42 @@ class FeedFetcher:
         'https://rsshub.rssforever.com',
         'https://rsshub.pseudoyu.com',
     ]
-    
+
     def _fetch_with_retry(self, url: str, headers: dict = None) -> tuple[bytes, int]:
         """Fetch URL with exponential backoff retry logic.
-        
+
         Returns:
             Tuple of (content_bytes, response_time_ms)
         """
         if not REQUESTS_AVAILABLE:
             raise RuntimeError("requests library required for fetching")
-        
+
         request_headers = {**self.DEFAULT_HEADERS, **(headers or {})}
         last_error = None
-        
+
         for attempt in range(self.MAX_RETRIES):
             try:
                 start_time = time.time()
                 response = requests.get(
-                    url, 
-                    headers=request_headers, 
+                    url,
+                    headers=request_headers,
                     timeout=30,
                     allow_redirects=True
                 )
                 response.raise_for_status()
                 response_time = int((time.time() - start_time) * 1000)
                 return response.content, response_time
-                
+
             except requests.exceptions.RequestException as e:
                 last_error = e
                 if attempt < self.MAX_RETRIES - 1:
                     delay = self.RETRY_DELAY_BASE * (2 ** attempt)
                     time.sleep(delay)
                 continue
-        
+
         # All retries exhausted
         raise last_error or RuntimeError(f"Failed to fetch {url} after {self.MAX_RETRIES} attempts")
-    
+
     def _is_cloudflare_error(self, error: Exception) -> bool:
         """Check if error indicates Cloudflare protection."""
         error_str = str(error).lower()
@@ -462,7 +462,7 @@ class FeedFetcher:
             'forbidden' in error_str or
             'cf-ray' in error_str
         )
-    
+
     def _is_auth_error(self, error: Exception) -> bool:
         """Check if error indicates an authentication/authorization failure (401)."""
         error_str = str(error).lower()
@@ -471,28 +471,28 @@ class FeedFetcher:
             'unauthorized' in error_str or
             'auth_failed' in error_str
         )
-    
+
     def _try_rsshub_fallback(self, original_url: str) -> tuple[bytes, int]:
         """Try to fetch via RSSHub instances as fallback for Cloudflare-protected feeds.
-        
+
         RSSHub can proxy many feeds through different infrastructure, bypassing
         Cloudflare blocks on the original URL.
-        
+
         Returns:
             Tuple of (content_bytes, response_time_ms) or raises exception
         """
         if not REQUESTS_AVAILABLE:
             raise RuntimeError("requests library required for RSSHub fallback")
-        
+
         last_error = None
-        
+
         for rsshub_base in self.RSSHUB_INSTANCES:
             try:
                 # Encode the original URL for RSSHub route
                 import urllib.parse
                 encoded_url = urllib.parse.quote(original_url, safe='')
                 rsshub_url = f"{rsshub_base}/rsshub/transform/json/{encoded_url}"
-                
+
                 start_time = time.time()
                 response = requests.get(
                     rsshub_url,
@@ -502,31 +502,31 @@ class FeedFetcher:
                 )
                 response.raise_for_status()
                 response_time = int((time.time() - start_time) * 1000)
-                
+
                 # RSSHub returns JSON, we need to convert it to RSS-like format
                 # For now, return the content as-is and let feedparser handle it
                 return response.content, response_time
-                
+
             except requests.exceptions.RequestException as e:
                 last_error = e
                 continue
-        
+
         raise last_error or RuntimeError(f"RSSHub fallback failed for {original_url}")
-    
+
     def _try_feedsyndicate_fallback(self, original_url: str) -> tuple[bytes, int]:
         """Try alternative feed syndication services.
-        
+
         Uses services like FeedBurner, Feedly, or other feed proxies.
         """
         if not REQUESTS_AVAILABLE:
             raise RuntimeError("requests library required for feed syndication fallback")
-        
+
         # Try Feedly's feed fetcher (they have good infrastructure)
         try:
             import urllib.parse
             encoded_url = urllib.parse.quote(original_url, safe='')
             feedly_url = f"https://cloud.feedly.com/v3/streams/contents?streamId=feed/{encoded_url}"
-            
+
             start_time = time.time()
             response = requests.get(
                 feedly_url,
@@ -536,23 +536,23 @@ class FeedFetcher:
             )
             response.raise_for_status()
             response_time = int((time.time() - start_time) * 1000)
-            
+
             return response.content, response_time
-            
+
         except requests.exceptions.RequestException:
             pass
-        
+
         raise RuntimeError(f"All feed syndication fallbacks failed for {original_url}")
-    
+
     def _try_html_scrape_fallback(self, source: FeedSource) -> list[FeedEntry]:
         """Try to fetch by scraping HTML as fallback for RSS auth errors.
-        
+
         Some sources (like Hugging Face Papers) require authentication for RSS
         but have public HTML pages. This fallback scrapes the HTML directly.
-        
+
         Args:
             source: The FeedSource to scrape
-            
+
         Returns:
             List of FeedEntry objects scraped from HTML
         """
@@ -586,31 +586,31 @@ class FeedFetcher:
                 'base_url': 'https://www.theinformation.com'
             },
         }
-        
+
         if source.id not in HTML_SCRAPE_CONFIGS:
             raise RuntimeError(f"No HTML scraping config for source: {source.id}")
-        
+
         config = HTML_SCRAPE_CONFIGS[source.id]
-        
+
         try:
             from bs4 import BeautifulSoup
         except ImportError:
             raise RuntimeError("beautifulsoup4 required for HTML scraping fallback")
-        
+
         # Fetch the HTML page
         headers = {
             'User-Agent': self.DEFAULT_HEADERS['User-Agent'],
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         }
-        
+
         response = requests.get(config['list_url'], headers=headers, timeout=30)
         response.raise_for_status()
-        
+
         soup = BeautifulSoup(response.text, 'html.parser')
-        
+
         entries = []
         articles = soup.select(config['article_selector'])
-        
+
         for article in articles[:20]:  # Limit to 20 most recent
             try:
                 # Extract title
@@ -618,16 +618,16 @@ class FeedFetcher:
                 if not title_elem:
                     continue
                 title = title_elem.get_text(strip=True)
-                
+
                 # Extract link
                 link_elem = article.select_one(config['link_selector'])
                 if not link_elem:
                     continue
-                
+
                 href = link_elem.get('href', '')
                 if not href:
                     continue
-                
+
                 # Build full URL
                 if href.startswith('http'):
                     article_url = href
@@ -636,10 +636,10 @@ class FeedFetcher:
                 else:
                     from urllib.parse import urljoin
                     article_url = urljoin(config['list_url'], href)
-                
+
                 # Generate unique ID
                 entry_id = hashlib.md5(f"{source.id}:{article_url}".encode()).hexdigest()[:16]
-                
+
                 feed_entry = FeedEntry(
                     id=entry_id,
                     title=title[:200],
@@ -652,21 +652,21 @@ class FeedFetcher:
                     fetched_at=datetime.now()
                 )
                 entries.append(feed_entry)
-                
+
             except Exception as e:
                 # Log and continue
                 continue
-        
+
         if not entries:
             raise RuntimeError(f"No entries found scraping HTML for {source.id}")
-        
+
         return entries
-    
+
     def fetch_rss(self, source: FeedSource) -> list[FeedEntry]:
         """Fetch and parse an RSS/Atom feed with retry logic and Cloudflare fallback."""
         if not FEEDPARSER_AVAILABLE:
             raise RuntimeError("feedparser library required for RSS fetching")
-        
+
         # Use per-source rate limiting with configured interval
         self._rate_limit(source_id=source.id, min_interval=source.min_fetch_interval)
         start_time = time.time()
@@ -674,7 +674,7 @@ class FeedFetcher:
         response_time = 0
         used_fallback = False
         fallback_method = None
-        
+
         try:
             # Try primary fetch with retry logic
             try:
@@ -702,33 +702,33 @@ class FeedFetcher:
                         used_fallback = True
                         fallback_method = 'html_scrape'
                         print(f"  ✅ HTML scraping fallback succeeded for {source.id} ({len(entries)} entries)")
-                        
+
                         # Log success with fallback note
                         fetch_time = int((time.time() - start_time) * 1000)
-                        self.cache.log_fetch(source.id, len(entries), True, 
-                                            error_message="Success via html_scrape fallback", 
+                        self.cache.log_fetch(source.id, len(entries), True,
+                                            error_message="Success via html_scrape fallback",
                                             response_time_ms=fetch_time)
-                        
+
                         # Update health status
                         if self.health_monitor:
                             self.health_monitor.update_health_status(source.id, True)
-                        
+
                         return entries
                     except Exception as html_error:
                         print(f"  ❌ HTML scraping fallback failed for {source.id}: {html_error}")
                         raise primary_error  # Re-raise original error
                 else:
                     raise  # Re-raise if not Cloudflare or auth error
-            
+
             parsed = feedparser.parse(content)
-            
+
             # Check for feedparser-level errors
             if hasattr(parsed, 'bozo') and parsed.bozo:
                 # Log but don't fail - many feeds have minor issues
                 pass
-            
+
             entries = []
-            
+
             for entry in parsed.entries:
                 # Extract publication date
                 published = None
@@ -736,16 +736,16 @@ class FeedFetcher:
                     published = datetime(*entry.published_parsed[:6])
                 elif hasattr(entry, 'updated_parsed') and entry.updated_parsed:
                     published = datetime(*entry.updated_parsed[:6])
-                
+
                 # Get content/summary
                 content = None
                 if hasattr(entry, 'content') and entry.content:
                     content = entry.content[0].value
-                
+
                 summary = entry.get('summary', '')
                 if not summary and content:
                     summary = content[:500] + '...' if len(content) > 500 else content
-                
+
                 feed_entry = FeedEntry(
                     id=self._generate_entry_id(entry.link, entry.title),
                     title=entry.title,
@@ -758,42 +758,42 @@ class FeedFetcher:
                     fetched_at=datetime.now()
                 )
                 entries.append(feed_entry)
-            
+
             # Use response_time from _fetch_with_retry or calculate locally
             fetch_time = response_time if response_time else int((time.time() - start_time) * 1000)
-            
+
             # Log success, noting if fallback was used
             success_message = None
             if used_fallback and fallback_method:
                 success_message = f"Success via {fallback_method} fallback"
-            
-            self.cache.log_fetch(source.id, len(entries), True, 
+
+            self.cache.log_fetch(source.id, len(entries), True,
                                 error_message=success_message, response_time_ms=fetch_time)
-            
+
             # Update health status
             if self.health_monitor:
                 self.health_monitor.update_health_status(source.id, True)
-            
+
             return entries
-            
+
         except Exception as e:
             fetch_time = int((time.time() - start_time) * 1000)
             self.cache.log_fetch(source.id, 0, False, str(e), fetch_time)
-            
+
             # Update health status
             if self.health_monitor:
                 self.health_monitor.update_health_status(source.id, False, str(e))
-            
+
             raise
-    
+
     def fetch_source(self, source: FeedSource) -> list[FeedEntry]:
         """Fetch a single source based on its format."""
         if not self.cache.should_fetch(source.id):
             print(f"Skipping {source.id}: fetched recently")
             return []
-        
+
         format_upper = source.format.upper()
-        
+
         if format_upper in ('RSS', 'ATOM'):
             return self.fetch_rss(source)
         elif format_upper == 'SCRAPER':
@@ -804,11 +804,11 @@ class FeedFetcher:
             return self.fetch_github_repo(source)
         else:
             raise ValueError(f"Unsupported feed format: {source.format}")
-    
+
     def _build_scrape_config(self, source: FeedSource) -> dict:
         """Build scrape configuration based on known source patterns."""
         url = source.url.lower()
-        
+
         # Anthropic Research pattern
         if 'anthropic.com' in url:
             return {
@@ -817,7 +817,7 @@ class FeedFetcher:
                 'title_selector': 'h3, h2',
                 'base_url': 'https://www.anthropic.com'
             }
-        
+
         # Default fallback - use generic article selectors
         return {
             'list_url': source.url,
@@ -826,15 +826,15 @@ class FeedFetcher:
             'link_selector': 'a',
             'base_url': source.url.rstrip('/')
         }
-    
+
     def fetch_scraper(self, source: FeedSource) -> list[FeedEntry]:
         """Fetch articles from a SCRAPER format source using blog scraping."""
         if not BLOG_SCRAPER_AVAILABLE:
             raise RuntimeError("blog_scraper module not available for SCRAPER format")
-        
+
         # Build scrape config based on source URL patterns
         scrape_config = self._build_scrape_config(source)
-        
+
         # Convert FeedSource to BlogSource
         blog_source = BlogSource(
             id=source.id,
@@ -847,15 +847,15 @@ class FeedFetcher:
             active=source.active,
             scrape_config=scrape_config
         )
-        
+
         # Use BlogScraper to fetch entries
         scraper = BlogScraper(
             request_timeout=30,
             min_fetch_interval=source.min_fetch_interval / 1000.0  # Convert ms to seconds
         )
-        
+
         blog_entries = scraper.scrape_blog_list(blog_source)
-        
+
         # Convert BlogEntry to FeedEntry
         entries = []
         for blog_entry in blog_entries:
@@ -871,68 +871,68 @@ class FeedFetcher:
                 fetched_at=blog_entry.scraped_at
             )
             entries.append(feed_entry)
-        
+
         return entries
-    
+
     def fetch_github_trending(self, source: FeedSource) -> list[FeedEntry]:
         """Fetch trending repositories from GitHub."""
         if not REQUESTS_AVAILABLE:
             raise RuntimeError("requests library not available for GitHub API")
         if not BS4_AVAILABLE:
             raise RuntimeError("beautifulsoup4 not available for GitHub scraping")
-        
+
         # Parse URL to extract language and time period
         # URL format: https://github.com/trending/{language}?since={period}
         parsed = urlparse(source.url)
         path_parts = parsed.path.strip('/').split('/')
-        
+
         language = None
         period = 'daily'  # default
-        
+
         if len(path_parts) >= 2 and path_parts[0] == 'trending':
             language = path_parts[1] if len(path_parts) > 1 else None
-        
+
         # Extract 'since' parameter
         if parsed.query:
             query_params = parse_qs(parsed.query)
             if 'since' in query_params:
                 period = query_params['since'][0]
-        
+
         # Build GitHub API URL for trending (using search as proxy)
         # GitHub doesn't have a direct trending API, so we use search with stars
         days = {'daily': 1, 'weekly': 7, 'monthly': 30}.get(period, 1)
         date_threshold = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
-        
+
         query = f"created:>{date_threshold}"
         if language:
             query += f" language:{language}"
         query += " sort:stars"
-        
+
         api_url = f"https://api.github.com/search/repositories?q={query}&sort=stars&order=desc&per_page=10"
-        
+
         headers = {
             'Accept': 'application/vnd.github.v3+json',
             'User-Agent': 'HighSignalNewsBot/1.0'
         }
-        
+
         # Check for GitHub token
         github_token = getattr(self, '_github_token', None) or os.environ.get('GITHUB_TOKEN')
         if github_token:
             headers['Authorization'] = f'token {github_token}'
-        
+
         try:
             response = requests.get(api_url, headers=headers, timeout=30)
             response.raise_for_status()
             data = response.json()
-            
+
             entries = []
             for idx, repo in enumerate(data.get('items', [])):
                 entry_id = hashlib.md5(f"{source.id}:{repo['html_url']}".encode()).hexdigest()[:16]
-                
+
                 # Build summary from description and stats
                 description = repo.get('description') or 'No description'
                 summary = f"{description}\n\n⭐ {repo.get('stargazers_count', 0):,} stars | 🍴 {repo.get('forks_count', 0):,} forks | 📝 {repo.get('language', 'Unknown')}"
-                
+
                 entry = FeedEntry(
                     id=entry_id,
                     title=repo.get('full_name', 'Unknown'),
@@ -945,49 +945,49 @@ class FeedFetcher:
                     fetched_at=datetime.now()
                 )
                 entries.append(entry)
-            
+
             return entries
-            
+
         except requests.RequestException as e:
             raise RuntimeError(f"Failed to fetch GitHub trending: {e}")
-    
+
     def fetch_github_repo(self, source: FeedSource) -> list[FeedEntry]:
         """Fetch repository metadata from GitHub."""
         if not REQUESTS_AVAILABLE:
             raise RuntimeError("requests library not available for GitHub API")
-        
+
         # Parse owner/repo from URL
         # URL format: https://github.com/{owner}/{repo}
         parsed = urlparse(source.url)
         path_parts = parsed.path.strip('/').split('/')
-        
+
         if len(path_parts) < 2:
             raise ValueError(f"Invalid GitHub repo URL: {source.url}")
-        
+
         owner, repo = path_parts[0], path_parts[1]
         api_url = f"https://api.github.com/repos/{owner}/{repo}"
-        
+
         headers = {
             'Accept': 'application/vnd.github.v3+json',
             'User-Agent': 'HighSignalNewsBot/1.0'
         }
-        
+
         # Check for GitHub token
         github_token = getattr(self, '_github_token', None) or os.environ.get('GITHUB_TOKEN')
         if github_token:
             headers['Authorization'] = f'token {github_token}'
-        
+
         try:
             response = requests.get(api_url, headers=headers, timeout=30)
             response.raise_for_status()
             repo_data = response.json()
-            
+
             entry_id = hashlib.md5(f"{source.id}:{repo_data['html_url']}".encode()).hexdigest()[:16]
-            
+
             # Build summary
             description = repo_data.get('description') or 'No description'
             summary = f"{description}\n\n⭐ {repo_data.get('stargazers_count', 0):,} stars | 🍴 {repo_data.get('forks_count', 0):,} forks | 📝 {repo_data.get('language', 'Unknown')} | 👁️ {repo_data.get('watchers_count', 0):,} watchers"
-            
+
             entry = FeedEntry(
                 id=entry_id,
                 title=repo_data.get('full_name', f"{owner}/{repo}"),
@@ -999,16 +999,16 @@ class FeedFetcher:
                 content=repo_data.get('readme_content'),  # Could fetch README
                 fetched_at=datetime.now()
             )
-            
+
             return [entry]
-            
+
         except requests.RequestException as e:
             raise RuntimeError(f"Failed to fetch GitHub repo: {e}")
-    
-    def fetch_all(self, domain: Optional[str] = None, 
+
+    def fetch_all(self, domain: Optional[str] = None,
                   include_disabled: bool = False) -> dict[str, list[FeedEntry]]:
         """Fetch all configured sources.
-        
+
         Args:
             domain: Filter by domain
             include_disabled: If True, also fetch disabled sources (for retry mode)
@@ -1016,7 +1016,7 @@ class FeedFetcher:
         sources = self.cache.get_sources(domain=domain, active_only=not include_disabled)
         results = {}
         disabled_sources = []
-        
+
         for source in sources:
             try:
                 print(f"Fetching {source.name} ({source.id})...")
@@ -1024,34 +1024,34 @@ class FeedFetcher:
                 self.cache.save_entries(entries)
                 results[source.id] = entries
                 print(f"  -> {len(entries)} entries")
-                
+
                 # If this was a retry of a disabled source and it succeeded, re-enable it
                 if include_disabled and not source.active and len(entries) > 0:
                     self.cache.reenable_source(source.id)
                     print(f"  ✅ Re-enabled {source.id} (fetch succeeded)")
-                    
+
             except Exception as e:
                 print(f"  -> ERROR: {e}")
                 results[source.id] = []
-                
+
                 # Check if source should be automatically disabled
                 if self.auto_disable and not include_disabled:
                     error_count = self.cache.get_source_error_count(source.id)
                     if error_count >= self.ERROR_THRESHOLD:
                         self.cache.disable_source(
-                            source.id, 
+                            source.id,
                             f"Auto-disabled after {error_count} consecutive failures: {str(e)[:100]}"
                         )
                         disabled_sources.append(source.id)
                         print(f"  ⚠️  AUTO-DISABLED {source.id} after {error_count} failures")
-        
+
         # Summary of auto-disabled sources
         if disabled_sources:
             print(f"\n⚠️  {len(disabled_sources)} source(s) auto-disabled due to repeated failures:")
             for sid in disabled_sources:
                 print(f"    - {sid}")
             print(f"\nUse --retry-disabled to attempt fetching these sources again.")
-        
+
         return results
 
 
@@ -1059,10 +1059,10 @@ def load_sources_from_catalog(catalog_path: Path) -> list[FeedSource]:
     """Load feed sources from the source catalog JSON."""
     with open(catalog_path) as f:
         catalog = json.load(f)
-    
+
     sources = []
     domain = catalog.get('metadata', {}).get('domain', 'unknown')
-    
+
     def _extract_sources(data, category_hint='General'):
         """Recursively extract feed sources from nested JSON structure."""
         if isinstance(data, list):
@@ -1072,13 +1072,13 @@ def load_sources_from_catalog(catalog_path: Path) -> list[FeedSource]:
                     item_type = item.get('type', item.get('format', 'RSS')).upper()
                     if item_type == 'NEWSLETTER':
                         continue
-                    
+
                     # Generate ID from name (slugify)
                     item_id = item['name'].lower().replace(' ', '-').replace('.', '-').replace('/', '-')
-                    
+
                     # Check if source is disabled in catalog
                     is_disabled = item.get('disabled', False)
-                    
+
                     source = FeedSource(
                         id=item_id,
                         name=item['name'],
@@ -1097,26 +1097,26 @@ def load_sources_from_catalog(catalog_path: Path) -> list[FeedSource]:
             for key, value in data.items():
                 if isinstance(value, (dict, list)) and key != 'metadata':
                     _extract_sources(value, key.replace('_', ' ').title())
-    
+
     # Extract from all non-metadata sections
     for key, value in catalog.items():
         if key != 'metadata':
             _extract_sources(value, key.replace('_', ' ').title())
-    
+
     return sources
 
 
 def main():
     """CLI entry point for testing."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Fetch RSS feeds for high-signal news')
     parser.add_argument('--db', default='state/feeds.db', help='Database path')
-    parser.add_argument('--catalog', default='research/source-catalog.json', 
+    parser.add_argument('--catalog', default='research/source-catalog.json',
                         help='Source catalog JSON')
     parser.add_argument('--domain', choices=['ai', 'software_development', 'investment'],
                         help='Filter by domain')
-    parser.add_argument('--init', action='store_true', 
+    parser.add_argument('--init', action='store_true',
                         help='Initialize with sources from catalog')
     parser.add_argument('--health-report', action='store_true',
                         help='Generate health report after fetching')
@@ -1125,13 +1125,13 @@ def main():
                         help='Retry disabled sources and re-enable if successful')
     parser.add_argument('--no-auto-disable', action='store_true',
                         help='Disable automatic source disabling on repeated failures')
-    
+
     args = parser.parse_args()
-    
+
     # Ensure state directory exists
     db_path = Path(args.db)
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     # Handle validation mode
     if args.validate_source:
         from .health_monitor import FeedHealthMonitor
@@ -1139,21 +1139,21 @@ def main():
         result = monitor.validate_feed(args.validate_source)
         print(json.dumps(result, indent=2))
         return 0 if result['valid'] else 1
-    
+
     cache = FeedCache(db_path)
-    
+
     if args.init:
         catalog_path = Path(args.catalog)
         if not catalog_path.exists():
             print(f"Catalog not found: {catalog_path}")
             return 1
-        
+
         sources = load_sources_from_catalog(catalog_path)
-        
+
         # Validate sources before adding if health_monitor available
         from .health_monitor import FeedHealthMonitor
         monitor = FeedHealthMonitor(db_path)
-        
+
         valid_sources = []
         for source in sources:
             print(f"Validating {source.name}...", end=' ')
@@ -1163,23 +1163,23 @@ def main():
                 valid_sources.append(source)
             else:
                 print(f"❌ ({validation.get('error', 'Unknown error')})")
-        
+
         for source in valid_sources:
             cache.save_source(source)
             print(f"Registered: {source.name} ({source.id})")
         print(f"\nTotal sources: {len(valid_sources)} (validated)")
         return 0
-    
+
     # Initialize health monitor if available
     try:
         from .health_monitor import FeedHealthMonitor
         health_monitor = FeedHealthMonitor(db_path)
     except ImportError:
         health_monitor = None
-    
-    fetcher = FeedFetcher(cache, health_monitor=health_monitor, 
+
+    fetcher = FeedFetcher(cache, health_monitor=health_monitor,
                           auto_disable=not args.no_auto_disable)
-    
+
     # Handle retry-disabled mode
     if args.retry_disabled:
         disabled = cache.get_disabled_sources()
@@ -1190,12 +1190,12 @@ def main():
             print()
         else:
             print("No disabled sources to retry.")
-    
+
     results = fetcher.fetch_all(domain=args.domain, include_disabled=args.retry_disabled)
-    
+
     total = sum(len(entries) for entries in results.values())
     print(f"\nTotal entries fetched: {total}")
-    
+
     # Generate health report if requested
     if args.health_report and health_monitor:
         print("\n" + "=" * 60)
@@ -1205,12 +1205,12 @@ def main():
         print(f"Healthy: {report['summary']['healthy']}")
         print(f"Degraded: {report['summary']['degraded']}")
         print(f"Unhealthy: {report['summary']['unhealthy']}")
-        
+
         if report['problematic_feeds']:
             print("\nProblematic feeds:")
             for feed in report['problematic_feeds']:
                 print(f"  - {feed['source_name']}: {feed['status']}")
-    
+
     return 0
 
 

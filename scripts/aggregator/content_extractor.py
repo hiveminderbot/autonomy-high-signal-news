@@ -46,7 +46,7 @@ class ExtractedContent:
 
 class ContentExtractor:
     """Extract article content from URLs with respectful fetching."""
-    
+
     # Common paywall indicators in HTML
     PAYWALL_INDICATORS = [
         'paywall',
@@ -58,7 +58,7 @@ class ContentExtractor:
         'data-paywall',
         'wall-message',
     ]
-    
+
     # Content-heavy selectors to prioritize
     CONTENT_SELECTORS = [
         'article',
@@ -72,7 +72,7 @@ class ContentExtractor:
         '.post-body',
         '.article-body',
     ]
-    
+
     # Elements to remove
     NOISE_SELECTORS = [
         'nav', 'header', 'footer', 'aside', 'sidebar',
@@ -84,8 +84,8 @@ class ContentExtractor:
         'script', 'style', 'noscript', 'iframe',
         '.newsletter-signup', '.subscribe',
     ]
-    
-    def __init__(self, 
+
+    def __init__(self,
                  request_timeout: int = 30,
                  min_fetch_interval: float = 1.0,
                  respect_robots_txt: bool = True,
@@ -96,7 +96,7 @@ class ContentExtractor:
         self.user_agent = user_agent
         self._last_fetch_time: Optional[float] = None
         self._session: Optional[object] = None
-        
+
         if REQUESTS_AVAILABLE:
             self._session = requests.Session()
             self._session.headers.update({
@@ -106,7 +106,7 @@ class ContentExtractor:
                 'Accept-Encoding': 'gzip, deflate',
                 'Connection': 'keep-alive',
             })
-    
+
     def _rate_limit(self):
         """Enforce minimum interval between requests."""
         if self._last_fetch_time:
@@ -114,15 +114,15 @@ class ContentExtractor:
             if elapsed < self.min_fetch_interval:
                 time.sleep(self.min_fetch_interval - elapsed)
         self._last_fetch_time = time.time()
-    
+
     def _detect_paywall(self, soup: 'BeautifulSoup') -> bool:
         """Detect if content is behind a paywall."""
         html_str = str(soup).lower()
-        
+
         for indicator in self.PAYWALL_INDICATORS:
             if indicator in html_str:
                 return True
-        
+
         # Check for common paywall elements
         paywall_selectors = [
             '[class*="paywall"]',
@@ -131,13 +131,13 @@ class ContentExtractor:
             '.regwall',
             '.metered-content',
         ]
-        
+
         for selector in paywall_selectors:
             if soup.select(selector):
                 return True
-        
+
         return False
-    
+
     def _extract_title(self, soup: 'BeautifulSoup') -> Optional[str]:
         """Extract article title from HTML."""
         # Try common title selectors
@@ -150,23 +150,23 @@ class ContentExtractor:
             '.content h1',
             'h1',
         ]
-        
+
         for selector in title_selectors:
             elem = soup.select_one(selector)
             if elem:
                 return elem.get_text(strip=True)
-        
+
         # Fallback to meta title
         meta_title = soup.find('meta', property='og:title') or soup.find('meta', attrs={'name': 'title'})
         if meta_title:
             return meta_title.get('content', '').strip()
-        
+
         # Fallback to page title
         if soup.title:
             return soup.title.get_text(strip=True)
-        
+
         return None
-    
+
     def _extract_author(self, soup: 'BeautifulSoup') -> Optional[str]:
         """Extract article author from HTML."""
         author_selectors = [
@@ -177,16 +177,16 @@ class ContentExtractor:
             'meta[name="author"]',
             'meta[property="article:author"]',
         ]
-        
+
         for selector in author_selectors:
             elem = soup.select_one(selector)
             if elem:
                 if elem.name == 'meta':
                     return elem.get('content', '').strip()
                 return elem.get_text(strip=True)
-        
+
         return None
-    
+
     def _extract_published_date(self, soup: 'BeautifulSoup') -> Optional[datetime]:
         """Extract published date from HTML."""
         date_selectors = [
@@ -196,7 +196,7 @@ class ContentExtractor:
             '[class*="published"]',
             '[class*="date"]',
         ]
-        
+
         for selector in date_selectors:
             elem = soup.select_one(selector)
             if elem:
@@ -204,7 +204,7 @@ class ContentExtractor:
                     date_str = elem.get('content', '')
                 else:
                     date_str = elem.get('datetime', '') or elem.get_text(strip=True)
-                
+
                 if date_str:
                     try:
                         # Try common date formats
@@ -222,44 +222,44 @@ class ContentExtractor:
                                 continue
                     except Exception:
                         pass
-        
+
         return None
-    
+
     def _extract_content(self, soup: 'BeautifulSoup') -> tuple[str, str]:
         """Extract article content text and HTML."""
         # Remove noise elements
         for selector in self.NOISE_SELECTORS:
             for elem in soup.select(selector):
                 elem.decompose()
-        
+
         # Try to find main content
         content_elem = None
         for selector in self.CONTENT_SELECTORS:
             content_elem = soup.select_one(selector)
             if content_elem:
                 break
-        
+
         if not content_elem:
             # Fallback to body
             content_elem = soup.find('body') or soup
-        
+
         # Get HTML content
         content_html = str(content_elem)
-        
+
         # Get text content
         # Replace common block elements with newlines for readability
         for tag in content_elem.find_all(['p', 'br', 'h1', 'h2', 'h3', 'h4', 'li']):
             tag.append('\n')
-        
+
         content_text = content_elem.get_text(separator=' ', strip=True)
-        
+
         # Clean up whitespace
         content_text = re.sub(r'\n\s*\n', '\n\n', content_text)
         content_text = re.sub(r' +', ' ', content_text)
         content_text = content_text.strip()
-        
+
         return content_text, content_html
-    
+
     def extract(self, url: str) -> ExtractedContent:
         """Extract content from a URL."""
         if not REQUESTS_AVAILABLE:
@@ -276,7 +276,7 @@ class ContentExtractor:
                 extracted_at=datetime.now(),
                 extraction_error="requests library not available"
             )
-        
+
         if not BS4_AVAILABLE:
             return ExtractedContent(
                 url=url,
@@ -291,34 +291,34 @@ class ContentExtractor:
                 extracted_at=datetime.now(),
                 extraction_error="beautifulsoup4 library not available"
             )
-        
+
         self._rate_limit()
-        
+
         try:
             response = self._session.get(url, timeout=self.request_timeout)
             response.raise_for_status()
-            
+
             # Parse HTML
             soup = BeautifulSoup(response.content, 'html.parser')
-            
+
             # Detect paywall
             is_paywalled = self._detect_paywall(soup)
-            
+
             # Extract components
             title = self._extract_title(soup)
             author = self._extract_author(soup)
             published_at = self._extract_published_date(soup)
             content_text, content_html = self._extract_content(soup)
-            
+
             # Calculate metrics
             word_count = len(content_text.split())
             reading_time_minutes = max(1, word_count // 200)  # ~200 WPM reading speed
-            
+
             # Generate excerpt (first ~300 chars)
             excerpt = content_text[:300].strip()
             if len(content_text) > 300:
                 excerpt = excerpt.rsplit(' ', 1)[0] + '...'
-            
+
             return ExtractedContent(
                 url=url,
                 title=title,
@@ -332,7 +332,7 @@ class ContentExtractor:
                 extracted_at=datetime.now(),
                 is_paywalled=is_paywalled
             )
-            
+
         except requests.RequestException as e:
             return ExtractedContent(
                 url=url,
@@ -361,7 +361,7 @@ class ContentExtractor:
                 extracted_at=datetime.now(),
                 extraction_error=f"Extraction failed: {str(e)}"
             )
-    
+
     def extract_batch(self, urls: list[str], progress_callback=None) -> list[ExtractedContent]:
         """Extract content from multiple URLs."""
         results = []
@@ -376,21 +376,21 @@ class ContentExtractor:
 def main():
     """CLI entry point for testing."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Extract content from URLs')
     parser.add_argument('url', help='URL to extract content from')
     parser.add_argument('--output', '-o', choices=['text', 'json', 'excerpt'], default='excerpt',
                         help='Output format')
-    
+
     args = parser.parse_args()
-    
+
     extractor = ContentExtractor()
     result = extractor.extract(args.url)
-    
+
     if result.extraction_error:
         print(f"Error: {result.extraction_error}", file=sys.stderr)
         return 1
-    
+
     if args.output == 'json':
         import json
         output = {
@@ -417,7 +417,7 @@ def main():
         print(f"Excerpt: {result.excerpt}")
         print(f"Word count: {result.word_count}")
         print(f"Paywalled: {result.is_paywalled}")
-    
+
     return 0
 
 

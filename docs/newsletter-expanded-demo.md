@@ -180,6 +180,6 @@ Themes appearing across **multiple generalist sources**:
 
 *Generated: March 22, 2026*
 
-**Sources:** 27 newsletters across 11 domains  
-**New additions:** 10 sources (Security, Design, Climate, DevOps, ML Engineering, Leadership)  
+**Sources:** 27 newsletters across 11 domains
+**New additions:** 10 sources (Security, Design, Climate, DevOps, ML Engineering, Leadership)
 **Method:** RSS aggregation → Content extraction → Cross-source validation

@@ -1,6 +1,6 @@
 # High-Signal Source Bootstrap
 
-**Date:** 2026-03-21  
+**Date:** 2026-03-21
 **Status:** Sources researched and cataloged
 
 ## Philosophy
@@ -83,11 +83,11 @@ Use search APIs **once** (or periodically) to discover high-signal sources. Then
 Monday:
   - This Week in Rust (check if new issue)
   - JavaScript Weekly (check if new issue)
-  
+
 Wednesday/Thursday:
   - Import AI (usually Wednesday)
   - The Diff (daily but digest on Thu)
-  
+
 Friday:
   - Stratechery (free weekly)
 ```

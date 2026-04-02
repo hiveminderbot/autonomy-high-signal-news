@@ -31,7 +31,7 @@ DOMAIN_SOURCES = {
 def get_recent_generalist_articles(conn, days=7):
     """Get articles from generalist feeds only."""
     placeholders = ','.join(f"'{s}'" for s in GENERALIST_SOURCES)
-    
+
     cursor = conn.execute(f'''
         SELECT title, url, source, full_content, fetched_at
         FROM articles
@@ -45,13 +45,13 @@ def get_recent_generalist_articles(conn, days=7):
 def extract_themes_from_text(title, content):
     """Extract technology themes from text."""
     text = f"{title} {content or ''}".lower()
-    
+
     themes = {}
-    
+
     # Define theme patterns with keywords
     theme_patterns = {
         'llms_ai': {
-            'keywords': ['llm', 'gpt', 'claude', 'gemini', 'ai model', 'foundation model', 
+            'keywords': ['llm', 'gpt', 'claude', 'gemini', 'ai model', 'foundation model',
                         'transformer', 'attention mechanism', 'large language'],
             'weight': 1.0
         },
@@ -101,7 +101,7 @@ def extract_themes_from_text(title, content):
             'weight': 0.8
         }
     }
-    
+
     for theme_name, config in theme_patterns.items():
         score = 0
         for keyword in config['keywords']:
@@ -109,20 +109,20 @@ def extract_themes_from_text(title, content):
                 score += 1
         if score > 0:
             themes[theme_name] = score * config['weight']
-    
+
     return themes
 
 
 def detect_cross_source_themes(articles):
     """Detect themes that appear across multiple generalist sources."""
-    
+
     # Theme -> list of articles
     theme_articles = defaultdict(list)
-    
+
     for article in articles:
         title, url, source, content, fetched_at = article
         themes = extract_themes_from_text(title, content)
-        
+
         for theme, score in themes.items():
             if score > 0.5:  # Threshold
                 theme_articles[theme].append({
@@ -132,7 +132,7 @@ def detect_cross_source_themes(articles):
                     'score': score,
                     'fetched_at': fetched_at
                 })
-    
+
     # Filter to themes with multiple sources (cross-source = more significant)
     cross_source_themes = {}
     for theme, articles_list in theme_articles.items():
@@ -144,7 +144,7 @@ def detect_cross_source_themes(articles):
                 'articles': articles_list[:5],  # Top 5
                 'total_score': sum(a['score'] for a in articles_list)
             }
-    
+
     # Sort by significance (total score)
     return dict(sorted(
         cross_source_themes.items(),
@@ -156,15 +156,15 @@ def detect_cross_source_themes(articles):
 def analyze_sentiment(title, content):
     """Simple sentiment analysis for practitioner sentiment."""
     text = f"{title} {content or ''}".lower()
-    
+
     positive = ['excited', 'awesome', 'great', 'love', 'impressive', 'breakthrough', 'milestone']
     negative = ['concerned', 'worried', 'problem', 'issue', 'broken', 'disappointed', 'frustrated']
     concerned = ['enshittification', 'consolidation', 'monopoly', 'privacy', 'surveillance']
-    
+
     pos_count = sum(1 for p in positive if p in text)
     neg_count = sum(1 for n in negative if n in text)
     concern_count = sum(1 for c in concerned if c in text)
-    
+
     if concern_count > 0:
         return 'concerned', concern_count
     elif neg_count > pos_count:
@@ -177,7 +177,7 @@ def analyze_sentiment(title, content):
 
 def generate_theme_report(themes, articles):
     """Generate a theme analysis report."""
-    
+
     lines = [
         "# Cross-Source Theme Analysis",
         "",
@@ -201,7 +201,7 @@ def generate_theme_report(themes, articles):
         "---",
         "",
     ]
-    
+
     if not themes:
         lines.append("## No Cross-Source Themes Detected")
         lines.append("")
@@ -211,12 +211,12 @@ def generate_theme_report(themes, articles):
         lines.append("- Diverse technical discussions")
         lines.append("- Need to check domain-specific feeds for deeper content")
         return '\n'.join(lines)
-    
+
     lines.append("## 🔥 Significant Cross-Source Themes")
     lines.append("")
     lines.append("Themes appearing in multiple generalist sources:")
     lines.append("")
-    
+
     theme_names = {
         'llms_ai': '🤖 LLMs & Foundation Models',
         'ai_safety': '⚠️ AI Safety & Alignment',
@@ -229,7 +229,7 @@ def generate_theme_report(themes, articles):
         'developer_tools': '🛠️ Developer Tools',
         'open_source': '📂 Open Source'
     }
-    
+
     for theme_key, data in list(themes.items())[:5]:
         display_name = theme_names.get(theme_key, theme_key)
         lines.append(f"### {display_name}")
@@ -242,59 +242,59 @@ def generate_theme_report(themes, articles):
             emoji = {'positive': '✅', 'negative': '⚠️', 'concerned': '🚨', 'neutral': '•'}[sentiment]
             lines.append(f"{emoji} **{article['title']}** ({article['source']})")
         lines.append("")
-    
+
     # Sentiment analysis
     lines.append("---")
     lines.append("")
     lines.append("## 📊 Practitioner Sentiment")
     lines.append("")
-    
+
     sentiments = defaultdict(int)
     for article in articles:
         sentiment, _ = analyze_sentiment(article[0], article[3])
         sentiments[sentiment] += 1
-    
+
     total = len(articles)
     for sentiment, count in sorted(sentiments.items(), key=lambda x: x[1], reverse=True):
         pct = (count / total) * 100
         emoji = {'positive': '✅', 'negative': '⚠️', 'concerned': '🚨', 'neutral': '⚪'}[sentiment]
         lines.append(f"{emoji} {sentiment.capitalize()}: {count} articles ({pct:.0f}%)")
-    
+
     lines.append("")
     lines.append("---")
     lines.append("")
     lines.append("## 🎯 Implications")
     lines.append("")
-    
+
     # Generate implications based on top themes
     top_themes = list(themes.keys())[:3]
-    
+
     if 'llms_ai' in top_themes and 'training_inference' in top_themes:
         lines.append("- **AI Infrastructure:** Focus shifting from model releases to")
         lines.append("  training efficiency and inference optimization - sign of maturation")
-    
+
     if 'robotics' in top_themes:
         lines.append("- **Physical AI:** Robotics discussions crossing into generalist tech")
         lines.append("  communities - potential inflection point for embodied AI")
-    
+
     if 'rust_systems' in top_themes:
         lines.append("- **Systems Language Shift:** Rust continues expanding beyond")
         lines.append("  early adopters into mainstream systems programming")
-    
+
     if 'ai_safety' in top_themes:
         lines.append("- **Safety Mainstreaming:** AI safety/alignment discussions")
         lines.append("  appearing in general engineering forums, not just research circles")
-    
+
     if not top_themes:
         lines.append("- **No dominant narratives** - fragmented attention across")
         lines.append("  many technical areas. Good time for focused deep work.")
-    
+
     lines.append("")
     lines.append("---")
     lines.append("")
     lines.append(f"*Analysis method: Cross-source theme detection on {len(GENERALIST_SOURCES)} generalist feeds*")
     lines.append(f"*Data: {len(articles)} articles from past 7 days*")
-    
+
     return '\n'.join(lines)
 
 
@@ -304,41 +304,41 @@ def main():
     print(f"Generalist sources: {', '.join(GENERALIST_SOURCES)}")
     print(f"Domain sources (content only): {', '.join(DOMAIN_SOURCES.keys())}")
     print()
-    
+
     conn = sqlite3.connect(DB_PATH)
-    
+
     print("Fetching articles from generalist sources...")
     articles = get_recent_generalist_articles(conn)
     print(f"  Found {len(articles)} articles")
-    
+
     if len(articles) < 5:
         print("ERROR: Not enough articles for meaningful analysis")
         conn.close()
         return 1
-    
+
     print("\nExtracting themes...")
     themes = detect_cross_source_themes(articles)
     print(f"  Found {len(themes)} cross-source themes")
-    
+
     for theme, data in themes.items():
         print(f"    {theme}: {data['article_count']} articles, sources: {data['sources']}")
-    
+
     print("\nGenerating report...")
     report = generate_theme_report(themes, articles)
-    
+
     output_path = 'output/cross-source-analysis.md'
     with open(output_path, 'w') as f:
         f.write(report)
-    
+
     print(f"Report written to {output_path}")
-    
+
     # Preview
     print("\n" + "="*50)
     print("PREVIEW:")
     print("="*50)
     print(report[:2000])
     print("...")
-    
+
     conn.close()
     return 0
 

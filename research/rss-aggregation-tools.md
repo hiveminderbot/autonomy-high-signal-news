@@ -11,7 +11,7 @@ status: completed
 
 This research evaluates three RSS aggregation solutions for potential integration with the high-signal-news lab:
 1. **FreshRSS** - Feature-rich self-hosted RSS aggregator
-2. **Miniflux** - Minimalist self-hosted RSS reader  
+2. **Miniflux** - Minimalist self-hosted RSS reader
 3. **Kill the Newsletter** - Newsletter-to-RSS conversion service
 
 **Recommendation**: Continue with current custom Python aggregator. FreshRSS and Miniflux add operational complexity without significant benefits for our use case. Consider Kill the Newsletter as supplementary tool for specific newsletter sources.
