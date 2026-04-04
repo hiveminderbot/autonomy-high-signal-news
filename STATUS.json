@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "High-signal news aggregation and briefing generation for AI, software development, and tech investment",
   "created_at": "2026-03-21",
-  "updated_at": "2026-03-30T15:15:00.000000Z",
+  "updated_at": "2026-04-04T08:10:00.000000Z",
   "owner": "autonomy",
   "repository": "forgejo:exedev/high-signal-news",
   "documentation": {
@@ -17,9 +17,9 @@
       "status": "operational",
       "description": "SQLite database with articles, sources, feed_entries tables",
       "metrics": {
-        "sources_configured": 30,
-        "articles_stored": 58,
-        "feed_entries": 0
+        "sources_configured": 41,
+        "articles_stored": 356,
+        "feed_entries": 28
       }
     },
     "rss_aggregation": {
@@ -113,9 +113,18 @@
   },
   "validation_status": {
     "overall": "healthy",
-    "last_validation": "2026-03-30",
+    "last_validation": "2026-04-04",
     "issues": [],
     "resolved": [
+      {
+        "component": "rss_sources",
+        "resolution": "Added 2 missing RSS sources (Distill.pub, TechCrunch). Validated RSS fetcher fetches 28 new articles across 7 sources. Briefing generator produces 117-article briefings with cross-source themes.",
+        "validation": {
+          "command": "python scripts/fetch_rss.py",
+          "result": "28 articles fetched from HN, arXiv, HF Blog, TWiR, JS Weekly, Lobsters, Distill.pub",
+          "briefing_output": "briefing-high-signal-2026-04-04.md (117 articles)"
+        }
+      },
       {
         "component": "validation_checks",
         "resolution": "Added PyYAML==6.0.1 to requirements.txt. The validation_checks module (shared from infrastructure/labtools) requires PyYAML for docs-config.yaml parsing. Validation now passes 12/12 checks.",
