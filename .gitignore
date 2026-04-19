@@ -28,3 +28,4 @@ logs/*.log
 .idea/
 *.swp
 *.swo
+test-output/
