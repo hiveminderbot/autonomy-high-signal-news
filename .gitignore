@@ -1,6 +1,7 @@
 # Runtime data
 state/feeds.db
 state/*.db
+state/reference_packages.json
 *.db
 
 # Python
