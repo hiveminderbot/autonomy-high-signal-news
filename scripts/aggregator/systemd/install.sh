@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Install systemd service and timer for High-Signal News aggregation
 #

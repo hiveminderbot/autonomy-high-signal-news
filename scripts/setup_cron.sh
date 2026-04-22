@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Cron Setup Script for High-Signal News Aggregation
 #
