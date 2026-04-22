@@ -173,6 +173,9 @@ Generate today's briefing:
 ```bash
 cd ~/autonomy/labs/high-signal-news
 
+# Validate the lab first with the preferred Nix wrapper
+./scripts/run-tests-nix.sh -q
+
 # Fetch fresh content
 scripts/run-with-nix-python.sh scripts/fetch_high_signal.py
 

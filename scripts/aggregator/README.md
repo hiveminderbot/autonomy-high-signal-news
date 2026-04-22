@@ -141,6 +141,9 @@ The SQLite database (`data/news.db`) includes:
 ## Testing
 
 ```bash
+# Run the full suite through the lab's preferred Nix wrapper
+./scripts/run-tests-nix.sh -q
+
 # Run aggregation pipeline tests
 scripts/run-with-nix-python.sh -m pytest tests/test_aggregation_pipeline.py -v
 

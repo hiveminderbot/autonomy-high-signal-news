@@ -22,11 +22,13 @@ The aggregation pipeline can be run in two modes:
 ```bash
 cd /home/autonomy/labs/high-signal-news
 chmod +x scripts/run-with-nix-python.sh
+chmod +x scripts/run-tests-nix.sh
 chmod +x scripts/aggregator/systemd/run-daily-aggregation-nix.sh
 scripts/run-with-nix-python.sh scripts/run_daily_aggregation.py --help >/dev/null
+./scripts/run-tests-nix.sh -q
 ```
 
-This deployment path is Nix-first: it does not require creating a `.venv` or using a globally installed Python package set.
+This deployment path is Nix-first: it does not require creating a `.venv` or using a globally installed Python package set. Use `./scripts/run-tests-nix.sh -q` as the baseline validation gate before installing or changing the systemd service.
 
 ### 2. Create Required Directories
 
@@ -45,6 +47,14 @@ scripts/run-with-nix-python.sh -c "from scripts.aggregator.storage import Articl
 ## Manual Execution
 
 ### Basic Run (AI domain only)
+
+Before using the scheduled service, validate the repo with the preferred Nix wrapper:
+
+```bash
+./scripts/run-tests-nix.sh -q
+```
+
+Then run the aggregation command itself:
 
 ```bash
 scripts/aggregator/systemd/run-daily-aggregation-nix.sh \

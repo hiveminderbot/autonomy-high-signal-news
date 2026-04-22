@@ -104,8 +104,8 @@ git commit --no-verify -m "fix: emergency patch"
 # Run newsletter pipeline
 scripts/run-with-nix-python.sh scripts/generate_newsletter.py
 
-# Test suite
-scripts/run-with-nix-python.sh -m pytest tests/ -v
+# Test suite (preferred Nix validation gate)
+./scripts/run-tests-nix.sh -v
 
 # Validate sources
 scripts/run-with-nix-python.sh scripts/validate_sources.py
