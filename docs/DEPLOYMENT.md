@@ -21,10 +21,11 @@ The aggregation pipeline can be run in two modes:
 
 ```bash
 cd /home/autonomy/labs/high-signal-news
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+chmod +x scripts/aggregator/systemd/run-daily-aggregation-nix.sh
+nix-shell -p python312 python312Packages.feedparser python312Packages.requests python312Packages.beautifulsoup4 python312Packages.pyyaml python312Packages.sgmllib3k --run 'python3 scripts/run_daily_aggregation.py --help >/dev/null'
 ```
+
+This deployment path is Nix-first: it does not require creating a `.venv` or using a globally installed Python package set.
 
 ### 2. Create Required Directories
 
@@ -45,10 +46,7 @@ python3 -c "from scripts.aggregator.storage import ArticleStorage; s = ArticleSt
 ### Basic Run (AI domain only)
 
 ```bash
-cd /home/autonomy/labs/high-signal-news
-source .venv/bin/activate
-
-python scripts/run_daily_aggregation.py \
+scripts/aggregator/systemd/run-daily-aggregation-nix.sh \
     --db state/aggregation.db \
     --newsletter-db state/newsletters.db \
     --catalog sources/sources-ai.json \
@@ -98,14 +96,14 @@ Edit `/etc/systemd/system/high-signal-news.service` to match your setup:
 User=your-username
 Group=your-group
 WorkingDirectory=/path/to/high-signal-news
-ExecStart=/path/to/high-signal-news/.venv/bin/python \
-    scripts/run_daily_aggregation.py \
-    --db state/aggregation.db \
-    --newsletter-db state/newsletters.db \
-    --catalog sources/sources-ai.json \
-    --newsletter-catalog sources/newsletter_catalog.json \
-    --output-dir output \
-    --log-dir logs
+Environment="PATH=/home/your-username/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/usr/bin:/bin"
+ExecStart=/path/to/high-signal-news/scripts/aggregator/systemd/run-daily-aggregation-nix.sh \
+    --db /path/to/high-signal-news/state/aggregation.db \
+    --newsletter-db /path/to/high-signal-news/state/newsletters.db \
+    --catalog /path/to/high-signal-news/sources/sources-ai.json \
+    --newsletter-catalog /path/to/high-signal-news/sources/newsletter_catalog.json \
+    --output-dir /path/to/high-signal-news/output \
+    --log-dir /path/to/high-signal-news/logs
 ReadWritePaths=/path/to/high-signal-news/state \
                /path/to/high-signal-news/output \
                /path/to/high-signal-news/logs

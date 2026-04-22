@@ -130,18 +130,15 @@ install_service() {
     local current_user
     current_user="${USER:-$(whoami)}"
 
-    # Determine Python path
-    local python_path
-    if [[ -f "${LAB_ROOT}/.venv/bin/python" ]]; then
-        python_path="${LAB_ROOT}/.venv/bin/python"
-    elif command -v python3 &>/dev/null; then
-        python_path="$(command -v python3)"
-    else
-        log_error "Python not found"
+    # Determine Nix-backed runner path
+    local runner_path
+    runner_path="${LAB_ROOT}/scripts/aggregator/systemd/run-daily-aggregation-nix.sh"
+    if [[ ! -x "$runner_path" ]]; then
+        log_error "Nix runner not found or not executable: $runner_path"
         exit 1
     fi
 
-    log_info "Using Python: $python_path"
+    log_info "Using Nix runner: $runner_path"
 
     # Create service file
     log_info "Creating service file..."
@@ -156,17 +153,17 @@ Type=oneshot
 User=${current_user}
 Group=${current_user}
 WorkingDirectory=${LAB_ROOT}
-Environment="PATH=${LAB_ROOT}/.venv/bin:/usr/local/bin:/usr/bin:/bin"
-Environment="PYTHONPATH=${LAB_ROOT}/scripts"
+Environment="PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin"
 EnvironmentFile=-${ENV_FILE}
 
-# Run the daily aggregation
-ExecStart=${python_path} \\
-    ${LAB_ROOT}/scripts/aggregator/daily_pipeline.py \\
-    --db ${LAB_ROOT}/data/news.db \\
-    --catalog ${LAB_ROOT}/sources/sources-ai.json \\
-    --output-dir ${LAB_ROOT}/output \\
-    -v
+# Run the daily aggregation through the Nix-backed wrapper
+ExecStart=${runner_path} \
+    --db ${LAB_ROOT}/state/aggregation.db \
+    --newsletter-db ${LAB_ROOT}/state/newsletters.db \
+    --catalog ${LAB_ROOT}/sources/sources-ai.json \
+    --newsletter-catalog ${LAB_ROOT}/sources/newsletter_catalog.json \
+    --output-dir ${LAB_ROOT}/output \
+    --log-dir ${LAB_ROOT}/logs
 
 # Security hardening
 NoNewPrivileges=true

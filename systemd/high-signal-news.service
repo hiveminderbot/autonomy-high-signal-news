@@ -8,13 +8,11 @@ Type=oneshot
 User=exedev
 Group=exedev
 WorkingDirectory=/home/exedev/autonomy/labs/high-signal-news
-Environment="PATH=/home/exedev/.local/bin:/usr/bin:/bin"
-Environment="PYTHONPATH=/home/exedev/autonomy/labs/high-signal-news/scripts"
+Environment="PATH=/home/exedev/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/usr/bin:/bin"
 Environment="BEADS_DIR=/home/exedev/autonomy/.beads"
 
-# Run the daily aggregation
-ExecStart=/home/exedev/autonomy/labs/high-signal-news/.venv/bin/python \
-    scripts/run_daily_aggregation.py \
+# Run the daily aggregation through the Nix-backed wrapper
+ExecStart=/home/exedev/autonomy/labs/high-signal-news/scripts/aggregator/systemd/run-daily-aggregation-nix.sh \
     --db state/aggregation.db \
     --newsletter-db state/newsletters.db \
     --catalog sources/sources-ai.json \
