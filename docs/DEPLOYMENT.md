@@ -21,8 +21,9 @@ The aggregation pipeline can be run in two modes:
 
 ```bash
 cd /home/autonomy/labs/high-signal-news
+chmod +x scripts/run-with-nix-python.sh
 chmod +x scripts/aggregator/systemd/run-daily-aggregation-nix.sh
-nix-shell -p python312 python312Packages.feedparser python312Packages.requests python312Packages.beautifulsoup4 python312Packages.pyyaml python312Packages.sgmllib3k --run 'python3 scripts/run_daily_aggregation.py --help >/dev/null'
+scripts/run-with-nix-python.sh scripts/run_daily_aggregation.py --help >/dev/null
 ```
 
 This deployment path is Nix-first: it does not require creating a `.venv` or using a globally installed Python package set.
@@ -38,7 +39,7 @@ mkdir -p state output logs
 The databases are created automatically on first run, but you can verify connectivity:
 
 ```bash
-python3 -c "from scripts.aggregator.storage import ArticleStorage; s = ArticleStorage('state/aggregation.db'); print('Database OK')"
+scripts/run-with-nix-python.sh -c "from scripts.aggregator.storage import ArticleStorage; s = ArticleStorage('state/aggregation.db'); print('Database OK')"
 ```
 
 ## Manual Execution
@@ -58,8 +59,8 @@ scripts/aggregator/systemd/run-daily-aggregation-nix.sh \
 ### With Limits (for testing)
 
 ```bash
-# Process only 5 feeds and 3 newsletters
-python scripts/run_daily_aggregation.py \
+# Process only 5 feeds and 3 newsletters with the Nix wrapper
+scripts/run-with-nix-python.sh scripts/run_daily_aggregation.py \
     --catalog sources/sources-ai.json \
     --limit-feeds 5 \
     --limit-newsletters 3 \
@@ -69,7 +70,7 @@ python scripts/run_daily_aggregation.py \
 ### Skip Content Extraction (faster)
 
 ```bash
-python scripts/run_daily_aggregation.py \
+scripts/run-with-nix-python.sh scripts/run_daily_aggregation.py \
     --catalog sources/sources-ai.json \
     --no-extract
 ```

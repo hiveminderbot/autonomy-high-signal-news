@@ -102,13 +102,13 @@ git commit --no-verify -m "fix: emergency patch"
 
 ```bash
 # Run newsletter pipeline
-python3 scripts/generate_newsletter.py
+scripts/run-with-nix-python.sh scripts/generate_newsletter.py
 
-# Test curator
-cd src/curator && python3 -m pytest tests/ -v
+# Test suite
+scripts/run-with-nix-python.sh -m pytest tests/ -v
 
 # Validate sources
-python3 scripts/validate_sources.py
+scripts/run-with-nix-python.sh scripts/validate_sources.py
 ```
 
 ### Git Operations
@@ -162,7 +162,7 @@ git checkout -b feat/add-source-autonomy-XXXX
 # 2. Add source to sources/ directory
 
 # 3. Validate source
-python3 scripts/validate_sources.py
+scripts/run-with-nix-python.sh scripts/validate_sources.py
 
 # 4. Commit and push
 git add -A

@@ -6,7 +6,10 @@ Cron-compatible script for generating and delivering daily briefings.
 Orchestrates the full pipeline: aggregation → summarization → briefing → delivery
 
 Cron setup (run at 7:00 AM daily):
-    0 7 * * * cd /home/exedev/autonomy/labs/high-signal-news && python -m scripts.scheduler.daily_briefing >> logs/scheduler.log 2>&1
+    0 7 * * * cd /home/exedev/autonomy/labs/high-signal-news && ./scripts/run-daily.sh >> logs/scheduler.log 2>&1
+
+Or use the generic Nix-backed wrapper directly:
+    ./scripts/run-with-nix-python.sh -m scripts.scheduler.daily_briefing
 
 Or use the provided shell wrapper:
     ./scripts/run-daily.sh
@@ -416,14 +419,14 @@ def main():
         epilog="""
 Examples:
     # Full run (aggregation + briefing + delivery)
-    python -m scripts.scheduler.daily_briefing
+    ./scripts/run-with-nix-python.sh -m scripts.scheduler.daily_briefing
 
     # Skip aggregation, use cached stories
-    python -m scripts.scheduler.daily_briefing --skip-aggregation
+    ./scripts/run-with-nix-python.sh -m scripts.scheduler.daily_briefing --skip-aggregation
 
     # Custom config and output
-    python -m scripts.scheduler.daily_briefing \\
-        --config config/delivery.json \\
+    ./scripts/run-with-nix-python.sh -m scripts.scheduler.daily_briefing \
+        --config config/delivery.json \
         --output ./custom_output
         """
     )

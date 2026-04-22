@@ -20,19 +20,20 @@ LAB_DIR="$(dirname "$SCRIPT_DIR")"
 # Change to lab directory
 cd "$LAB_DIR"
 
-# Set up Python path
-export PYTHONPATH="$SCRIPT_DIR:$PYTHONPATH"
+RUN_WITH_NIX_PYTHON="$SCRIPT_DIR/run-with-nix-python.sh"
 
-# Default Python interpreter
-PYTHON="${PYTHON:-python3}"
+if [[ ! -x "$RUN_WITH_NIX_PYTHON" ]]; then
+    echo "[ERROR] Missing executable Nix Python wrapper: $RUN_WITH_NIX_PYTHON" >&2
+    exit 1
+fi
 
 # Log startup
 echo "[$(date -Iseconds)] Starting daily aggregation cron job"
 echo "[$(date -Iseconds)] Working directory: $LAB_DIR"
-echo "[$(date -Iseconds)] Python: $PYTHON"
+echo "[$(date -Iseconds)] Python wrapper: $RUN_WITH_NIX_PYTHON"
 
 # Run the aggregation
-if $PYTHON scripts/run_daily_aggregation.py "$@"; then
+if "$RUN_WITH_NIX_PYTHON" scripts/run_daily_aggregation.py "$@"; then
     echo "[$(date -Iseconds)] Daily aggregation completed successfully"
     exit 0
 else

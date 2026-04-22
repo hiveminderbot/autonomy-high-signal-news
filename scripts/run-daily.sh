@@ -17,10 +17,10 @@ set -euo pipefail
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LAB_DIR="$(dirname "$SCRIPT_DIR")"
-VENV_PATH="${LAB_DIR}/venv"
 LOG_DIR="${LAB_DIR}/logs"
 OUTPUT_DIR="${LAB_DIR}/output"
 CONFIG_DIR="${LAB_DIR}/config"
+RUN_WITH_NIX_PYTHON="${SCRIPT_DIR}/run-with-nix-python.sh"
 
 # Create directories
 mkdir -p "$LOG_DIR" "$OUTPUT_DIR" "$CONFIG_DIR"
@@ -83,11 +83,9 @@ if [[ "$FORCE_REGENERATE" == false && -f "$TODAY_BRIEFING" ]]; then
     exit 0
 fi
 
-# Activate virtual environment if it exists
-if [[ -f "$VENV_PATH/bin/activate" ]]; then
-    # shellcheck source=/dev/null
-    source "$VENV_PATH/bin/activate"
-    log "Activated virtual environment: $VENV_PATH"
+if [[ ! -x "$RUN_WITH_NIX_PYTHON" ]]; then
+    log "Missing executable Nix Python wrapper: $RUN_WITH_NIX_PYTHON"
+    exit 1
 fi
 
 log "=================================================="
@@ -102,19 +100,20 @@ log ""
 cd "$LAB_DIR"
 
 # Build Python command
-PYTHON_CMD="python3 -m scripts.scheduler.daily_briefing"
+PYTHON_CMD=("$RUN_WITH_NIX_PYTHON" -m scripts.scheduler.daily_briefing)
 
 if [[ "$SKIP_AGGREGATION" == true ]]; then
-    PYTHON_CMD="$PYTHON_CMD --skip-aggregation"
+    PYTHON_CMD+=(--skip-aggregation)
 fi
 
-PYTHON_CMD="$PYTHON_CMD --output $OUTPUT_DIR --log-dir $LOG_DIR"
+PYTHON_CMD+=(--output "$OUTPUT_DIR" --log-dir "$LOG_DIR")
 
 # Run the scheduler
-log "Running: $PYTHON_CMD"
+printf -v PYTHON_CMD_LOG '%q ' "${PYTHON_CMD[@]}"
+log "Running: ${PYTHON_CMD_LOG% }"
 log ""
 
-if $PYTHON_CMD 2>&1 | tee -a "$LOG_FILE"; then
+if "${PYTHON_CMD[@]}" 2>&1 | tee -a "$LOG_FILE"; then
     log ""
     log "=================================================="
     log "Daily briefing completed successfully"
