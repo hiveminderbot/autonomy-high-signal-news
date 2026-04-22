@@ -66,7 +66,7 @@ INSERT INTO sources (name, url, domain, type) VALUES
 
 Then run:
 ```bash
-python scripts/aggregator/feed_fetcher.py
+scripts/run-with-nix-python.sh scripts/aggregator/feed_fetcher.py
 ```
 
 ### Option 2: Wait for API Rate Limit Reset
@@ -172,16 +172,15 @@ fetch_high_signal.py → extract_with_jina.py → generate_high_signal_briefing.
 Generate today's briefing:
 ```bash
 cd ~/autonomy/labs/high-signal-news
-source .venv/bin/activate
 
 # Fetch fresh content
-python scripts/fetch_high_signal.py
+scripts/run-with-nix-python.sh scripts/fetch_high_signal.py
 
 # Extract full text
-python scripts/extract_with_jina.py
+scripts/run-with-nix-python.sh scripts/extract_with_jina.py
 
 # Generate briefing
-python scripts/generate_high_signal_briefing.py
+scripts/run-with-nix-python.sh scripts/generate_high_signal_briefing.py
 
 # View result
 cat output/briefing-high-signal-$(date +%Y-%m-%d).md

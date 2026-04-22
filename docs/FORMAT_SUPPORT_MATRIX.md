@@ -103,20 +103,20 @@ Sources requiring HTML scraping (no RSS or RSS is broken).
 
 ```bash
 # Initialize from catalog
-python scripts/aggregator/feed_fetcher.py --init --catalog sources/sources-ai.json
+scripts/run-with-nix-python.sh scripts/aggregator/feed_fetcher.py --init --catalog sources/sources-ai.json
 
 # Fetch all feeds
-python scripts/aggregator/feed_fetcher.py
+scripts/run-with-nix-python.sh scripts/aggregator/feed_fetcher.py
 
 # Fetch specific domain
-python scripts/aggregator/feed_fetcher.py --domain ai
+scripts/run-with-nix-python.sh scripts/aggregator/feed_fetcher.py --domain ai
 ```
 
 ### Ingesting Newsletters
 
 ```bash
 # Load newsletter sources
-python -c "
+scripts/run-with-nix-python.sh -c "
 from aggregator.newsletter_ingester import *
 from pathlib import Path
 
@@ -130,7 +130,7 @@ print(f'Loaded {len(sources)} newsletter sources')
 
 ```bash
 # Run full pipeline with newsletter ingestion enabled
-python scripts/aggregator/pipeline.py \
+scripts/run-with-nix-python.sh scripts/aggregator/pipeline.py \
   --catalog sources/sources-ai.json \
   --db data/aggregator.db \
   --blog-catalog sources/blog_scraper_catalog.json \
@@ -143,13 +143,13 @@ python scripts/aggregator/pipeline.py \
 
 ```bash
 # Scrape all blog sources
-python scripts/aggregator/blog_scraper.py --catalog sources/blog_scraper_catalog.json
+scripts/run-with-nix-python.sh scripts/aggregator/blog_scraper.py --catalog sources/blog_scraper_catalog.json
 
 # Scrape specific source with content extraction
-python scripts/aggregator/blog_scraper.py --source python-insider --extract-content
+scripts/run-with-nix-python.sh scripts/aggregator/blog_scraper.py --source python-insider --extract-content
 
 # Scrape by domain
-python scripts/aggregator/blog_scraper.py --domain ai
+scripts/run-with-nix-python.sh scripts/aggregator/blog_scraper.py --domain ai
 ```
 
 ## Adding New Sources
@@ -270,7 +270,7 @@ The sources feed into the aggregation pipeline in this order:
 
 ### Command (Full Pipeline)
 ```bash
-python scripts/aggregator/pipeline.py \
+scripts/run-with-nix-python.sh scripts/aggregator/pipeline.py \
   --catalog sources/sources-ai.json \
   --db data/aggregator.db \
   --blog-catalog sources/blog_scraper_catalog.json \

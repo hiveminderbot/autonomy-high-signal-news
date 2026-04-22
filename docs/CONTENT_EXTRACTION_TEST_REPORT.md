@@ -24,7 +24,7 @@ Content extraction testing revealed a **critical rate-limiting issue** with the 
 
 #### Test 1: Baseline (No Content Extraction)
 ```bash
-python scripts/run_daily_aggregation.py \
+scripts/run-with-nix-python.sh scripts/run_daily_aggregation.py \
   --catalog sources/sources-test.json \
   --limit-feeds 5 \
   --no-extract
@@ -49,7 +49,7 @@ python scripts/run_daily_aggregation.py \
 
 #### Test 2: With Content Extraction
 ```bash
-python scripts/run_daily_aggregation.py \
+scripts/run-with-nix-python.sh scripts/run_daily_aggregation.py \
   --catalog sources/sources-test.json \
   --limit-feeds 5
 ```

@@ -72,16 +72,16 @@ This module provides the core infrastructure for:
 ```bash
 # Run full pipeline
 cd /home/exedev/autonomy/labs/high-signal-news
-python scripts/aggregator/daily_pipeline.py
+scripts/run-with-nix-python.sh scripts/aggregator/daily_pipeline.py
 
 # Dry run (no database writes)
-python scripts/aggregator/daily_pipeline.py --dry-run
+scripts/run-with-nix-python.sh scripts/aggregator/daily_pipeline.py --dry-run
 
 # Verbose output with domain filter
-python scripts/aggregator/daily_pipeline.py -v --domain ai
+scripts/run-with-nix-python.sh scripts/aggregator/daily_pipeline.py -v --domain ai
 
 # JSON output for scripting
-python scripts/aggregator/daily_pipeline.py --json
+scripts/run-with-nix-python.sh scripts/aggregator/daily_pipeline.py --json
 ```
 
 ### Install Systemd Timer
@@ -142,16 +142,16 @@ The SQLite database (`data/news.db`) includes:
 
 ```bash
 # Run aggregation pipeline tests
-python -m pytest tests/test_aggregation_pipeline.py -v
+scripts/run-with-nix-python.sh -m pytest tests/test_aggregation_pipeline.py -v
 
 # Run content extractor tests
-python -m pytest tests/test_content_extractor.py -v
+scripts/run-with-nix-python.sh -m pytest tests/test_content_extractor.py -v
 
 # Run deduplicator tests
-python -m pytest tests/test_deduplicator.py -v
+scripts/run-with-nix-python.sh -m pytest tests/test_deduplicator.py -v
 
 # Run rate limiter tests
-python -m pytest tests/test_rate_limited_extractor.py -v
+scripts/run-with-nix-python.sh -m pytest tests/test_rate_limited_extractor.py -v
 ```
 
 ## Performance

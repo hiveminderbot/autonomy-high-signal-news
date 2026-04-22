@@ -43,12 +43,12 @@ The fetcher now:
 
 ```bash
 cd labs/high-signal-news
-python -m aggregator.health_monitor --db state/feeds.db
+scripts/run-with-nix-python.sh -m aggregator.health_monitor --db state/feeds.db
 ```
 
 With JSON output:
 ```bash
-python -m aggregator.health_monitor --db state/feeds.db --json
+scripts/run-with-nix-python.sh -m aggregator.health_monitor --db state/feeds.db --json
 ```
 
 ### Validate a New Feed
@@ -56,7 +56,7 @@ python -m aggregator.health_monitor --db state/feeds.db --json
 Before adding a feed to the catalog:
 
 ```bash
-python scripts/aggregator/feed_fetcher.py --validate-source "https://example.com/feed.xml"
+scripts/run-with-nix-python.sh scripts/aggregator/feed_fetcher.py --validate-source "https://example.com/feed.xml"
 ```
 
 ### Initialize with Validation
@@ -64,7 +64,7 @@ python scripts/aggregator/feed_fetcher.py --validate-source "https://example.com
 When adding sources from catalog, validate each one:
 
 ```bash
-python scripts/aggregator/feed_fetcher.py --init --catalog sources/sources-ai.json
+scripts/run-with-nix-python.sh scripts/aggregator/feed_fetcher.py --init --catalog sources/sources-ai.json
 ```
 
 ### Fetch with Health Report
@@ -72,7 +72,7 @@ python scripts/aggregator/feed_fetcher.py --init --catalog sources/sources-ai.js
 Generate a health report after fetching:
 
 ```bash
-python scripts/aggregator/feed_fetcher.py --health-report --domain ai
+scripts/run-with-nix-python.sh scripts/aggregator/feed_fetcher.py --health-report --domain ai
 ```
 
 ## Handling Cloudflare-Protected Feeds
