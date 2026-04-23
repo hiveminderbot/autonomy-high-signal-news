@@ -87,25 +87,28 @@ scripts/run-with-nix-python.sh scripts/run_daily_aggregation.py \
 
 ## Scheduled Execution (systemd)
 
-### 1. Install Service Files
+### 1. Preview and Install Service Files
 
 ```bash
-# Copy systemd files to system directory
-sudo cp systemd/high-signal-news.service /etc/systemd/system/
-sudo cp systemd/high-signal-news.timer /etc/systemd/system/
+# Render the generated unit files without touching systemd
+./scripts/aggregator/systemd/install.sh --output-dir /tmp/high-signal-news-systemd-preview
+systemd-analyze --user verify /tmp/high-signal-news-systemd-preview/high-signal-news.service \
+    /tmp/high-signal-news-systemd-preview/high-signal-news.timer
 
-# Reload systemd
-sudo systemctl daemon-reload
+# Install for the current user once the preview looks correct
+./scripts/aggregator/systemd/install.sh
 ```
+
+For a system-wide install, run `sudo ./scripts/aggregator/systemd/install.sh --system` after validating the dry-run output.
 
 ### 2. Configure User and Paths
 
-Edit `/etc/systemd/system/high-signal-news.service` to match your setup:
+The installer writes repo-specific paths automatically. Before enabling delivery, edit `/path/to/high-signal-news/.env.briefing` with the Telegram and/or email credentials you actually want the timer to use.
+
+The generated unit uses the Nix-backed runner directly:
 
 ```ini
 [Service]
-User=your-username
-Group=your-group
 WorkingDirectory=/path/to/high-signal-news
 Environment="PATH=/home/your-username/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/usr/bin:/bin"
 ExecStart=/path/to/high-signal-news/scripts/aggregator/systemd/run-daily-aggregation-nix.sh \
