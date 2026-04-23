@@ -123,6 +123,16 @@
       "config": {
         "path": ".git/"
       }
+    },
+    {
+      "check_id": "file_exists",
+      "name": "Nix flake exists",
+      "description": "Lab must have a Nix flake for Nix-first execution",
+      "severity": "required",
+      "strong_correctness": true,
+      "config": {
+        "path": "flake.nix"
+      }
     }
   ]
 }
