@@ -176,6 +176,11 @@ cd ~/autonomy/labs/high-signal-news
 # Validate the lab first with the preferred Nix wrapper
 ./scripts/run-tests-nix.sh -q
 
+# Generate and preflight local package evidence used by relevance scoring
+scripts/run-with-nix-python.sh -m scripts.reference_manifest --output state/reference_packages.json
+python -m json.tool state/reference_packages.json >/dev/null
+scripts/run-with-nix-python.sh -m scripts.reference_manifest --check state/reference_packages.json
+
 # Fetch fresh content
 scripts/run-with-nix-python.sh scripts/fetch_high_signal.py
 
