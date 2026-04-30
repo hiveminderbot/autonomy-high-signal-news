@@ -6,7 +6,12 @@
   "created_at": "2026-03-21",
   "updated_at": "2026-04-04T08:10:00.000000Z",
   "owner": "autonomy",
-  "repository": "forgejo:exedev/high-signal-news",
+  "repository": "github:hiveminderbot/autonomy-high-signal-news",
+  "source_of_truth": {
+    "remote": "github",
+    "url": "https://github.com/hiveminderbot/autonomy-high-signal-news.git",
+    "retired_remotes_forbidden": ["forgejo", "gitea", "localhost:3000", "tin-sun", "172.17.0.1:3000"]
+  },
   "documentation": {
     "overview": "./README.md",
     "validation": "./validation.json"
@@ -181,7 +186,9 @@
     ]
   },
   "ci_cd": {
-    "forgejo_workflows": ".forgejo/workflows/",
+    "github_remote": "github:hiveminderbot/autonomy-high-signal-news",
+    "validation_config": "validation.json",
+    "legacy_local_workflows": "disabled",
     "enabled_checks": [
       "validation_json_check"
     ]

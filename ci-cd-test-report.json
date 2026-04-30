@@ -1,0 +1,186 @@
+{
+  "lab_name": "high-signal-news",
+  "lab_root": "/home/exedev/autonomy/labs/high-signal-news",
+  "timestamp": "2026-04-30T07:09:54.371675+00:00",
+  "duration_ms": 20.067691802978516,
+  "success": true,
+  "summary": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "error": 0
+  },
+  "results": [
+    {
+      "name": "README.md exists",
+      "status": "passed",
+      "message": "File/directory exists: README.md",
+      "duration_ms": 0.03528594970703125,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/README.md",
+        "type": "file"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "STATUS.json exists",
+      "status": "passed",
+      "message": "File/directory exists: STATUS.json",
+      "duration_ms": 0.024557113647460938,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/STATUS.json",
+        "type": "file"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "STATUS.json is valid JSON",
+      "status": "passed",
+      "message": "JSON is valid: STATUS.json",
+      "duration_ms": 0.11301040649414062,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/STATUS.json",
+        "keys": [
+          "name",
+          "status",
+          "version",
+          "description",
+          "created_at",
+          "updated_at",
+          "owner",
+          "repository",
+          "source_of_truth",
+          "documentation",
+          "components",
+          "validation_status",
+          "ci_cd",
+          "next_steps"
+        ]
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Scripts directory exists",
+      "status": "passed",
+      "message": "File/directory exists: scripts/",
+      "duration_ms": 0.025987625122070312,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/scripts",
+        "type": "directory"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Aggregator scripts exist",
+      "status": "passed",
+      "message": "File/directory exists: scripts/aggregator/",
+      "duration_ms": 0.0209808349609375,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/aggregator",
+        "type": "directory"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Briefing scripts exist",
+      "status": "passed",
+      "message": "File/directory exists: scripts/briefing/",
+      "duration_ms": 0.019073486328125,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/briefing",
+        "type": "directory"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Content extraction script exists",
+      "status": "passed",
+      "message": "File/directory exists: scripts/extract_with_jina.py",
+      "duration_ms": 0.018358230590820312,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/extract_with_jina.py",
+        "type": "file"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Content extraction syntax valid",
+      "status": "passed",
+      "message": "All 1 Python file(s) have valid syntax",
+      "duration_ms": 2.177000045776367,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/extract_with_jina.py",
+        "files_checked": 1
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Database exists",
+      "status": "passed",
+      "message": "File/directory exists: news.db",
+      "duration_ms": 0.05030632019042969,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/news.db",
+        "type": "file"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Sources catalog exists",
+      "status": "passed",
+      "message": "File/directory exists: sources/",
+      "duration_ms": 0.022411346435546875,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/sources",
+        "type": "directory"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Requirements file exists",
+      "status": "passed",
+      "message": "File/directory exists: requirements.txt",
+      "duration_ms": 0.020265579223632812,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/requirements.txt",
+        "type": "file"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Git repository initialized",
+      "status": "passed",
+      "message": "File/directory exists: .git/",
+      "duration_ms": 0.018596649169921875,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/.git",
+        "type": "directory"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "Nix flake exists",
+      "status": "passed",
+      "message": "File/directory exists: flake.nix",
+      "duration_ms": 0.016689300537109375,
+      "details": {
+        "path": "/home/exedev/autonomy/labs/high-signal-news/flake.nix",
+        "type": "file"
+      },
+      "suggestion": null
+    },
+    {
+      "name": "GitHub source-of-truth remote hygiene",
+      "status": "passed",
+      "message": "Command succeeded (exit 0)",
+      "duration_ms": 17.38572120666504,
+      "details": {
+        "command": "git remote -v | grep -q 'github.com/hiveminderbot/autonomy-high-signal-news.git' && ! git remote -v | grep -Eqi 'forgejo|gitea|localhost:3000|tin-sun|172\\.17\\.0\\.1:3000' && echo 'PASS: GitHub-only source of truth'",
+        "exit_code": 0,
+        "stdout_preview": "PASS: GitHub-only source of truth\n"
+      },
+      "suggestion": null
+    }
+  ]
+}

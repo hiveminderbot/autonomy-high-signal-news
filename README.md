@@ -2,6 +2,8 @@
 
 **Status:** ✅ OPERATIONAL — High-signal briefing generation active
 
+**Source of truth:** private GitHub remote [`hiveminderbot/autonomy-high-signal-news`](https://github.com/hiveminderbot/autonomy-high-signal-news). Retired local remotes are not canonical and must not be configured.
+
 ## What's Working
 
 - ✅ **Tier-1 source catalog**: 26 curated sources (distinguished engineers, top researchers, high-signal pubs)

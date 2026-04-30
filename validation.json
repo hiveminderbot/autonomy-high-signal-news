@@ -133,6 +133,18 @@
       "config": {
         "path": "flake.nix"
       }
+    },
+    {
+      "check_id": "command",
+      "name": "GitHub source-of-truth remote hygiene",
+      "description": "Retired Forgejo/Gitea remotes must not be configured; private GitHub under hiveminderbot is canonical",
+      "severity": "required",
+      "strong_correctness": true,
+      "config": {
+        "command": "git remote -v | grep -q 'github.com/hiveminderbot/autonomy-high-signal-news.git' && ! git remote -v | grep -Eqi 'forgejo|gitea|localhost:3000|tin-sun|172\\.17\\.0\\.1:3000' && echo 'PASS: GitHub-only source of truth'",
+        "expected_output": "PASS: GitHub-only source of truth",
+        "timeout": 10
+      }
     }
   ]
 }
