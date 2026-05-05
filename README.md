@@ -19,27 +19,23 @@ Information overload is real. This project aims to deliver a **10-minute daily m
 
 ## ⚠️ CURRENT LIMITATIONS
 
-**The briefing generator works, but the live data pipeline is NOT fully operational.**
+**The live RSS proof path is operational, but the full daily delivery pipeline still needs a 7-run burn-in before it should be treated as production.**
 
 ### What's Working
 - ✅ Database schema and storage
 - ✅ Briefing generation (formatting, prioritization)
 - ✅ Source catalog (42 sources identified)
 - ✅ Aggregation infrastructure code
+- ✅ **Live RSS proof** — `scripts/validate_live_rss_briefing_proof_20260505.py` fetched 4/4 public RSS/Atom sources and parsed 32 live entries on 2026-05-05; see `results/live-rss-briefing-proof-20260505.md`
 
-### What's NOT Working
-- ❌ **Live RSS feeds** — No actual RSS URLs configured in database
-- ❌ **Brave Search** — Rate limit exceeded (2,000 queries/month free tier)
-- ❌ **Real-time news** — Cannot fetch actual current news
+### What's NOT Working / Not Yet Proven
+- ⚠️ **Daily production cron** — needs 7 consecutive source-backed runs before delivery is enabled
+- ⚠️ **Brave Search** — rate limit may still be exceeded (2,000 queries/month free tier), but the RSS proof no longer depends on it
+- ⚠️ **End-user delivery** — Telegram/email delivery remains a separate integration step
 
-### The Issue
+### Guardrail
 
-The previous "today's briefing" I generated was **fabricated from my training cutoff data**:
-- GPT-4.5 mentioned (released Feb 2025, not current)
-- Python 3.13 mentioned (actually at 3.14 now)
-- React 19 beta mentioned (stable now)
-
-**This is unacceptable.** The system presented fake data as if it were live.
+A previous "today's briefing" was fabricated from training-cutoff data. That is not acceptable. New briefing work must cite fetched source URLs, HTTP statuses, byte counts, parsed entry counts, and current source-backed headlines before being reported as live.
 
 ## Infrastructure Status
 
