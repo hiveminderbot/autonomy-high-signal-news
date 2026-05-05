@@ -1,0 +1,238 @@
+{
+  "acceptance": {
+    "healthy_targets": 7,
+    "minimum_segments": 4,
+    "minimum_targets": 5,
+    "passed": true,
+    "segments_present": [
+      "browser_agent_infra",
+      "collaboration_saas",
+      "developer_platform",
+      "developer_tools",
+      "product_analytics",
+      "scheduling_saas"
+    ]
+  },
+  "all_target_evidence": [
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Produce a signup/onboarding friction report covering field validation, auth options, and calendar-connection dead ends without touching private data.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "cal",
+        "sign"
+      ],
+      "name": "Cal.com signup",
+      "ok": true,
+      "segment": "scheduling_saas",
+      "title": "Sign up | Cal.com",
+      "url": "https://cal.com/signup",
+      "why_fit": "Scheduling onboarding usually has account creation, calendar/account connection, timezone, and team-routing complexity that browser agents can check repeatedly."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Check whether a new user can reach the first-project setup path and capture any confusing or blocked instrumentation steps.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "posthog",
+        "signup"
+      ],
+      "name": "PostHog signup",
+      "ok": true,
+      "segment": "product_analytics",
+      "title": "PostHog",
+      "url": "https://app.posthog.com/signup",
+      "why_fit": "Analytics onboarding depends on multi-step project creation and instrumentation guidance, a good fit for workflow-health and copy/friction checks."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Generate a browser-agent transcript from landing on signup through first SDK/project prompts, highlighting friction and console/network errors.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "sentry",
+        "sign",
+        "error"
+      ],
+      "name": "Sentry signup",
+      "ok": true,
+      "segment": "developer_tools",
+      "title": "Sign up for Sentry to start your free trial. | Sentry",
+      "url": "https://sentry.io/signup/",
+      "why_fit": "Developer-tool onboarding combines auth, organization/project setup, and SDK-install instructions where broken or confusing flows are high-value."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Validate account/workspace-entry affordances and report any stalled or unclear browser states from a fresh public session.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "linear",
+        "signup"
+      ],
+      "name": "Linear signup",
+      "ok": true,
+      "segment": "collaboration_saas",
+      "title": "Linear",
+      "url": "https://linear.app/signup",
+      "why_fit": "Team/workspace creation has several branching onboarding states that can regress visibly and matter to conversion."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Check first-dashboard path and capture timing, console, and copy issues around project creation prompts.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "supabase",
+        "sign",
+        "dashboard"
+      ],
+      "name": "Supabase dashboard sign-up",
+      "ok": true,
+      "segment": "developer_platform",
+      "title": "Supabase",
+      "url": "https://supabase.com/dashboard/sign-up",
+      "why_fit": "Developer-platform onboarding includes auth, organization/project creation, and dashboard load behavior that automated browser diagnostics can measure."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Create a concise dogfood-style onboarding QA artifact focused on signup clarity and developer activation path.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "browserbase",
+        "sign",
+        "browser"
+      ],
+      "name": "Browserbase sign-up",
+      "ok": true,
+      "segment": "browser_agent_infra",
+      "title": "Browserbase - Headless Web Browser API",
+      "url": "https://www.browserbase.com/sign-up",
+      "why_fit": "A browser-automation infrastructure vendor is a meta-fit: their own onboarding can be evaluated with the service category they sell."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Assess whether a fresh visitor can understand account options and first-deploy path; capture browser errors and blocked states.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "vercel",
+        "sign",
+        "deploy"
+      ],
+      "name": "Vercel signup",
+      "ok": true,
+      "segment": "developer_platform",
+      "title": "Sign Up \u2013 Vercel",
+      "url": "https://vercel.com/signup",
+      "why_fit": "Deployment-platform onboarding is high-volume and depends on auth/provider branching, dashboard load, and first-deploy guidance."
+    }
+  ],
+  "artifact": "browser-agent-qa-prospect-shortlist-20260505",
+  "bottom_line": "A browser-agent QA service sprint now has enough live public onboarding surfaces to run a concrete demo/outreach experiment rather than more abstract tooling research.",
+  "fetched_at": "2026-05-05T00:00:00+00:00",
+  "next_experiment": {
+    "deliverables": [
+      "One reproducible public-flow QA report per selected target, with screenshots/log snippets and no private-account actions beyond public signup entry points.",
+      "One fixed-price service offer paragraph tied to the strongest report.",
+      "A reject memo if no externally useful finding emerges within one day."
+    ],
+    "name": "One-day public onboarding QA demo sprint",
+    "success_gate": "Run browser-agent/Playwright diagnostics against the top 3 reachable targets and adopt the service wedge only if at least one artifact contains a reproducible public UX, console, network, or copy issue useful enough for credible outreach."
+  },
+  "not_revenue_ready_because": [
+    "no live browser-agent runs against these targets were executed in this task",
+    "no prospect contacted and no reply/revenue evidence exists yet",
+    "no measured agent cost per useful report yet",
+    "must respect public-site terms, rate limits, and avoid private data entry before outreach use"
+  ],
+  "recommendation": "ADOPT_BROWSER_AGENT_QA_PROSPECT_SPRINT",
+  "scope": "Non-OpenViking browser-agent QA service experiment: live public signup/onboarding prospect shortlist.",
+  "shortlist": [
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Create a concise dogfood-style onboarding QA artifact focused on signup clarity and developer activation path.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "browserbase",
+        "sign",
+        "browser"
+      ],
+      "name": "Browserbase sign-up",
+      "ok": true,
+      "segment": "browser_agent_infra",
+      "title": "Browserbase - Headless Web Browser API",
+      "url": "https://www.browserbase.com/sign-up",
+      "why_fit": "A browser-automation infrastructure vendor is a meta-fit: their own onboarding can be evaluated with the service category they sell."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Produce a signup/onboarding friction report covering field validation, auth options, and calendar-connection dead ends without touching private data.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "cal",
+        "sign"
+      ],
+      "name": "Cal.com signup",
+      "ok": true,
+      "segment": "scheduling_saas",
+      "title": "Sign up | Cal.com",
+      "url": "https://cal.com/signup",
+      "why_fit": "Scheduling onboarding usually has account creation, calendar/account connection, timezone, and team-routing complexity that browser agents can check repeatedly."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Validate account/workspace-entry affordances and report any stalled or unclear browser states from a fresh public session.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "linear",
+        "signup"
+      ],
+      "name": "Linear signup",
+      "ok": true,
+      "segment": "collaboration_saas",
+      "title": "Linear",
+      "url": "https://linear.app/signup",
+      "why_fit": "Team/workspace creation has several branching onboarding states that can regress visibly and matter to conversion."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Check whether a new user can reach the first-project setup path and capture any confusing or blocked instrumentation steps.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "posthog",
+        "signup"
+      ],
+      "name": "PostHog signup",
+      "ok": true,
+      "segment": "product_analytics",
+      "title": "PostHog",
+      "url": "https://app.posthog.com/signup",
+      "why_fit": "Analytics onboarding depends on multi-step project creation and instrumentation guidance, a good fit for workflow-health and copy/friction checks."
+    },
+    {
+      "bytes_read_minimum_met": true,
+      "demo_hypothesis": "Generate a browser-agent transcript from landing on signup through first SDK/project prompts, highlighting friction and console/network errors.",
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "sentry",
+        "sign",
+        "error"
+      ],
+      "name": "Sentry signup",
+      "ok": true,
+      "segment": "developer_tools",
+      "title": "Sign up for Sentry to start your free trial. | Sentry",
+      "url": "https://sentry.io/signup/",
+      "why_fit": "Developer-tool onboarding combines auth, organization/project setup, and SDK-install instructions where broken or confusing flows are high-value."
+    }
+  ]
+}
