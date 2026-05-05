@@ -1,0 +1,72 @@
+{
+  "acceptance": {
+    "finding_count": 3,
+    "not_revenue_ready_reasons": [
+      "no prospect contacted and no paid reply/revenue evidence exists",
+      "this run used public HTTP/static evidence; a real browser screenshot/console trace is still required before outreach",
+      "browser-agent cost per useful report remains unmeasured"
+    ],
+    "passed": true,
+    "recommendation": "ADOPT_OUTREACH_PACKET_AFTER_REAL_BROWSER_TRACE",
+    "source_ok": true
+  },
+  "artifact": "calcom-signup-browser-qa-20260505",
+  "findings": [
+    {
+      "category": "resilience/first-paint",
+      "finding": "The public signup HTML exposes almost no visible signup content before JavaScript hydration.",
+      "repro": "Fetch https://cal.com/signup; observe title-only visible text and no static form controls in the HTTP response.",
+      "severity": "medium",
+      "why_it_matters": "A blank/minimal first response gives a browser-agent QA demo a concrete conversion-risk hypothesis: JS, CDN, CSP, or client runtime failures can strand new users before account creation options are visible."
+    },
+    {
+      "category": "progressive-enhancement",
+      "finding": "The signup page is heavily JavaScript-driven and has no <noscript> fallback in the fetched HTML.",
+      "repro": "Fetch https://cal.com/signup; count script tags and noscript tags in the response.",
+      "severity": "low",
+      "why_it_matters": "This is not automatically a bug, but it is outreach-worthy because browser automation can cheaply verify whether the hydrated page degrades safely under common script/network failure modes."
+    },
+    {
+      "category": "signup-discoverability",
+      "finding": "No form/input/button controls are present in the public static response.",
+      "repro": "Fetch https://cal.com/signup; static control counts are form=0/input=0/button=0.",
+      "severity": "medium",
+      "why_it_matters": "A paid QA monitor could repeatedly confirm whether account entry controls appear after hydration and capture regressions with screenshots/console/network logs."
+    }
+  ],
+  "generated_at": "2026-05-05T23:21:41.157589+00:00",
+  "next_experiment": {
+    "command_shape": "Run Playwright/browser-agent against https://cal.com/signup and capture screenshot + console + network failure evidence without account submission.",
+    "name": "One-prospect real-browser trace",
+    "success_gate": "Send outreach only if a real browser trace confirms a reproducible loading, console, network, accessibility, or copy issue useful to Cal.com."
+  },
+  "outreach_packet": {
+    "guardrail": "Do not send this as a claim of a confirmed production bug until a real browser trace reproduces the hydrated/loading behavior; this packet is a compliant pre-outreach demo scaffold.",
+    "offer": "I can run a fixed-price browser-agent QA pass that captures screenshots, console/network evidence, and reproducible steps for signup-flow resilience without creating accounts or touching private user data.",
+    "opening": "I ran a source-backed public-entry QA pass on Cal.com's signup URL and found a concrete browser-automation demo target: the initial HTML response exposes almost no signup affordances before hydration.",
+    "subject": "Public signup-flow QA finding for Cal.com"
+  },
+  "scope": "Agent-service revenue experiment: public browser-agent QA demo packet for Cal.com signup, explicitly outside trading/parser work.",
+  "source_evidence": {
+    "button_count": 0,
+    "bytes_read": 401659,
+    "error": null,
+    "final_url": "https://app.cal.com/signup",
+    "form_count": 0,
+    "http_status": 200,
+    "input_count": 0,
+    "name": "Cal.com signup public HTML",
+    "noscript_count": 0,
+    "ok": true,
+    "script_count": 52,
+    "title": "Sign up | Cal.com",
+    "url": "https://cal.com/signup",
+    "visible_text_chars": 17,
+    "visible_text_sample": "Sign up | Cal.com"
+  },
+  "target": {
+    "name": "Cal.com signup",
+    "segment": "scheduling_saas",
+    "url": "https://cal.com/signup"
+  }
+}
