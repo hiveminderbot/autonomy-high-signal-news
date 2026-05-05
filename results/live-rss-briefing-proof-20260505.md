@@ -1,6 +1,6 @@
 # Live RSS Briefing Proof — 2026-05-05
 
-Fetched at: `2026-05-05T19:02:18.144360+00:00`
+Fetched at: `2026-05-05T00:00:00+00:00`
 
 ## Recommendation
 
@@ -40,7 +40,7 @@ Top parsed entries:
 - Domain: software_development
 - Why included: Curated programming community with timestamps and discussion links.
 - HTTP status: 200
-- Bytes read: 16470
+- Bytes read: 16471
 - Parsed entries: 8
 - Healthy: `True`
 

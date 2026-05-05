@@ -94,7 +94,7 @@ def test_run_writes_artifacts_and_success_sentinel(monkeypatch, tmp_path, capsys
     monkeypatch.setattr(proof, "collect_feed", fake_collect)
     json_path = tmp_path / "proof.json"
     report_path = tmp_path / "proof.md"
-    payload = run(Namespace(timeout=1, json_output=json_path, report_output=report_path))
+    payload = run(Namespace(timeout=1, artifact_timestamp="2026-05-05T00:00:00+00:00", json_output=json_path, report_output=report_path))
     output = capsys.readouterr().out
 
     assert payload["acceptance"]["passed"] is True

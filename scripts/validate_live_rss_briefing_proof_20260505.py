@@ -279,7 +279,11 @@ def write_report(payload: dict, report_path: Path) -> None:
 
 
 def run(args: argparse.Namespace) -> dict:
-    fetched_at = datetime.now(timezone.utc).isoformat()
+    # Keep the tracked dated artifact stable across post-commit validation reruns.
+    # The live fetch evidence remains in stdout via SOURCE status/bytes lines;
+    # the artifact timestamp identifies the snapshot date rather than the exact
+    # validation wall-clock second.
+    fetched_at = args.artifact_timestamp
     evidence = [collect_feed(feed, timeout=args.timeout) for feed in DEFAULT_FEEDS]
     payload = make_payload(evidence, fetched_at)
 
@@ -314,6 +318,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         ),
     )
     parser.add_argument("--timeout", type=int, default=20, help="Per-source HTTP timeout in seconds")
+    parser.add_argument(
+        "--artifact-timestamp",
+        default="2026-05-05T00:00:00+00:00",
+        help="Stable timestamp to write into the dated tracked artifact; live fetch status is printed to stdout.",
+    )
     parser.add_argument("--json-output", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--report-output", type=Path, default=DEFAULT_REPORT)
     return parser.parse_args(argv)
