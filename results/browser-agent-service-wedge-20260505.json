@@ -1,0 +1,106 @@
+{
+  "acceptance": {
+    "healthy_sources": 4,
+    "minimum_sources": 4,
+    "passed": true,
+    "required_roles": [
+      "agent_sdk",
+      "automation_surface",
+      "diagnostic_surface",
+      "model_capability"
+    ],
+    "required_roles_present": [
+      "agent_sdk",
+      "automation_surface",
+      "diagnostic_surface",
+      "model_capability"
+    ]
+  },
+  "artifact": "browser-agent-service-wedge-20260505",
+  "fetched_at": "2026-05-05T00:00:00+00:00",
+  "next_experiment": {
+    "deliverables": [
+      "Pick 3 small SaaS/ecommerce websites with public signup/cart/demo flows and visible complexity.",
+      "Use Playwright/DevTools/LLM browser agents to produce one reproducible bug report or workflow-health report per target.",
+      "Package the best report as an outreach artifact offering a fixed-price weekly browser-agent QA monitor."
+    ],
+    "duration_days": 2,
+    "name": "48-hour browser-agent QA artifact sprint",
+    "success_gate": "Adopt only if at least one report contains a reproducible externally visible issue or concrete UX/conversion fix that could plausibly justify paid outreach; otherwise reject this wedge for now."
+  },
+  "not_capital_ready_because": [
+    "no paying customer or prospect reply yet",
+    "no measured cost per successful browser task or failure triage yet",
+    "no proof that agent-generated QA reports beat a human checklist for this market",
+    "no production monitoring, consent, or anti-abuse process for third-party websites yet"
+  ],
+  "recommendation": "ADOPT_BROWSER_AGENT_QA_SERVICE_PILOT",
+  "scope": "Non-OpenViking agent-service revenue experiment: browser-agent QA/ops automation for small SaaS and ecommerce workflows.",
+  "source_evidence": [
+    {
+      "bytes_read": 590790,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "Playwright",
+        "MCP",
+        "browser"
+      ],
+      "name": "Microsoft Playwright MCP repository",
+      "ok": true,
+      "role": "automation_surface",
+      "url": "https://github.com/microsoft/playwright-mcp",
+      "why": "Primary source showing Playwright has an MCP server for browser automation through agent tools."
+    },
+    {
+      "bytes_read": 504926,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "Chrome",
+        "DevTools",
+        "MCP"
+      ],
+      "name": "Chrome DevTools MCP repository",
+      "ok": true,
+      "role": "diagnostic_surface",
+      "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "why": "Primary source for using Chrome DevTools as an MCP-connected browser diagnostics surface."
+    },
+    {
+      "bytes_read": 518898,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "Stagehand",
+        "Browserbase",
+        "browser"
+      ],
+      "name": "Browserbase Stagehand introduction",
+      "ok": true,
+      "role": "agent_sdk",
+      "url": "https://docs.browserbase.com/stagehand/introduction",
+      "why": "Primary vendor documentation for an agent-friendly browser automation SDK/API surface."
+    },
+    {
+      "bytes_read": 1051584,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "computer use",
+        "tool",
+        "Claude"
+      ],
+      "name": "Anthropic computer use documentation",
+      "ok": true,
+      "role": "model_capability",
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/computer-use",
+      "why": "Primary model-provider documentation that computer-use/browser-control capabilities are supported for agents."
+    }
+  ],
+  "summary": {
+    "finding": "Browser-agent QA/ops automation is worth one short service experiment because model, browser-control, and diagnostic surfaces now exist as primary-source-supported building blocks.",
+    "sunk_cost_guardrail": "This is outside OpenViking/Polymarket and should be killed if a 48-hour demo cannot produce at least one externally useful QA artifact for a real public site or prospect workflow.",
+    "why_now": "MCP-connected browser automation, DevTools diagnostics, managed browser-agent SDKs, and computer-use model docs collectively make it feasible to package a narrow bug-reproduction or workflow-monitoring service without building a full product first."
+  }
+}
