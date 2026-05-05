@@ -122,6 +122,18 @@ def collect_source(source: dict, timeout: int, fetcher: Callable[[str, int], tup
         )
 
 
+def _stable_source_record(item: SourceEvidence) -> dict:
+    """Return a deterministic artifact record while stdout can print exact bytes.
+
+    Live HTML byte counts for GitHub/docs pages vary between fetches, so tracked
+    JSON/Markdown should store the stable validation fact instead of exact bytes.
+    """
+    record = asdict(item)
+    record.pop("bytes_read", None)
+    record["bytes_read_minimum_met"] = item.bytes_read >= 1_000
+    return record
+
+
 def make_payload(evidence: list[SourceEvidence], fetched_at: str) -> dict:
     healthy = [item for item in evidence if item.ok]
     roles = {item.role for item in healthy}
@@ -161,7 +173,7 @@ def make_payload(evidence: list[SourceEvidence], fetched_at: str) -> dict:
             "no proof that agent-generated QA reports beat a human checklist for this market",
             "no production monitoring, consent, or anti-abuse process for third-party websites yet",
         ],
-        "source_evidence": [asdict(item) for item in evidence],
+        "source_evidence": [_stable_source_record(item) for item in evidence],
     }
 
 
@@ -201,7 +213,7 @@ def render_report(payload: dict) -> str:
             f"- **{item['name']}** — {status}",
             f"  - URL: {item['url']}",
             f"  - Role: {item['role']}",
-            f"  - HTTP: {item['http_status']} bytes_minimum_met: {item['bytes_read'] >= 1000}",
+            f"  - HTTP: {item['http_status']} bytes_minimum_met: {item['bytes_read_minimum_met']}",
             f"  - Keyword hits: {', '.join(item['keyword_hits']) if item['keyword_hits'] else '(none)'}",
             f"  - Why cited: {item['why']}",
         ])
@@ -225,8 +237,8 @@ def run(args: argparse.Namespace) -> dict:
     args.json_output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     args.report_output.write_text(render_report(payload) + "\n")
 
-    for item in payload["source_evidence"]:
-        print(f"SOURCE {item['url']} STATUS {item['http_status']} BYTES {item['bytes_read']} OK {item['ok']}")
+    for evidence_item, item in zip(evidence, payload["source_evidence"], strict=True):
+        print(f"SOURCE {item['url']} STATUS {item['http_status']} BYTES {evidence_item.bytes_read} OK {item['ok']}")
     print(f"REPORT {args.report_output} BYTES {args.report_output.stat().st_size}")
     print(f"SUMMARY {args.json_output} BYTES {args.json_output.stat().st_size}")
     if payload["acceptance"]["passed"]:

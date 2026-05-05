@@ -38,7 +38,7 @@
   "scope": "Non-OpenViking agent-service revenue experiment: browser-agent QA/ops automation for small SaaS and ecommerce workflows.",
   "source_evidence": [
     {
-      "bytes_read": 590790,
+      "bytes_read_minimum_met": true,
       "error": null,
       "http_status": 200,
       "keyword_hits": [
@@ -53,7 +53,7 @@
       "why": "Primary source showing Playwright has an MCP server for browser automation through agent tools."
     },
     {
-      "bytes_read": 504926,
+      "bytes_read_minimum_met": true,
       "error": null,
       "http_status": 200,
       "keyword_hits": [
@@ -68,7 +68,7 @@
       "why": "Primary source for using Chrome DevTools as an MCP-connected browser diagnostics surface."
     },
     {
-      "bytes_read": 518898,
+      "bytes_read_minimum_met": true,
       "error": null,
       "http_status": 200,
       "keyword_hits": [
@@ -83,7 +83,7 @@
       "why": "Primary vendor documentation for an agent-friendly browser automation SDK/API surface."
     },
     {
-      "bytes_read": 1051584,
+      "bytes_read_minimum_met": true,
       "error": null,
       "http_status": 200,
       "keyword_hits": [
