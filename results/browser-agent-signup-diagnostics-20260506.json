@@ -1,0 +1,155 @@
+{
+  "acceptance": {
+    "minimum_outreach_worthy_targets": 1,
+    "minimum_reachable_targets": 3,
+    "outreach_worthy_targets": 3,
+    "passed": true,
+    "reachable_targets": 3
+  },
+  "artifact": "browser-agent-signup-diagnostics-20260506",
+  "artifact_timestamp": "2026-05-06T00:00:00+00:00",
+  "bottom_line": "The browser-agent QA wedge has a concrete public-flow demo path: at least one top prospect exposes a diagnosable signup/onboarding surface that can be converted into a safe outreach artifact.",
+  "diagnostics": [
+    {
+      "button_count": 2,
+      "bytes_read_minimum_met": true,
+      "demo_angle": "Dogfood the browser-automation vendor's own signup surface for static fallback and first-step clarity.",
+      "error": null,
+      "expected_term_hits": [
+        "browserbase",
+        "email",
+        "password",
+        "continue"
+      ],
+      "final_url": "https://www.browserbase.com/sign-up",
+      "findings": [
+        "Heavy JavaScript surface (38 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.",
+        "Static signup controls are visible without account creation; this is a good baseline target for copy, validation, and accessibility diagnostics."
+      ],
+      "form_count": 1,
+      "has_noscript": false,
+      "http_status": 200,
+      "identity_provider_hits": [
+        "continue"
+      ],
+      "input_count": 4,
+      "name": "Browserbase sign-up",
+      "ok": true,
+      "outreach_worthy": true,
+      "script_count": 38,
+      "segment": "browser_agent_infra",
+      "title": "Browserbase - Headless Web Browser API",
+      "url": "https://www.browserbase.com/sign-up",
+      "visible_text_chars": 308,
+      "visible_text_sample": "Browserbase - Headless Web Browser API Welcome to Browserbase E-mail address * Phone number * \ud83c\uddfa\ud83c\uddf8 +1 Need multiple accounts? Password * Continue Already have an account? Log in By continuing, you agree to Browserbase's Terms of Service with Privacy Policy and to receive periodic emails with updates. Get help"
+    },
+    {
+      "button_count": 0,
+      "bytes_read_minimum_met": true,
+      "demo_angle": "Check whether account creation/calendar-onboarding entry points expose enough first-step content for automated QA triage.",
+      "error": null,
+      "expected_term_hits": [
+        "cal",
+        "sign",
+        "signup"
+      ],
+      "final_url": "https://app.cal.com/signup",
+      "findings": [
+        "Static HTML exposes almost no visible signup copy before JavaScript execution; this is a credible browser-agent QA demo target for blank/loading-state and no-JS fallback capture.",
+        "Heavy JavaScript surface (46 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.",
+        "No static form/input controls are present in the fetched signup HTML; a public browser run can validate whether account entry is discoverable after hydration.",
+        "No obvious identity-provider/auth option text appears in the public static response; browser-agent run should document auth-option discoverability."
+      ],
+      "form_count": 0,
+      "has_noscript": false,
+      "http_status": 200,
+      "identity_provider_hits": [],
+      "input_count": 0,
+      "name": "Cal.com signup",
+      "ok": true,
+      "outreach_worthy": true,
+      "script_count": 46,
+      "segment": "scheduling_saas",
+      "title": "Sign up | Cal.com",
+      "url": "https://cal.com/signup",
+      "visible_text_chars": 17,
+      "visible_text_sample": "Sign up | Cal.com"
+    },
+    {
+      "button_count": 0,
+      "bytes_read_minimum_met": true,
+      "demo_angle": "Check whether team/workspace signup has useful no-JS/static fallback and a diagnosable first visible state.",
+      "error": null,
+      "expected_term_hits": [
+        "linear",
+        "signup",
+        "loading"
+      ],
+      "final_url": "https://linear.app/signup",
+      "findings": [
+        "Static HTML exposes almost no visible signup copy before JavaScript execution; this is a credible browser-agent QA demo target for blank/loading-state and no-JS fallback capture.",
+        "No static form/input controls are present in the fetched signup HTML; a public browser run can validate whether account entry is discoverable after hydration.",
+        "No obvious identity-provider/auth option text appears in the public static response; browser-agent run should document auth-option discoverability."
+      ],
+      "form_count": 0,
+      "has_noscript": false,
+      "http_status": 200,
+      "identity_provider_hits": [],
+      "input_count": 0,
+      "name": "Linear signup",
+      "ok": true,
+      "outreach_worthy": true,
+      "script_count": 9,
+      "segment": "collaboration_saas",
+      "title": "Linear",
+      "url": "https://linear.app/signup",
+      "visible_text_chars": 15,
+      "visible_text_sample": "Linear Loading\u2026"
+    }
+  ],
+  "fixed_price_offer_paragraph": "Offer: I run a fixed-price public onboarding QA pass against your signup flow using browser automation plus HTTP/console/network evidence, then deliver a concise report with reproducible states, screenshots/log excerpts, and prioritized fixes. No private user data or account abuse; the first pass focuses only on public entry points and conversion-blocking friction.",
+  "next_experiment": {
+    "name": "One-prospect browser-agent QA demo packet",
+    "success_gate": "Run a real browser automation trace against the strongest public target, attach screenshots/console/network snippets, and send one compliant outreach email only if the report contains a reproducible conversion or reliability issue.",
+    "target": "Cal.com signup"
+  },
+  "not_revenue_ready_because": [
+    "no prospect has been contacted and no paid reply exists",
+    "these diagnostics are public HTTP/static evidence, not a full Playwright screenshot/console trace yet",
+    "browser-agent cost per useful report is still unmeasured"
+  ],
+  "recommendation": "ADOPT_PUBLIC_BROWSER_AGENT_QA_DEMO",
+  "scope": "Non-OpenViking public signup diagnostics for a browser-agent QA revenue experiment; no account creation or private-data entry.",
+  "strongest_target": {
+    "button_count": 0,
+    "bytes_read_minimum_met": true,
+    "demo_angle": "Check whether account creation/calendar-onboarding entry points expose enough first-step content for automated QA triage.",
+    "error": null,
+    "expected_term_hits": [
+      "cal",
+      "sign",
+      "signup"
+    ],
+    "final_url": "https://app.cal.com/signup",
+    "findings": [
+      "Static HTML exposes almost no visible signup copy before JavaScript execution; this is a credible browser-agent QA demo target for blank/loading-state and no-JS fallback capture.",
+      "Heavy JavaScript surface (46 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.",
+      "No static form/input controls are present in the fetched signup HTML; a public browser run can validate whether account entry is discoverable after hydration.",
+      "No obvious identity-provider/auth option text appears in the public static response; browser-agent run should document auth-option discoverability."
+    ],
+    "form_count": 0,
+    "has_noscript": false,
+    "http_status": 200,
+    "identity_provider_hits": [],
+    "input_count": 0,
+    "name": "Cal.com signup",
+    "ok": true,
+    "outreach_worthy": true,
+    "script_count": 46,
+    "segment": "scheduling_saas",
+    "title": "Sign up | Cal.com",
+    "url": "https://cal.com/signup",
+    "visible_text_chars": 17,
+    "visible_text_sample": "Sign up | Cal.com"
+  }
+}
