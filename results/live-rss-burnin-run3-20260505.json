@@ -78,7 +78,7 @@
       "domain": "software_development",
       "why": "Curated programming community with timestamps and discussion links.",
       "http_status": 200,
-      "bytes_read": 15676,
+      "bytes_read": 15675,
       "ok": true,
       "error": null,
       "entries": [
@@ -107,15 +107,15 @@
           "summary": "Comments"
         },
         {
-          "title": "Bun (the js runtime) is being vibe-ported from zig to rust",
-          "url": "https://github.com/oven-sh/bun/blob/claude/phase-a-port/docs/PORTING.md",
-          "published": "2026-05-05T03:07:03+00:00",
-          "summary": "Comments"
-        },
-        {
           "title": "claude code is not making your product better",
           "url": "https://ethanding.substack.com/p/claude-code-is-not-making-your-product",
           "published": "2026-05-05T13:27:10+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Bun (the js runtime) is being vibe-ported from zig to rust",
+          "url": "https://github.com/oven-sh/bun/blob/claude/phase-a-port/docs/PORTING.md",
+          "published": "2026-05-05T03:07:03+00:00",
           "summary": "Comments"
         },
         {

@@ -40,7 +40,7 @@ Top parsed entries:
 - Domain: software_development
 - Why included: Curated programming community with timestamps and discussion links.
 - HTTP status: 200
-- Bytes read: 15676
+- Bytes read: 15675
 - Parsed entries: 8
 - Healthy: `True`
 
@@ -50,7 +50,7 @@ Top parsed entries:
 - [RSS Feeds Send Me More Traffic Than Google](https://shkspr.mobi/blog/2026/05/rss-feeds-send-me-more-traffic-than-google/) — 2026-05-05T14:46:08+00:00
 - [A bidirectional typechecking puzzle](https://haskellforall.com/2026/05/a-bidirectional-typechecking-puzzle) — 2026-05-05T13:21:28+00:00
 - [A Caddy Cert Expired Because systemd-resolved Was Selectively Broken](https://rant.mvh.dev/a-caddy-cert-expired-because-systemd-resolved-was-selectively-broken/) — 2026-05-05T12:32:59+00:00
-- [Bun (the js runtime) is being vibe-ported from zig to rust](https://github.com/oven-sh/bun/blob/claude/phase-a-port/docs/PORTING.md) — 2026-05-05T03:07:03+00:00
+- [claude code is not making your product better](https://ethanding.substack.com/p/claude-code-is-not-making-your-product) — 2026-05-05T13:27:10+00:00
 
 ### Simon Willison
 
