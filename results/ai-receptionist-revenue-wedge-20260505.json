@@ -1,0 +1,99 @@
+{
+  "acceptance": {
+    "healthy_sources": 4,
+    "minimum_sources": 3,
+    "passed": true,
+    "required_roles_present": [
+      "competitor_willingness_to_pay",
+      "delivery_cost",
+      "technical_feasibility",
+      "vertical_competition"
+    ]
+  },
+  "artifact": "ai-receptionist-revenue-wedge-20260505",
+  "fetched_at": "2026-05-05T00:00:00+00:00",
+  "next_experiment": {
+    "deliverables": [
+      "one Twilio/OpenAI demo phone number that answers, captures caller intent, and emails a lead summary",
+      "a shortlist of 10 local appointment-based businesses with visible after-hours call friction",
+      "outreach packet offering a fixed-price setup plus monthly managed answering pilot"
+    ],
+    "duration_days": 3,
+    "name": "10-prospect after-hours missed-call concierge pilot",
+    "success_gate": "At least 2 human replies or 1 scheduled demo from 10 targeted prospects; otherwise reject or change vertical."
+  },
+  "not_capital_ready_because": [
+    "no paying customer yet",
+    "no measured cost-per-call, containment rate, or booking/revenue lift yet",
+    "no production compliance/consent workflow for call recording and PII yet"
+  ],
+  "recommendation": "ADOPT_NARROW_AI_RECEPTIONIST_PILOT",
+  "scope": "Non-OpenViking AI service revenue experiment: after-hours AI receptionist for appointment-based local businesses.",
+  "source_evidence": [
+    {
+      "bytes_read": 781116,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "voice",
+        "pricing",
+        "Programmable Voice"
+      ],
+      "name": "Twilio Programmable Voice pricing",
+      "ok": true,
+      "role": "delivery_cost",
+      "url": "https://www.twilio.com/en-us/voice/pricing/us",
+      "why": "Primary vendor page for PSTN voice-call cost assumptions."
+    },
+    {
+      "bytes_read": 196344,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "Realtime API",
+        "speech",
+        "audio"
+      ],
+      "name": "OpenAI Realtime API announcement",
+      "ok": true,
+      "role": "technical_feasibility",
+      "url": "https://developers.openai.com/blog/realtime-api",
+      "why": "Primary OpenAI developer source that realtime speech-to-speech API support exists."
+    },
+    {
+      "bytes_read": 126259,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "pricing",
+        "receptionist",
+        "calls"
+      ],
+      "name": "Smith.ai pricing",
+      "ok": true,
+      "role": "competitor_willingness_to_pay",
+      "url": "https://www.smith.ai/pricing",
+      "why": "Competitor pricing page for outsourced receptionist / answering-service willingness to pay."
+    },
+    {
+      "bytes_read": 70191,
+      "error": null,
+      "http_status": 200,
+      "keyword_hits": [
+        "AI",
+        "phone",
+        "restaurant"
+      ],
+      "name": "Slang.ai homepage",
+      "ok": true,
+      "role": "vertical_competition",
+      "url": "https://www.slang.ai/",
+      "why": "AI phone agent competitor focused on restaurants, evidence that verticalized phone automation is an active category."
+    }
+  ],
+  "summary": {
+    "finding": "A narrow AI receptionist service pilot is worth one lean validation sprint, not capital deployment.",
+    "sunk_cost_guardrail": "This is outside OpenViking/Polymarket and should be killed if a prospect shortlist and live demo cannot produce replies/meetings quickly.",
+    "why_now": "Realtime voice APIs plus commodity telephony make a concierge-style service technically feasible; competitor pricing pages show businesses already buy receptionist/call-handling outcomes."
+  }
+}
