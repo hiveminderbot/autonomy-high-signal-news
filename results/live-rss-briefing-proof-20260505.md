@@ -22,17 +22,17 @@ Run the existing high-signal-news briefing generator against these live feed row
 - Domain: software_development
 - Why included: High-signal startup/software community feed with current links.
 - HTTP status: 200
-- Bytes read: 11679
+- Bytes read: 11883
 - Parsed entries: 8
 - Healthy: `True`
 
 Top parsed entries:
 
+- [.de TLD offline due to DNSSEC?](https://dnssec-analyzer.verisignlabs.com/nic.de) — 2026-05-05T20:16:35+00:00
 - [Accelerating Gemma 4: faster inference with multi-token prediction drafters](https://blog.google/innovation-and-ai/technology/developers-tools/multi-token-prediction-gemma-4/) — 2026-05-05T16:14:17+00:00
-- [Three Inverse Laws of AI](https://susam.net/inverse-laws-of-robotics.html) — 2026-05-05T15:27:18+00:00
 - [Computer Use is 45x more expensive than structured APIs](https://reflex.dev/blog/computer-use-is-45x-more-expensive-than-structured-apis/) — 2026-05-05T16:34:48+00:00
-- [EEVblog: The 555 Timer is 55 years old](https://www.youtube.com/watch?v=6JhK8iCQuqI) — 2026-05-05T15:47:18+00:00
-- [GLM-5V-Turbo: Toward a Native Foundation Model for Multimodal Agents](https://arxiv.org/abs/2604.26752) — 2026-05-05T17:52:31+00:00
+- [Three Inverse Laws of AI](https://susam.net/inverse-laws-of-robotics.html) — 2026-05-05T15:27:18+00:00
+- [Google Chrome silently installs a 4 GB AI model on your device without consent](https://www.thatprivacyguy.com/blog/chrome-silent-nano-install/) — 2026-05-05T07:34:55+00:00
 
 ### Lobsters
 
@@ -40,14 +40,14 @@ Top parsed entries:
 - Domain: software_development
 - Why included: Curated programming community with timestamps and discussion links.
 - HTTP status: 200
-- Bytes read: 16471
+- Bytes read: 15820
 - Parsed entries: 8
 - Healthy: `True`
 
 Top parsed entries:
 
-- [A bidirectional typechecking puzzle](https://haskellforall.com/2026/05/a-bidirectional-typechecking-puzzle) — 2026-05-05T13:21:28+00:00
 - [Why didn’t IPv6 work in my home network?](https://gowtham.dev/blog/ipv6-problems.html) — 2026-05-05T13:46:37+00:00
+- [A bidirectional typechecking puzzle](https://haskellforall.com/2026/05/a-bidirectional-typechecking-puzzle) — 2026-05-05T13:21:28+00:00
 - [RSS Feeds Send Me More Traffic Than Google](https://shkspr.mobi/blog/2026/05/rss-feeds-send-me-more-traffic-than-google/) — 2026-05-05T14:46:08+00:00
 - [A Caddy Cert Expired Because systemd-resolved Was Selectively Broken](https://rant.mvh.dev/a-caddy-cert-expired-because-systemd-resolved-was-selectively-broken/) — 2026-05-05T12:32:59+00:00
 - [Bun (the js runtime) is being vibe-ported from zig to rust](https://github.com/oven-sh/bun/blob/claude/phase-a-port/docs/PORTING.md) — 2026-05-05T03:07:03+00:00

@@ -18,20 +18,20 @@
       "domain": "software_development",
       "why": "High-signal startup/software community feed with current links.",
       "http_status": 200,
-      "bytes_read": 11679,
+      "bytes_read": 11883,
       "ok": true,
       "error": null,
       "entries": [
         {
-          "title": "Accelerating Gemma 4: faster inference with multi-token prediction drafters",
-          "url": "https://blog.google/innovation-and-ai/technology/developers-tools/multi-token-prediction-gemma-4/",
-          "published": "2026-05-05T16:14:17+00:00",
+          "title": ".de TLD offline due to DNSSEC?",
+          "url": "https://dnssec-analyzer.verisignlabs.com/nic.de",
+          "published": "2026-05-05T20:16:35+00:00",
           "summary": "Comments"
         },
         {
-          "title": "Three Inverse Laws of AI",
-          "url": "https://susam.net/inverse-laws-of-robotics.html",
-          "published": "2026-05-05T15:27:18+00:00",
+          "title": "Accelerating Gemma 4: faster inference with multi-token prediction drafters",
+          "url": "https://blog.google/innovation-and-ai/technology/developers-tools/multi-token-prediction-gemma-4/",
+          "published": "2026-05-05T16:14:17+00:00",
           "summary": "Comments"
         },
         {
@@ -41,7 +41,19 @@
           "summary": "Comments"
         },
         {
-          "title": "EEVblog: The 555 Timer is 55 years old",
+          "title": "Three Inverse Laws of AI",
+          "url": "https://susam.net/inverse-laws-of-robotics.html",
+          "published": "2026-05-05T15:27:18+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Google Chrome silently installs a 4 GB AI model on your device without consent",
+          "url": "https://www.thatprivacyguy.com/blog/chrome-silent-nano-install/",
+          "published": "2026-05-05T07:34:55+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "EEVblog: The 555 Timer is 55 years old [video]",
           "url": "https://www.youtube.com/watch?v=6JhK8iCQuqI",
           "published": "2026-05-05T15:47:18+00:00",
           "summary": "Comments"
@@ -53,21 +65,9 @@
           "summary": "Comments"
         },
         {
-          "title": "IBM didn't want Microsoft to use the Tab key to move between dialog fields",
-          "url": "https://devblogs.microsoft.com/oldnewthing/20260505-00/?p=112298",
-          "published": "2026-05-05T17:28:18+00:00",
-          "summary": "Comments"
-        },
-        {
-          "title": "I'm scared about biological computing",
-          "url": "https://kuber.studio/blog/Reflections/I%27m-Scared-About-Biological-Computing",
-          "published": "2026-05-05T16:03:06+00:00",
-          "summary": "Comments"
-        },
-        {
-          "title": "Agents for financial services and insurance",
-          "url": "https://www.anthropic.com/news/finance-agents",
-          "published": "2026-05-05T15:05:47+00:00",
+          "title": "Show HN: Explore color palettes inspired by 3000 master painter artworks",
+          "url": "https://paletteinspiration.com/",
+          "published": "2026-05-05T18:13:14+00:00",
           "summary": "Comments"
         }
       ]
@@ -78,20 +78,20 @@
       "domain": "software_development",
       "why": "Curated programming community with timestamps and discussion links.",
       "http_status": 200,
-      "bytes_read": 16471,
+      "bytes_read": 15820,
       "ok": true,
       "error": null,
       "entries": [
         {
-          "title": "A bidirectional typechecking puzzle",
-          "url": "https://haskellforall.com/2026/05/a-bidirectional-typechecking-puzzle",
-          "published": "2026-05-05T13:21:28+00:00",
-          "summary": "Comments"
-        },
-        {
           "title": "Why didn’t IPv6 work in my home network?",
           "url": "https://gowtham.dev/blog/ipv6-problems.html",
           "published": "2026-05-05T13:46:37+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "A bidirectional typechecking puzzle",
+          "url": "https://haskellforall.com/2026/05/a-bidirectional-typechecking-puzzle",
+          "published": "2026-05-05T13:21:28+00:00",
           "summary": "Comments"
         },
         {
@@ -125,9 +125,9 @@
           "summary": "Comments"
         },
         {
-          "title": "Async Rust never left the MVP state",
-          "url": "https://tweedegolf.nl/en/blog/237/async-rust-never-left-the-mvp-state",
-          "published": "2026-05-04T14:26:01+00:00",
+          "title": "claude code is not making your product better",
+          "url": "https://ethanding.substack.com/p/claude-code-is-not-making-your-product",
+          "published": "2026-05-05T13:27:10+00:00",
           "summary": "Comments"
         }
       ]
