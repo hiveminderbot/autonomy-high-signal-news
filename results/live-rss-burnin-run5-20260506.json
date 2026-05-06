@@ -1,0 +1,256 @@
+{
+  "fetched_at": "2026-05-06T00:00:00+00:00",
+  "task": "Live RSS briefing proof for high-signal-news",
+  "recommendation": "ADOPT_FOR_DAILY_BRIEFING_CRON",
+  "next_experiment": "Run the existing high-signal-news briefing generator against these live feed rows for 7 daily runs, then keep only sources with nonzero entries and no HTTP/parser failures.",
+  "acceptance": {
+    "healthy_sources": 4,
+    "total_sources": 4,
+    "total_entries": 32,
+    "minimum_healthy_sources": 3,
+    "minimum_entries": 10,
+    "passed": true
+  },
+  "sources": [
+    {
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com/rss",
+      "domain": "software_development",
+      "why": "High-signal startup/software community feed with current links.",
+      "http_status": 200,
+      "bytes_read": 12036,
+      "ok": true,
+      "error": null,
+      "entries": [
+        {
+          "title": ".de TLD offline due to DNSSEC?",
+          "url": "https://dnssec-analyzer.verisignlabs.com/nic.de",
+          "published": "2026-05-05T20:16:35+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Accelerating Gemma 4: faster inference with multi-token prediction drafters",
+          "url": "https://blog.google/innovation-and-ai/technology/developers-tools/multi-token-prediction-gemma-4/",
+          "published": "2026-05-05T16:14:17+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Computer Use is 45x more expensive than structured APIs",
+          "url": "https://reflex.dev/blog/computer-use-is-45x-more-expensive-than-structured-apis/",
+          "published": "2026-05-05T16:34:48+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Write some software, give it away for free",
+          "url": "https://nonogra.ph/write-some-software-give-it-away-for-free-05-05-2026",
+          "published": "2026-05-05T21:26:50+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Three Inverse Laws of AI",
+          "url": "https://susam.net/inverse-laws-of-robotics.html",
+          "published": "2026-05-05T15:27:18+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "EEVblog: The 555 Timer is 55 years old [video]",
+          "url": "https://www.youtube.com/watch?v=6JhK8iCQuqI",
+          "published": "2026-05-05T15:47:18+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "NPR finds \"no sign\" of Polymarket at its Panama HQ address",
+          "url": "https://www.npr.org/2026/05/05/nx-s1-5807918/polymarket-panama-prediction-market",
+          "published": "2026-05-05T21:50:21+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Why most product tours get skipped",
+          "url": "https://productonboarding.com/articles/why-product-tours-get-skipped",
+          "published": "2026-05-05T21:05:19+00:00",
+          "summary": "Comments"
+        }
+      ]
+    },
+    {
+      "name": "Lobsters",
+      "url": "https://lobste.rs/rss",
+      "domain": "software_development",
+      "why": "Curated programming community with timestamps and discussion links.",
+      "http_status": 200,
+      "bytes_read": 15774,
+      "ok": true,
+      "error": null,
+      "entries": [
+        {
+          "title": "Why didn’t IPv6 work in my home network?",
+          "url": "https://gowtham.dev/blog/ipv6-problems.html",
+          "published": "2026-05-05T13:46:37+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "RSS Feeds Send Me More Traffic Than Google",
+          "url": "https://shkspr.mobi/blog/2026/05/rss-feeds-send-me-more-traffic-than-google/",
+          "published": "2026-05-05T14:46:08+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "A bidirectional typechecking puzzle",
+          "url": "https://haskellforall.com/2026/05/a-bidirectional-typechecking-puzzle",
+          "published": "2026-05-05T13:21:28+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "A Caddy Cert Expired Because systemd-resolved Was Selectively Broken",
+          "url": "https://rant.mvh.dev/a-caddy-cert-expired-because-systemd-resolved-was-selectively-broken/",
+          "published": "2026-05-05T12:32:59+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "claude code is not making your product better",
+          "url": "https://ethanding.substack.com/p/claude-code-is-not-making-your-product",
+          "published": "2026-05-05T13:27:10+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Bun (the js runtime) is being vibe-ported from zig to rust",
+          "url": "https://github.com/oven-sh/bun/blob/claude/phase-a-port/docs/PORTING.md",
+          "published": "2026-05-05T03:07:03+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Podman rootless containers and the Copy Fail exploit",
+          "url": "https://garrido.io/notes/podman-rootless-containers-copy-fail/",
+          "published": "2026-05-04T22:20:57+00:00",
+          "summary": "Comments"
+        },
+        {
+          "title": "Security Advisory: Local privilege escalation in Lix and Nix",
+          "url": "https://discourse.nixos.org/t/security-advisory-local-privilege-escalation-in-lix-and-nix/77407",
+          "published": "2026-05-04T20:17:53+00:00",
+          "summary": "Comments"
+        }
+      ]
+    },
+    {
+      "name": "Simon Willison",
+      "url": "https://simonwillison.net/atom/everything/",
+      "domain": "ai_and_software",
+      "why": "Practitioner-focused AI/tooling notes from a high-signal individual source.",
+      "http_status": 200,
+      "bytes_read": 105460,
+      "ok": true,
+      "error": null,
+      "entries": [
+        {
+          "title": "datasette-referrer-policy 0.1",
+          "url": "https://simonwillison.net/2026/May/5/datasette-referrer-policy/#atom-everything",
+          "published": "2026-05-05T23:44:27+00:00",
+          "summary": "Release: datasette-referrer-policy 0.1 The OpenStreetMap tiles on the Datasette global-power-plants demo weren't displaying correctly. This turned out to be caused by two bugs. The first is that the CAPTCHA I added to that site a few weeks ago was triggering for the .json fetch requests used by the map plugin, and since those weren't HTML the user was not being asked to solve them. Here's the fix . The second was that OpenStreetMap quite reasonably block tile requests from sites that use a Referrer-Policy: no-referrer header. Datasette does this by default, and I didn't want to change that default on people without warning - so I had Codex + GPT-5.5 build me a new plugin to help set that header to another value. Tags: openstreetmap , http , datasette"
+        },
+        {
+          "title": "Our AI started a cafe in Stockholm",
+          "url": "https://simonwillison.net/2026/May/5/our-ai-started-a-cafe-in-stockholm/#atom-everything",
+          "published": "2026-05-05T22:14:21+00:00",
+          "summary": "Our AI started a cafe in Stockholm Andon Labs previously started an AI-run retail store in San Francisco. Now they're running a similar experiment in Stockholm, Sweden, only this time it's a cafe. These experiments are interesting, and often throw out amusing anecdotes: During the first week of inventory, Mona ordered 120 eggs even though the café has no stove. When the staff told her they couldn’t cook them, she suggested using the high-speed oven, until they pointed out the eggs would likely explode. She also tried to solve the problem of fresh tomatoes being spoiled too fast by ordering 22.5 kg of canned tomatoes for the fresh sandwiches. The baristas eventually started a “Hall of Shame”, a shelf visible to customers with all the weird things Mona ordered, including 6,000 napkins, 3,000 nitrile gloves, 9L coconut milk, and industrial-sized trash bags. Where they lose their shine is when these AI managers start wasting the time of human beings who have not opted into the experiment: She also successfully applied for an outdoor seating permit through the Police e-service, which didn’t require BankID. Her first submission included a sketch she had generated herself, despite having never seen the street outside the café. Unsurprisingly, the Police sent it back for revision. [...] When she makes a mistake, she often sends multiple emails to suppliers with the subject “EMERGENCY” to cancel or change the order. I don't think it's ethical to run experiments like this that affect real-world systems and steal time from people. I'm reminded of the incident last year where the AI Village experiment infuriated Rob Pike by sending him unsolicited gratitude emails as an \"act of kindness\". That was just an unwanted email - asking suppliers to correct mistakes that were made without a human-in-the-loop or wasting police time with slop diagrams feels a whole lot worse to me. I think experiments like this need to keep their own human operators in-the-loop for outbound actions that affect other people. Via Hacker News Tags: ai , generative-ai , llms , ai-agents , ai-ethics"
+        },
+        {
+          "title": "datasette-llm 0.1a7",
+          "url": "https://simonwillison.net/2026/May/5/datasette-llm/#atom-everything",
+          "published": "2026-05-05T01:56:55+00:00",
+          "summary": "Release: datasette-llm 0.1a7 Mechanism for configuring default options for specific models. Part of Datasette's evolving support mechanism for plugins that use LLMs. It's now possible to configure a model with default options, e.g. to say all enrichment operations should use a specific model with temperature set to 0.5. Tags: llm , datasette"
+        },
+        {
+          "title": "llm-echo 0.5a0",
+          "url": "https://simonwillison.net/2026/May/5/llm-echo/#atom-everything",
+          "published": "2026-05-05T01:31:54+00:00",
+          "summary": "Release: llm-echo 0.5a0 New -o thinking 1 option to help test against LLM 0.32a0 and higher. This plugin provides a fake model called \"echo\" for LLM which doesn't run an LLM at all - it's useful for writing automated tests. You can now do this: uvx --with llm==0.32a1 --with llm-echo==0.5a0 llm -m echo hi -o thinking 1 This will fake a reasoning block to standard error before returning JSON echoing the prompt. Tags: llm"
+        },
+        {
+          "title": "Quoting John Gruber",
+          "url": "https://simonwillison.net/2026/May/5/john-gruber/#atom-everything",
+          "published": "2026-05-05T00:46:29+00:00",
+          "summary": "So it’s well known that Y Combinator owns some stake in OpenAI. But how big is that stake? This seems like devilishly difficult information to obtain. I asked around and a little birdie who knows several OpenAI investors came back with an answer: Y Combinator owns about 0.6 percent of OpenAI. At OpenAI’s current $852 billion valuation , that’s worth over $5 billion. &mdash; John Gruber , Y Combinator’s Stake in OpenAI Tags: openai , y-combinator , ai , john-gruber"
+        },
+        {
+          "title": "Granite 4.1 3B SVG Pelican Gallery",
+          "url": "https://simonwillison.net/2026/May/4/granite-41-3b-svg-pelican-gallery/#atom-everything",
+          "published": "2026-05-04T23:49:24+00:00",
+          "summary": "Granite 4.1 3B SVG Pelican Gallery IBM released their Granite 4.1 family of LLMs a few days ago. They're Apache 2.0 licensed and come in 3B, 8B and 30B sizes. Granite 4.1 LLMs: How They’re Built by Granite team member Yousaf Shah describes the training process in detail. Unsloth released the unsloth/granite-4.1-3b-GGUF collection of GGUF encoded quantized variants of the 3B model - 21 different model files ranging in size from 1.2GB to 6.34GB. All 21 of those Unsloth files add up to 51.3GB, which inspired me to finally try an experiment I've been wanting to run for ages: prompting \"Generate an SVG of a pelican riding a bicycle\" against different sized quantized variants of the same model to see what the results would look like. Honestly, the results are less interesting than I expected. There's no distinguishable pattern relating quality to size - they're all pretty terrible! I'll likely try this again in the future with a model that's better at drawing pelicans. Tags: ibm , ai , generative-ai , llms , pelican-riding-a-bicycle , llm-release"
+        },
+        {
+          "title": "Quoting Andy Masley",
+          "url": "https://simonwillison.net/2026/May/4/andy-masley/#atom-everything",
+          "published": "2026-05-04T22:51:09+00:00",
+          "summary": "[...] Between 2000 and 2024, farmers sold in total a Colorado-sized chunk of land all on their own, 77 times all land on data center property in 2028, and grew more food than ever on what was left. None of this caused any problems for US food access. And then, in the middle of all this, a farmer in Loudoun County sells a few acres of mediocre hay field to a hyperscaler for ten times its agricultural value, and the response is that we’re running out of farmland. &mdash; Andy Masley , pushing back against the \"land use\" argument against data center construction Tags: ai-ethics , ai , generative-ai , andy-masley"
+        },
+        {
+          "title": "April 2026 newsletter",
+          "url": "https://simonwillison.net/2026/May/4/april-newsletter/#atom-everything",
+          "published": "2026-05-04T22:38:36+00:00",
+          "summary": "I just sent out the April edition of my sponsors-only monthly newsletter . If you are a sponsor (or if you start a sponsorship now) you can access it here . In this month's newsletter: Opus 4.7 and GPT-5.5, both with price increases Claude Mythos and LLM security research ChatGPT Images 2.0 More model releases Other highlights from my blog What I'm using, April 2026 edition Here's a copy of the March newsletter as a preview of what you'll get. Pay $10/month to stay a month ahead of the free copy! Tags: newsletter"
+        }
+      ]
+    },
+    {
+      "name": "Python Insider",
+      "url": "https://pythoninsider.blogspot.com/feeds/posts/default",
+      "domain": "software_development",
+      "why": "Official-ish Python release/community announcements via Atom.",
+      "http_status": 200,
+      "bytes_read": 236423,
+      "ok": true,
+      "error": null,
+      "entries": [
+        {
+          "title": "The Python Insider Blog has moved!",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/2791909950033204350",
+          "published": "2026-03-03T13:08:00.007-05:00",
+          "summary": "Exciting news: We moved the blog! Python Insider now lives at https://blog.python.org , backed by a Git repository. All 307 posts from the Blogger era have been migrated over, and old URLs redirect to the new ones automatically. Your RSS readers should pick up the new feed without any action on your part, but if something looks off, the new feed URL is&nbsp; https://blog.python.org/rss.xml. Why we moved Blogger worked fine for a long time, but contributing to the blog meant having a Google account and using Blogger's editor. That's a higher bar than it needs to be. The new setup is just Markdown files in a Git repo. If you can open a pull request, you can write a post. Posts live in content/posts/{slug}/index.md with YAML frontmatter for the title, date, authors, and tags. Images go right next to the post in the same directory. No special tooling required beyond a text editor. Contributing Want to write about a Python release, core sprint, governance update, or&nbsp;anything else that belongs on the official Python blog? Here's the short version: 1. Fork https://github.com/python/python-insider-blog 2. Create a new directory under content/posts/ with your post slug 3. Add an {post_name}/index.md with your content (and optionally upload your images.) 4. Open a PR The repo README has more detail on frontmatter fields and local development if you want to preview your post before submitting. What's under the hood The site is built with Astro and deployed as fully static HTML. There's a Keystatic CMS available in dev mode if you prefer a visual editor over raw Markdown, but it's entirely optional. Tailwind handles the styling. The whole thing builds and deploys through GitHub Actions. Links - New site: https://blog.python.org - Repository: https://github.com/python/python-insider-blog - RSS feed: https://blog.python.org/rss.xml If you spot broken links, missing images, or formatting issues from the migration, file an issue on the repo. PRs are welcome too."
+        },
+        {
+          "title": "Join the Python Security Response Team!",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/307741466945747729",
+          "published": "2026-02-17T02:30:00.001-05:00",
+          "summary": "&nbsp;Thanks to the work of the Security Developer-in-Residence Seth Larson, the Python Security Response Team (PSRT) now has an approved public governance document (PEP 811). Following the new governance structure the PSRT now publishes a public list of members , has documented responsibilities for members and admins , and a defined process for onboarding and offboarding members to balance the needs of security and sustainability. The document also clarifies the relationship between the Python Steering Council and the PSRT. And this new onboarding process is already working! The PSF Infrastructure Engineer, Jacob Coffee, has just joined the PSRT as the first new non-\"Release Manager\" member since Seth joined the PSRT in 2023. We expect new members to join further bolstering the sustainability of security work for the Python programming language. Thanks to Alpha-Omega for their support of Python ecosystem security by sponsoring Seth’s work as the Security Developer-in-Residence at the Python Software Foundation. What is the Python Security Response Team? Security doesn't happen by accident: it's thanks to the work of volunteers and paid Python Software Foundation staff on the Python Security Response Team to triage and coordinate vulnerability reports and remediations keeping all Python users safe. Just last year the PSRT published 16 vulnerability advisories for CPython and pip, the most in a single year to date! And the PSRT usually can’t do this work alone, PSRT coordinators are encouraged to involve maintainers and experts on the projects and submodules. By involving the experts directly in the remediation process ensures fixes adhere to existing API conventions and threat-models, are maintainable long-term, and have minimal impact on existing use-cases. Sometimes the PSRT even coordinates with other open source projects to avoid catching the Python ecosystem off-guard by publishing a vulnerability advisory that affects multiple other projects. The most recent example of this is PyPI’s ZIP archive differential attack mitigation . This work deserves recognition and celebration just like contributions to source code and documentation. Seth and Jacob are developing further improvements to workflows involving “GitHub Security Advisories” to record the reporter, coordinator, and remediation developers and reviewers to CVE and OSV records to properly thank everyone involved in the otherwise private contribution to open source projects. How can I join the Python Security Response Team? Maybe you’ve read all this and are interested in directly helping the Python programming language be more secure! The process is similar to the Core Team nomination process , you need an existing PSRT member to nominate you and for your nomination to receive at least ⅔ positive votes from existing PSRT members. You do not need to be a core developer, team member, or triager to be a member of the Python Security Response Team. Anyone with security expertise that is known and highly-trusted within the Python community and has time to volunteer or donate through their employer would make a good candidate for the PSRT. Please note that all PSRT team members have documented responsibilities and are expected to contribute meaningfully to the remediation of vulnerabilities. Being a member of the PSRT is not required to be notified of vulnerabilities and shouldn’t be to receive “early notification” of vulnerabilities affecting CPython and pip. The Python Software Foundation is a CVE Numbering Authority and publishes CVE and OSV records with up-to-date information about vulnerabilities affecting CPython and pip."
+        },
+        {
+          "title": "Python 3.15.0 alpha 6",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/6973278117439741537",
+          "published": "2026-02-11T10:42:00.003-05:00",
+          "summary": "This is an early developer preview of Python 3.15 www.python.org/downloads/release/python-3150a6/ Major new features of the 3.15 series, compared to 3.14 Python 3.15 is still in development. This release, 3.15.0a6, is the sixth of eight planned alpha releases. Alpha releases are intended to make it easier to test the current state of new features and bug fixes and to test the release process. During the alpha phase, features may be added up until the start of the beta phase (2026-05-05) and, if necessary, may be modified or deleted up until the release candidate phase (2026-07-28). Please keep in mind that this is a preview release and its use is not recommended for production environments. Many new features for Python 3.15 are still being planned and written. Among the new major new features and changes so far: PEP 799 : A new high-frequency, low-overhead, statistical sampling profiler and dedicated profiling package PEP 798 : Unpacking in comprehensions with * and ** PEP 686 : Python now uses UTF-8 as the default encoding PEP 782 : A new PyBytesWriter C API to create a Python bytes object PEP 728 : TypedDict with typed extra items The JIT compiler has been significantly upgraded, with 3-4% geometric mean performance improvement on x86-64 Linux over the standard interpreter, and 7-8% speedup on AArch64 macOS over the tail-calling interpreter Improved error messages (Hey, fellow core developer, if a feature you find important is missing from this list, let Hugo know.) The next pre-release of Python 3.15 will be 3.15.0a7, currently scheduled for 2026-03-10. More resources Online documentation PEP 790 , 3.15 release schedule Report bugs at github.com/python/cpython/issues Help fund Python directly (or via GitHub Sponsors ) and support the Python community And now for something completely different By reason of these things, then, the whaling voyage was welcome; the great flood-gates of the wonder-world swung open, and in the wild conceits that swayed me to my purpose, two and two there floated into my inmost soul, endless processions of the whale, and, mid most of them all, one grand hooded phantom, like a snow hill in the air. Enjoy the new release Thanks to all of the many volunteers who help make Python development and these releases possible! Please consider supporting our efforts by volunteering yourself or through organisation contributions to the Python Software Foundation . Regards as the snow slowly falls in Helsinki, Your release team, Hugo van Kemenade Ned Deily Steve Dower Łukasz Langa"
+        },
+        {
+          "title": "Python 3.14.3 and 3.13.12 are now available!",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/3021891016049002155",
+          "published": "2026-02-03T17:08:00.002-05:00",
+          "summary": "&nbsp; Python 3.14.3 is now available! Two snakes enjoying a pie with 3.14 on the top and π crimping 538×507 110 KB This is third maintenance release of Python 3.14 Python 3.14.3 is the third maintenance release of 3.14, containing around 299 bugfixes, build improvements and documentation changes since 3.14.2. https://www.python.org/downloads/release/python-3143/ Major new features of the 3.14 series, compared to 3.13 Some of the major new features and changes in Python 3.14 are: New features PEP 779 : Free-threaded Python is officially supported PEP 649 : The evaluation of annotations is now deferred, improving the semantics of using annotations. PEP 750 : Template string literals (t-strings) for custom string processing, using the familiar syntax of f-strings. PEP 734 : Multiple interpreters in the stdlib. PEP 784 : A new module&nbsp; compression.zstd &nbsp;providing support for the Zstandard compression algorithm. PEP 758 :&nbsp; except &nbsp;and&nbsp; except* &nbsp;expressions may now omit the brackets. Syntax highlighting in PyREPL , and support for color in&nbsp; unittest ,&nbsp; argparse ,&nbsp; json &nbsp;and&nbsp; calendar &nbsp;CLIs. PEP 768 : A zero-overhead external debugger interface for CPython. UUID versions 6-8 &nbsp;are now supported by the&nbsp; uuid &nbsp;module, and generation of versions 3-5 are up to 40% faster. PEP 765 : Disallow&nbsp; return / break / continue &nbsp;that exit a&nbsp; finally &nbsp;block. PEP 741 : An improved C API for configuring Python. A&nbsp; new type of interpreter . For certain newer compilers, this interpreter provides significantly better performance. Opt-in for now, requires building from source. Improved error messages. Builtin implementation of HMAC &nbsp;with formally verified code from the HACL* project. A&nbsp; new command-line interface &nbsp;to inspect running Python processes using asynchronous tasks. The pdb module now supports&nbsp; remote attaching to a running Python process . For more details on the changes to Python 3.14, see&nbsp; What’s new in Python 3.14 . Build changes PEP 761 : Python 3.14 and onwards no longer provides PGP signatures for release artifacts. Instead, Sigstore is recommended for verifiers. Official macOS and Windows release binaries include an&nbsp; experimental &nbsp;JIT compiler . Official&nbsp; Android binary releases &nbsp;are now available. Incompatible changes, removals and new deprecations Incompatible changes Python&nbsp; removals &nbsp;and&nbsp; deprecations C API&nbsp; removals &nbsp;and&nbsp; deprecations Overview of all&nbsp; pending deprecations Python install manager The installer we offer for Windows is being replaced by our new install manager, which can be installed from&nbsp; the Windows Store &nbsp;or from its&nbsp; download page . See&nbsp; our documentation &nbsp;for more information. The JSON file available for download contains the list of all the installable packages available as part of this release, including file URLs and hashes, but is not required to install the latest release. The traditional installer will remain available throughout the 3.14 and 3.15 releases. More resources Online documentation PEP 745 , 3.14 Release Schedule Report bugs at&nbsp; github.com/python/cpython/issues Help fund Python directly &nbsp;(or via&nbsp; GitHub Sponsors ) and support&nbsp; the Python community And now for something almost, but not quite, completely different Python 3.13.12 is&nbsp; also &nbsp;now available! https://www.python.org/downloads/release/python-31312/ This is the twelfth maintenance release of Python 3.13 Python 3.13.12 is the twelfth maintenance release of 3.13, containing around 250 bugfixes, build improvements and documentation changes since 3.13.11. Enjoy the new releases Thanks to all of the many volunteers who help make Python Development and these releases possible! Please consider supporting our efforts by volunteering yourself or through organisation contributions to the&nbsp; Python Software Foundation . Regards from an international releasing task force spread out over a whopping 10 timezones this time, Your release team, Thomas Wouters&nbsp; Hugo van Kemenade&nbsp; Ned Deily&nbsp; Steve Dower&nbsp; Łukasz Langa&nbsp;"
+        },
+        {
+          "title": "Python 3.15.0 alpha 5 (yes, another alpha!)",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/6770398946690401432",
+          "published": "2026-01-14T12:38:00.006-05:00",
+          "summary": "Note: 3.15.0a4 was accidentally built against main from 2025-12-23 instead of 2026-01-13, so this 3.15.0a5 is an extra release correctly built against 2026-01-14. This is an early developer preview of Python 3.15 www.python.org/downloads/release/python-3150a5/ Major new features of the 3.15 series, compared to 3.14 Python 3.15 is still in development. This release, 3.15.0a5, is the fifth of seven eight planned alpha releases. Alpha releases are intended to make it easier to test the current state of new features and bug fixes and to test the release process. During the alpha phase, features may be added up until the start of the beta phase (2026-05-05) and, if necessary, may be modified or deleted up until the release candidate phase (2026-07-28). Please keep in mind that this is a preview release and its use is not recommended for production environments. Many new features for Python 3.15 are still being planned and written. Among the new major new features and changes so far: PEP 799 : A new high-frequency, low-overhead, statistical sampling profiler and dedicated profiling package PEP 686 : Python now uses UTF-8 as the default encoding PEP 782 : A new PyBytesWriter C API to create a Python bytes object The JIT compiler has been significantly upgraded, with 4-5% geometric mean performance improvement on x86-64 Linux over the standard interpreter, and 7-8% speedup on AArch64 macOS over the tail-calling interpreter Improved error messages (Hey, fellow core developer, if a feature you find important is missing from this list, let Hugo know.) The next pre-release of Python 3.15 will be 3.15.0a6, currently scheduled for 2026-02-10. More resources Online documentation PEP 790 , 3.15 release schedule Report bugs at https://github.com/python/cpython/issues Help fund Python directly (or via GitHub Sponsors ) and support the Python community And now for something completely different At last it was given out that some time next day the ship would certainly sail. So next morning, Queequeg and I took a very early start. Enjoy the new release Thanks to all of the many volunteers who help make Python Development and these releases possible! Please consider supporting our efforts by volunteering yourself or through organisation contributions to the Python Software Foundation . Regards from a still snowfully subzero Helsinki, Your release team, Hugo van Kemenade Ned Deily Steve Dower Łukasz Langa"
+        },
+        {
+          "title": "Python 3.15.0 alpha 4",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/6350391120978376033",
+          "published": "2026-01-13T15:24:00.003-05:00",
+          "summary": "Edit: This 3.15.0a4 was accidentally built against `main` from 2025-12-23 instead of 2026-01-13, so 3.15.0a5 is an extra release correctly built against 2026-01-14. This is an early developer preview of Python 3.15 www.python.org/downloads/release/python-3150a4/ Major new features of the 3.15 series, compared to 3.14 Python 3.15 is still in development. This release, 3.15.0a4, is the fourth of seven planned alpha releases. Alpha releases are intended to make it easier to test the current state of new features and bug fixes and to test the release process. During the alpha phase, features may be added up until the start of the beta phase (2026-05-05) and, if necessary, may be modified or deleted up until the release candidate phase (2026-07-28). Please keep in mind that this is a preview release and its use is not recommended for production environments. Many new features for Python 3.15 are still being planned and written. Among the new major new features and changes so far: PEP 799 : A new high-frequency, low-overhead, statistical sampling profiler and dedicated profiling package PEP 686 : Python now uses UTF-8 as the default encoding PEP 782 : A new PyBytesWriter C API to create a Python bytes object The JIT compiler has been significantly upgraded, with 3-4% geometric mean performance improvement on x86-64 Linux over the standard interpreter, and 7-8% speedup on AArch64 macOS over the tail-calling interpreter Improved error messages (Hey, fellow core developer, if a feature you find important is missing from this list, let Hugo know.) The next pre-release of Python 3.15 will be 3.15.0a5, currently scheduled for 2026-02-10. More resources Online documentation PEP 790 , 3.15 release schedule Report bugs at https://github.com/python/cpython/issues Help fund Python directly (or via GitHub Sponsors ) and support the Python community And now for something completely different Upon this every soul was confounded; for the phenomenon just then observed by Ahab had unaccountably escaped every one else; but its very blinding palpableness must have been the cause. Thrusting his head half way into the binnacle, Ahab caught one glimpse of the compasses; his uplifted arm slowly fell; for a moment he almost seemed to stagger. Standing behind him Starbuck looked, and lo! the two compasses pointed East, and the Pequod was as infallibly going West. But ere the first wild alarm could get out abroad among the crew, the old man with a rigid laugh exclaimed, “I have it! It has happened before. Mr. Starbuck, last night’s thunder turned our compasses—that’s all. Thou hast before now heard of such a thing, I take it.” “Aye; but never before has it happened to me, sir,” said the pale mate, gloomily. Enjoy the new release Thanks to all of the many volunteers who help make Python Development and these releases possible! Please consider supporting our efforts by volunteering yourself or through organisation contributions to the Python Software Foundation . Regards from a snowfully subzero Helsinki, Your release team, Hugo van Kemenade Ned Deily Steve Dower Łukasz Langa"
+        },
+        {
+          "title": "Python 3.15.0 alpha 3",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/3929087211406746971",
+          "published": "2025-12-16T09:44:00.004-05:00",
+          "summary": "This is an early developer preview of Python 3.15 www.python.org/downloads/release/python-3150a3/ Major new features of the 3.15 series, compared to 3.14 Python 3.15 is still in development. This release, 3.15.0a3, is the third of seven planned alpha releases. Alpha releases are intended to make it easier to test the current state of new features and bug fixes and to test the release process. During the alpha phase, features may be added up until the start of the beta phase (2026-05-05) and, if necessary, may be modified or deleted up until the release candidate phase (2026-07-28). Please keep in mind that this is a preview release and its use is not recommended for production environments. Many new features for Python 3.15 are still being planned and written. Among the new major new features and changes so far: PEP 799 : A new high-frequency, low-overhead, statistical sampling profiler and dedicated profiling package PEP 686 : Python now uses UTF-8 as the default encoding PEP 782 : A new PyBytesWriter C API to create a Python bytes object Improved error messages (Hey, fellow core developer, if a feature you find important is missing from this list, let Hugo know.) The next pre-release of Python 3.15 will be 3.15.0a4, currently scheduled for 2026-01-13. More resources Online documentation PEP 790 , 3.15 release schedule Report bugs at https://github.com/python/cpython/issues Help fund Python directly (or via GitHub Sponsors ) and support the Python community And now for something completely different Instantly the captain ran forward, and in a loud voice commanded his crew to desist from hoisting the cutting-tackles, and at once cast loose the cables and chains confining the whales to the ship. “What now?” said the Guernsey-man, when the Captain had returned to them. “Why, let me see; yes, you may as well tell him now that—that—in fact, tell him I’ve diddled him, and (aside to himself) perhaps somebody else.” Enjoy the new release Thanks to all of the many volunteers who help make Python Development and these releases possible! Please consider supporting our efforts by volunteering yourself or through organisation contributions to the Python Software Foundation . Regards from an even deeper darker Helsinki, Your release team, Hugo van Kemenade Ned Deily Steve Dower Łukasz Langa"
+        },
+        {
+          "title": "Python 3.14.2 and 3.13.11 are now available!",
+          "url": "https://www.blogger.com/feeds/3941553907430899163/posts/default/3914031266089986714",
+          "published": "2025-12-05T16:29:00.001-05:00",
+          "summary": "Two more, just three days after the last? Yes! We found some regressions, so here’s an expedited pair of releases. They also come with some bonus security fixes. Python 3.14.2 www.python.org/downloads/release/python-3142/ Python 3.14.2 is the second maintenance release of 3.14, containing 18 bugfixes, build improvements and documentation changes since 3.14.1. This is an expedited release to fix the following regressions: gh-142206 : Exceptions in multiprocessing in running programs while upgrading Python. gh-142214 : Exceptions in dataclasses without __init__ method. gh-142218 : Segmentation faults and assertion failures in insertdict. gh-140797 : Crash when using multiple capturing groups in re.Scanner And these security fixes: gh-142145 : Remove quadratic behavior in node ID cache clearing ( CVE-2025-12084 ) gh-119452 : Fix a potential virtual memory allocation denial of service in http.server See the full changelog . Python 3.13.11 www.python.org/downloads/release/python-31311/ Python 3.13.11 is the eleventh maintenance release of 3.13. This is an expedited release to fix the following regressions: gh-142206 : Exceptions in multiprocessing in running programs while upgrading Python. gh-142218 : Segmentation faults and assertion failures in insertdict. gh-140797 : Crash when using multiple capturing groups in re.Scanner And these security fixes: gh-142145 : Remove quadratic behavior in node ID cache clearing ( CVE-2025-12084 ) gh-119451 : Fix a potential denial of service in http.client gh-119452 : Fix a potential virtual memory allocation denial of service in http.server See the full changelog . Enjoy the new release Thanks to all of the many volunteers who help make Python Development and these releases possible! Please consider supporting our efforts by volunteering yourself or through organisation contributions to the Python Software Foundation . Regards from deeper darker Helsinki, Your release team, Hugo van Kemenade Thomas Wouters Ned Deily Steve Dower Łukasz Langa"
+        }
+      ]
+    }
+  ]
+}
