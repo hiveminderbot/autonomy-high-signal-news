@@ -13,9 +13,9 @@ Offer: I run a fixed-price public onboarding QA pass against your signup flow us
   - Segment: scheduling_saas
   - Title: Sign up | Cal.com
   - Static visible text chars: 17
-  - Forms/inputs/buttons/scripts: 0/0/0/46
+  - Forms/inputs/buttons/scripts: 0/0/0/52
   - Finding: Static HTML exposes almost no visible signup copy before JavaScript execution; this is a credible browser-agent QA demo target for blank/loading-state and no-JS fallback capture.
-  - Finding: Heavy JavaScript surface (46 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.
+  - Finding: Heavy JavaScript surface (52 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.
   - Finding: No static form/input controls are present in the fetched signup HTML; a public browser run can validate whether account entry is discoverable after hydration.
   - Finding: No obvious identity-provider/auth option text appears in the public static response; browser-agent run should document auth-option discoverability.
 
@@ -34,12 +34,12 @@ Offer: I run a fixed-price public onboarding QA pass against your signup flow us
   - HTTP: 200 final_url: https://app.cal.com/signup bytes_minimum_met: True
   - Title: Sign up | Cal.com
   - Static visible text chars: 17 sample: Sign up | Cal.com
-  - Forms/inputs/buttons/scripts/noscript: 0/0/0/46/False
+  - Forms/inputs/buttons/scripts/noscript: 0/0/0/52/False
   - Expected hits: cal, sign, signup
   - Identity/auth hits: (none)
   - Outreach-worthy: True
   - Finding: Static HTML exposes almost no visible signup copy before JavaScript execution; this is a credible browser-agent QA demo target for blank/loading-state and no-JS fallback capture.
-  - Finding: Heavy JavaScript surface (46 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.
+  - Finding: Heavy JavaScript surface (52 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.
   - Finding: No static form/input controls are present in the fetched signup HTML; a public browser run can validate whether account entry is discoverable after hydration.
   - Finding: No obvious identity-provider/auth option text appears in the public static response; browser-agent run should document auth-option discoverability.
 - **Linear signup** — https://linear.app/signup

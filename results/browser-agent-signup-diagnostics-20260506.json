@@ -56,7 +56,7 @@
       "final_url": "https://app.cal.com/signup",
       "findings": [
         "Static HTML exposes almost no visible signup copy before JavaScript execution; this is a credible browser-agent QA demo target for blank/loading-state and no-JS fallback capture.",
-        "Heavy JavaScript surface (46 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.",
+        "Heavy JavaScript surface (52 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.",
         "No static form/input controls are present in the fetched signup HTML; a public browser run can validate whether account entry is discoverable after hydration.",
         "No obvious identity-provider/auth option text appears in the public static response; browser-agent run should document auth-option discoverability."
       ],
@@ -68,7 +68,7 @@
       "name": "Cal.com signup",
       "ok": true,
       "outreach_worthy": true,
-      "script_count": 46,
+      "script_count": 52,
       "segment": "scheduling_saas",
       "title": "Sign up | Cal.com",
       "url": "https://cal.com/signup",
@@ -133,7 +133,7 @@
     "final_url": "https://app.cal.com/signup",
     "findings": [
       "Static HTML exposes almost no visible signup copy before JavaScript execution; this is a credible browser-agent QA demo target for blank/loading-state and no-JS fallback capture.",
-      "Heavy JavaScript surface (46 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.",
+      "Heavy JavaScript surface (52 script tags) has no <noscript> fallback; browser diagnostics should capture first-paint/loading and console/network failures.",
       "No static form/input controls are present in the fetched signup HTML; a public browser run can validate whether account entry is discoverable after hydration.",
       "No obvious identity-provider/auth option text appears in the public static response; browser-agent run should document auth-option discoverability."
     ],
@@ -145,7 +145,7 @@
     "name": "Cal.com signup",
     "ok": true,
     "outreach_worthy": true,
-    "script_count": 46,
+    "script_count": 52,
     "segment": "scheduling_saas",
     "title": "Sign up | Cal.com",
     "url": "https://cal.com/signup",
