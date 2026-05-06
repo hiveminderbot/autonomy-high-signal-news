@@ -1,0 +1,145 @@
+{
+  "artifact": "calcom-real-browser-trace-20260506",
+  "generated_at": "2026-05-06T01:00:45.754824+00:00",
+  "scope": "Non-OpenViking browser-agent QA revenue experiment; passive public Cal.com signup trace only.",
+  "target": {
+    "name": "Cal.com signup",
+    "url": "https://cal.com/signup"
+  },
+  "capital_readiness": "not_capital_ready",
+  "revenue_readiness": "not_revenue_ready_no_prospect_contact_or_payment",
+  "safety_guardrails": [
+    "No form submission, account creation, login attempt, scraping behind auth, or prospect contact occurred.",
+    "Any outreach must describe this as public passive QA evidence, not as proof of a production outage.",
+    "OpenViking/Polymarket work is explicitly excluded from this artifact."
+  ],
+  "trace": {
+    "started_at": "2026-05-06T01:00:39.490Z",
+    "finished_at": "2026-05-06T01:00:45.616Z",
+    "target_url": "https://cal.com/signup",
+    "final_url": "https://app.cal.com/signup",
+    "main_status": 200,
+    "goto_error": null,
+    "title": "Sign up | Cal.com",
+    "body_text_chars": 462,
+    "body_text_sample": "Create your Cal.com account Free for individuals. Team plans for collaborative features. Data region United States Continue with Google Continue with Microsoft or Continue with Email or SAML Already have an account? Sign in Connect all your calendars Cal.com reads availability from all your existing calendars. Set your availability Set schedules for the times you want to be booked. Share a link or embed Share your Cal.com link or embed on your site.",
+    "controls": {
+      "forms": 0,
+      "inputs": 1,
+      "buttons": 4,
+      "links": 1,
+      "text_controls": [
+        "Continue with Google",
+        "Continue with Microsoft",
+        "Continue with Email",
+        "or SAML",
+        "Sign in"
+      ],
+      "has_noscript": true,
+      "script_count": 76
+    },
+    "console_messages": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 ()"
+      },
+      {
+        "type": "error",
+        "text": "%c << query #4 %cviewer.me.myStats%c %O \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n   \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n  ; font-weight: bold; \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n  ; font-weight: normal; {input: undefined, result: TRPCClientError: UNAUTHORIZED\n    at eF.from (https://app.cal.com/_next/static/chunks/10_rq_f1w_s~0\u2026, elapsedMs: 231, context: Object}"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 ()"
+      },
+      {
+        "type": "error",
+        "text": "%c << query #2 %cviewer.teams.hasTeamPlan%c %O \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n   \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n  ; font-weight: bold; \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n  ; font-weight: normal; {input: undefined, result: TRPCClientError: UNAUTHORIZED\n    at eF.from (https://app.cal.com/_next/static/chunks/10_rq_f1w_s~0\u2026, elapsedMs: 234, context: Object}"
+      },
+      {
+        "type": "error",
+        "text": "%c << query #3 %cviewer.me.get%c %O \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n   \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n  ; font-weight: bold; \n    background-color: #3fb0d8;\n    color: white;\n    padding: 2px;\n  ; font-weight: normal; {input: undefined, result: TRPCClientError: UNAUTHORIZED\n    at eF.from (https://app.cal.com/_next/static/chunks/10_rq_f1w_s~0\u2026, elapsedMs: 237, context: Object}"
+      },
+      {
+        "type": "warning",
+        "text": "The resource https://app.cal.com/_next/static/media/CalSansUI%5Bwght%2CGEOM%5D-s.p.17~pqx5aww0vr.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+      }
+    ],
+    "page_errors": [],
+    "failed_requests": [
+      {
+        "url": "https://www.google.com/ccm/collect?rcb=13&frm=0&ae=g&en=page_view&dl=https%3A%2F%2Fapp.cal.com%2Fsignup&scrsrc=www.googletagmanager.com&rnd=211397128.1778029241&dt=Sign%20up%20%7C%20Cal.com&auid=454000469.1778029241&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6541h1v9135538394za200zd9135538394xea&g",
+        "method": "POST",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://www.google.com/rmkt/collect/11268524478/?random=1778029241333&cv=11&fst=1778029241333&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6541h1v9216818495z89135538394za20gzb9135538394zd9135538394xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=0~115938465~115938468~118131809~118463261&u_w=1365&u_h=900",
+        "method": "POST",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://www.google.com/ccm/collect?rcb=1&frm=0&en=page_view&dl=https%3A%2F%2Fapp.cal.com%2Fsignup&scrsrc=www.googletagmanager.com&rnd=211397128.1778029241&dt=Sign%20up%20%7C%20Cal.com&auid=454000469.1778029241&navt=n&npa=0&gtm=45be6541h1v9216818495z89135538394za20gzb9135538394zd9135538394xec&gcd=13l",
+        "method": "POST",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://analytics.google.com/g/collect?v=2&tid=G-RX4HHQ613S&gtm=45je6541h1v9135545983z89135538394za20gzb9135538394zd9135538394&_p=1778029240801&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&ecid=1498716241&_eu=AAAAAGAC&are=1&cid=1195259808.1778029241&ec_mode=a&frm=0&pscdl=noapi&rcb=3&sr=1365x900&uaa=x86&uab=6",
+        "method": "POST",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://analytics.google.com/g/collect?v=2&tid=G-RX4HHQ613S&gtm=45je6541h1v9135545983za20gzb9135538394zd9135538394&_p=1778029240801&gcd=13l3l3l3l1l1&npa=0&dma=0&ecid=1498716241&_eu=AEAAAGQC&ae=a&are=1&cid=1195259808.1778029241&frm=0&pscdl=noapi&rcb=3&sr=1365x900&uaa=x86&uab=64&uafvl=HeadlessChrome%3",
+        "method": "POST",
+        "failure": "net::ERR_ABORTED"
+      }
+    ],
+    "error_responses": [
+      {
+        "status": 401,
+        "url": "https://app.cal.com/api/trpc/me/myStats?input=%7B%22json%22%3Anull%2C%22meta%22%3A%7B%22values%22%3A%5B%22undefined%22%5D%7D%7D"
+      },
+      {
+        "status": 401,
+        "url": "https://app.cal.com/api/trpc/teams/hasTeamPlan?batch=1&input=%7B%220%22%3A%7B%22json%22%3Anull%2C%22meta%22%3A%7B%22values%22%3A%5B%22undefined%22%5D%7D%7D%7D"
+      },
+      {
+        "status": 401,
+        "url": "https://app.cal.com/api/trpc/me/get?batch=1&input=%7B%220%22%3A%7B%22json%22%3Anull%2C%22meta%22%3A%7B%22values%22%3A%5B%22undefined%22%5D%7D%7D%7D"
+      }
+    ],
+    "screenshot_path": "/home/exedev/autonomy/labs/high-signal-news/results/calcom-real-browser-trace-20260506.png"
+  },
+  "summary": {
+    "screenshot_ok": true,
+    "screenshot_bytes": 107172,
+    "auth_terms": [
+      "Continue with Google",
+      "Continue with Microsoft",
+      "Continue with Email",
+      "Sign in"
+    ],
+    "console_error_count": 7,
+    "failed_request_count": 5,
+    "finding_count": 4,
+    "findings": [
+      "The public signup entry point loaded successfully in a real headless Chromium session.",
+      "The browser trace exposes account-entry/authentication affordances suitable for a compliant no-submit QA packet.",
+      "The trace captured failed network requests worth reviewing before any outreach claim is made.",
+      "Console warnings/errors were observed and can be included as diagnostic context if they reproduce."
+    ],
+    "recommendation": "REJECT_OUTREACH_UNTIL_STRONGER_TRACE",
+    "outreach_ready_for_manual_review": false
+  },
+  "screenshot": {
+    "path": "results/calcom-real-browser-trace-20260506.png",
+    "bytes": 107172
+  },
+  "next_experiment": {
+    "name": "One manual outreach review",
+    "success_gate": "Send at most one compliant note only after human review confirms the screenshot and trace contain a useful, reproducible public onboarding observation.",
+    "reject_gate": "Reject this wedge for outreach if the screenshot/body text only shows a normal working signup page with no useful QA angle."
+  }
+}
