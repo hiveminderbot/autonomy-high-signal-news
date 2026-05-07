@@ -105,7 +105,6 @@ class RSSFetcher:
 
             # Handle both RSS and Atom
             items = []
-            seen_urls = set()
 
             # RSS 2.0
             for item in root.findall('.//item'):
@@ -115,13 +114,9 @@ class RSSFetcher:
                 description = item.find('description')
 
                 if title is not None and link is not None:
-                    url = link.text or ""
-                    if url in seen_urls:
-                        continue
-                    seen_urls.add(url)
                     items.append({
                         'title': title.text or "",
-                        'url': url,
+                        'url': link.text or "",
                         'published': pub_date.text if pub_date is not None else datetime.now().isoformat(),
                         'content': description.text if description is not None else ""
                     })
@@ -136,17 +131,13 @@ class RSSFetcher:
                 description = item.find('description')
 
                 if title is not None and link is not None:
-                    url = link.text or ""
-                    if url in seen_urls:
-                        continue
-                    seen_urls.add(url)
                     media_url = media_content.get('url') if media_content is not None else None
                     content = description.text if description is not None else ""
                     if media_url:
                         content = f"{content}\n[Media: {media_url}]".strip()
                     items.append({
                         'title': title.text or "",
-                        'url': url,
+                        'url': link.text or "",
                         'published': pub_date.text if pub_date is not None else datetime.now().isoformat(),
                         'content': content
                     })
@@ -160,13 +151,9 @@ class RSSFetcher:
                 summary = entry.find('atom:summary', ns)
 
                 if title is not None and link is not None:
-                    url = link.get('href', '')
-                    if url in seen_urls:
-                        continue
-                    seen_urls.add(url)
                     items.append({
                         'title': title.text or "",
-                        'url': url,
+                        'url': link.get('href', ''),
                         'published': pub_date.text if pub_date is not None else datetime.now().isoformat(),
                         'content': summary.text if summary is not None else ""
                     })
@@ -196,21 +183,24 @@ class RSSFetcher:
             new_items = 0
             for item in items:
                 try:
-                    cursor.execute('''
-                        INSERT OR IGNORE INTO articles
-                        (title, url, source_id, content, published_at, fetched_at)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    ''', (
-                        item['title'],
-                        item['url'],
-                        source_id,
-                        item['content'],
-                        item['published'],
-                        datetime.now().isoformat()
-                    ))
-                    if cursor.rowcount > 0:
-                        new_items += 1
-                        total_new += 1
+                    # BUG: should be >= cutoff, not > cutoff, so articles exactly 'hours' old are excluded
+                    pub_dt = datetime.fromisoformat(item['published'].replace('Z', '+00:00'))
+                    if pub_dt > cutoff:
+                        cursor.execute('''
+                            INSERT OR IGNORE INTO articles
+                            (title, url, source_id, content, published_at, fetched_at)
+                            VALUES (?, ?, ?, ?, ?, ?)
+                        ''', (
+                            item['title'],
+                            item['url'],
+                            source_id,
+                            item['content'],
+                            item['published'],
+                            datetime.now().isoformat()
+                        ))
+                        if cursor.rowcount > 0:
+                            new_items += 1
+                            total_new += 1
                 except Exception as e:
                     print(f"  ✗ Insert failed: {e}")
 
