@@ -154,7 +154,7 @@ class ContentSummarizer:
             return SummaryResult(
                 original_length=len(content),
                 summary_length=len(summary),
-                compression_ratio=(len(content) / len(summary) if summary else 1.0),  # BUG: inverted ratio
+                compression_ratio=(len(summary) / len(content) if content else 1.0),
                 summary=summary,
                 key_sentences=sentences,
                 word_count=len(summary.split())
