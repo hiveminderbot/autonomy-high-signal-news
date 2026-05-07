@@ -1,8 +1,8 @@
 {
   "lab_name": "high-signal-news",
   "lab_root": "/home/exedev/autonomy/labs/high-signal-news",
-  "timestamp": "2026-05-07T10:32:03.455751+00:00",
-  "duration_ms": 16.376018524169922,
+  "timestamp": "2026-05-07T12:40:55.789554+00:00",
+  "duration_ms": 15.292882919311523,
   "success": true,
   "summary": {
     "total": 14,
@@ -16,7 +16,7 @@
       "name": "README.md exists",
       "status": "passed",
       "message": "File/directory exists: README.md",
-      "duration_ms": 0.034332275390625,
+      "duration_ms": 0.038623809814453125,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/README.md",
         "type": "file"
@@ -27,7 +27,7 @@
       "name": "STATUS.json exists",
       "status": "passed",
       "message": "File/directory exists: STATUS.json",
-      "duration_ms": 0.02193450927734375,
+      "duration_ms": 0.023603439331054688,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/STATUS.json",
         "type": "file"
@@ -38,7 +38,7 @@
       "name": "STATUS.json is valid JSON",
       "status": "passed",
       "message": "JSON is valid: STATUS.json",
-      "duration_ms": 0.11873245239257812,
+      "duration_ms": 0.15664100646972656,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/STATUS.json",
         "keys": [
@@ -64,7 +64,7 @@
       "name": "Scripts directory exists",
       "status": "passed",
       "message": "File/directory exists: scripts/",
-      "duration_ms": 0.023126602172851562,
+      "duration_ms": 0.03314018249511719,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/scripts",
         "type": "directory"
@@ -75,7 +75,7 @@
       "name": "Aggregator scripts exist",
       "status": "passed",
       "message": "File/directory exists: scripts/aggregator/",
-      "duration_ms": 0.030040740966796875,
+      "duration_ms": 0.02384185791015625,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/aggregator",
         "type": "directory"
@@ -86,7 +86,7 @@
       "name": "Briefing scripts exist",
       "status": "passed",
       "message": "File/directory exists: scripts/briefing/",
-      "duration_ms": 0.016450881958007812,
+      "duration_ms": 0.017404556274414062,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/briefing",
         "type": "directory"
@@ -97,7 +97,7 @@
       "name": "Content extraction script exists",
       "status": "passed",
       "message": "File/directory exists: scripts/extract_with_jina.py",
-      "duration_ms": 0.025987625122070312,
+      "duration_ms": 0.016689300537109375,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/extract_with_jina.py",
         "type": "file"
@@ -108,7 +108,7 @@
       "name": "Content extraction syntax valid",
       "status": "passed",
       "message": "All 1 Python file(s) have valid syntax",
-      "duration_ms": 2.210378646850586,
+      "duration_ms": 2.2614002227783203,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/scripts/extract_with_jina.py",
         "files_checked": 1
@@ -119,7 +119,7 @@
       "name": "Database exists",
       "status": "passed",
       "message": "File/directory exists: news.db",
-      "duration_ms": 0.062465667724609375,
+      "duration_ms": 0.06747245788574219,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/news.db",
         "type": "file"
@@ -141,7 +141,7 @@
       "name": "Requirements file exists",
       "status": "passed",
       "message": "File/directory exists: requirements.txt",
-      "duration_ms": 0.023365020751953125,
+      "duration_ms": 0.021219253540039062,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/requirements.txt",
         "type": "file"
@@ -152,7 +152,7 @@
       "name": "Git repository initialized",
       "status": "passed",
       "message": "File/directory exists: .git/",
-      "duration_ms": 0.0171661376953125,
+      "duration_ms": 0.022411346435546875,
       "details": {
         "path": "/home/exedev/autonomy/labs/high-signal-news/.git",
         "type": "directory"
@@ -174,7 +174,7 @@
       "name": "GitHub source-of-truth remote hygiene",
       "status": "passed",
       "message": "Command succeeded (exit 0)",
-      "duration_ms": 13.627767562866211,
+      "duration_ms": 12.4359130859375,
       "details": {
         "command": "git remote -v | grep -q 'github.com/hiveminderbot/autonomy-high-signal-news.git' && ! git remote -v | grep -Eqi 'forgejo|gitea|localhost:3000|tin-sun|172\\.17\\.0\\.1:3000' && echo 'PASS: GitHub-only source of truth'",
         "exit_code": 0,
