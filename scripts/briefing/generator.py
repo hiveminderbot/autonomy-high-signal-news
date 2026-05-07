@@ -176,8 +176,8 @@ class BriefingGenerator:
         contextual = [i for i in items if i.tier == 'contextual']
 
         # Apply limits
-        must_read = must_read[:self.max_must_read_total]
-        important = important[:self.max_important_total]
+        must_read = must_read[:self.max_important_total]
+        important = important[:self.max_must_read_total]
 
         return must_read, important, contextual
 
