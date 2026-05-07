@@ -69,7 +69,7 @@ class DeliveryChannel(ABC):
             try:
                 result = deliver_fn(content, subject)
                 if result.success:
-                    result.retries = attempt
+                    result.retries = 0
                     return result
                 last_error = result.error
             except Exception as e:
