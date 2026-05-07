@@ -1,6 +1,6 @@
 # High-Signal News Briefing — Run 6
-Generated: 2026-05-07T06:46:19.142837
-Articles: 180 | Sources: 11
+Generated: 2026-05-07T06:47:56.717270
+Articles: 164 | Sources: 8
 
 ## Ai
 
@@ -11,10 +11,6 @@ Articles: 180 | Sources: 11
 - **What JFK can teach us about AI job loss** (AI Supremacy)
   https://www.ai-supremacy.com/p/what-jfk-can-teach-us-about-ai-job-loss-automation-1960s-2020s
   A playbook from 1962 may be our last defense against looming inequality for the American worker
-
-- **The Sequence Knowledge #854: Return of the King: Unrolling the xLSTM Architecture** (The Sequence)
-  https://thesequence.substack.com/p/the-sequence-knowledge-854-return
-  An unexpected alternative to transformers.
 
 
 ## Artificial-Intelligence
@@ -102,30 +98,10 @@ Abstract: As LLMs enter conflict monitoring, understanding systematic distortion
   https://www.lennysnewsletter.com/p/quests-token-leaderboards-and-a-skills
   Watch now | &#127897;&#65039;Sendbird&#8217;s CEO turned AI adoption into a product, including quests, token tiers, and a marketing team that ships live swag stores in a day with zero engineers
 
-- **Why SaaS freemium playbooks don’t work in AI, and what to do instead** (Lenny's Newsletter)
-  https://www.lennysnewsletter.com/p/why-saas-freemium-playbooks-dont
-  How to build an AI monetization strategy that actually works
-
-
-## Software_Development
-
-- **This Week in Rust 650** (This Week in Rust)
-  https://this-week-in-rust.org/blog/2026/05/06/this-week-in-rust-650/
-  <p>Hello and welcome to another issue of <em>This Week in Rust</em>!
-<a href="https://www.rust-lang.org/">Rust</a> is a programming language empowering everyone to build reliable and efficient softwar
-
-- **How Instacart Built a Search for Billions of Products** (ByteByteGo)
-  https://blog.bytebytego.com/p/how-instacart-built-a-search-for
-  In this article, we will learn how Instacart&#8217;s search infrastructure evolved over the years and the challenges its engineering team faced.
-
 
 ## Technology
 
 - **Microsoft Earnings, Apple Earnings** (Stratechery)
   https://stratechery.com/2026/microsoft-earnings-apple-earnings/
   Microsoft unveils its new agentic business model, and Apple confronts shortages in memory and chips even as the Mac benefits from AI.
-
-- **Amazon’s Durability** (Stratechery)
-  https://stratechery.com/2026/amazons-durability/
-  Amazon looked behind in AI in the training era, but is well place in the inference era, thanks to its continued investment in the long-term.
 
