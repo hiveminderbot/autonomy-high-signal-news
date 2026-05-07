@@ -121,6 +121,27 @@ class RSSFetcher:
                         'content': description.text if description is not None else ""
                     })
 
+            # Media RSS (MRSS) - e.g. YouTube, Substack audio
+            media_ns = {'media': 'http://search.yahoo.com/mrss'}
+            for item in root.findall('.//item'):
+                title = item.find('title')
+                link = item.find('link')
+                pub_date = item.find('pubDate')
+                media_content = item.find('media:content', media_ns)
+                description = item.find('description')
+
+                if title is not None and link is not None:
+                    media_url = media_content.get('url') if media_content is not None else None
+                    content = description.text if description is not None else ""
+                    if media_url:
+                        content = f"{content}\n[Media: {media_url}]".strip()
+                    items.append({
+                        'title': title.text or "",
+                        'url': link.text or "",
+                        'published': pub_date.text if pub_date is not None else datetime.now().isoformat(),
+                        'content': content
+                    })
+
             # Atom
             ns = {'atom': 'http://www.w3.org/2005/Atom'}
             for entry in root.findall('.//atom:entry', ns):
