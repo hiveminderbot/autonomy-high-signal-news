@@ -1,8 +1,9 @@
 """Test that exposes the > vs >= cutoff bug in rss_fetcher.fetch_all_feeds."""
 import sqlite3
 import tempfile
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.aggregator.rss_fetcher import RSSFetcher
 
@@ -44,9 +45,10 @@ def test_article_exactly_hours_old_is_included():
         conn.commit()
         conn.close()
 
-        # Simulate fetch_feed returning an article published exactly 24 hours ago
-        # Use naive datetime to match cutoff (datetime.now() is naive)
-        exactly_24h_ago = (datetime.now() - timedelta(hours=24)).isoformat()
+        # Use a fixed reference time so cutoff and article published time align
+        fixed_now = datetime(2026, 5, 7, 12, 0, 0)
+        exactly_24h_ago = (fixed_now - timedelta(hours=24)).isoformat()
+
         fetcher.fetch_feed = lambda url: [
             {
                 'title': 'Exactly 24h old',
@@ -56,7 +58,11 @@ def test_article_exactly_hours_old_is_included():
             }
         ]
 
-        total = fetcher.fetch_all_feeds(hours=24)
+        # Patch datetime.now in rss_fetcher to return fixed_now
+        with patch('scripts.aggregator.rss_fetcher.datetime') as mock_datetime:
+            mock_datetime.now.return_value = fixed_now
+            mock_datetime.fromisoformat = datetime.fromisoformat
+            total = fetcher.fetch_all_feeds(hours=24)
 
         # With the bug (>), this article is excluded → total == 0
         # After fix (>=), it is included → total == 1

@@ -185,7 +185,7 @@ class RSSFetcher:
                 try:
                     # BUG: should be >= cutoff, not > cutoff, so articles exactly 'hours' old are excluded
                     pub_dt = datetime.fromisoformat(item['published'].replace('Z', '+00:00'))
-                    if pub_dt > cutoff:
+                    if pub_dt >= cutoff:
                         cursor.execute('''
                             INSERT OR IGNORE INTO articles
                             (title, url, source_id, content, published_at, fetched_at)
