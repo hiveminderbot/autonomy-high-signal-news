@@ -183,7 +183,6 @@ class RSSFetcher:
             new_items = 0
             for item in items:
                 try:
-                    # BUG: should be >= cutoff, not > cutoff, so articles exactly 'hours' old are excluded
                     pub_dt = datetime.fromisoformat(item['published'].replace('Z', '+00:00'))
                     if pub_dt >= cutoff:
                         cursor.execute('''
