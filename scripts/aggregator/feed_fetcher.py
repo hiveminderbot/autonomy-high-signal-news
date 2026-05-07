@@ -1022,7 +1022,7 @@ class FeedFetcher:
                 print(f"Fetching {source.name} ({source.id})...")
                 entries = self.fetch_source(source)
                 self.cache.save_entries(entries)
-                results[source.id] = []  # BUG: discards fetched entries
+                results[source.id] = entries
                 print(f"  -> {len(entries)} entries")
 
                 # If this was a retry of a disabled source and it succeeded, re-enable it
