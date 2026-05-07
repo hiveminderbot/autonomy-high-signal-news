@@ -105,6 +105,7 @@ class RSSFetcher:
 
             # Handle both RSS and Atom
             items = []
+            seen_urls = set()
 
             # RSS 2.0
             for item in root.findall('.//item'):
@@ -114,9 +115,13 @@ class RSSFetcher:
                 description = item.find('description')
 
                 if title is not None and link is not None:
+                    url = link.text or ""
+                    if url in seen_urls:
+                        continue
+                    seen_urls.add(url)
                     items.append({
                         'title': title.text or "",
-                        'url': link.text or "",
+                        'url': url,
                         'published': pub_date.text if pub_date is not None else datetime.now().isoformat(),
                         'content': description.text if description is not None else ""
                     })
@@ -131,13 +136,17 @@ class RSSFetcher:
                 description = item.find('description')
 
                 if title is not None and link is not None:
+                    url = link.text or ""
+                    if url in seen_urls:
+                        continue
+                    seen_urls.add(url)
                     media_url = media_content.get('url') if media_content is not None else None
                     content = description.text if description is not None else ""
                     if media_url:
                         content = f"{content}\n[Media: {media_url}]".strip()
                     items.append({
                         'title': title.text or "",
-                        'url': link.text or "",
+                        'url': url,
                         'published': pub_date.text if pub_date is not None else datetime.now().isoformat(),
                         'content': content
                     })
@@ -151,9 +160,13 @@ class RSSFetcher:
                 summary = entry.find('atom:summary', ns)
 
                 if title is not None and link is not None:
+                    url = link.get('href', '')
+                    if url in seen_urls:
+                        continue
+                    seen_urls.add(url)
                     items.append({
                         'title': title.text or "",
-                        'url': link.get('href', ''),
+                        'url': url,
                         'published': pub_date.text if pub_date is not None else datetime.now().isoformat(),
                         'content': summary.text if summary is not None else ""
                     })
