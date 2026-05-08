@@ -220,9 +220,10 @@ def articles_to_stories(articles: list) -> list[dict]:
         else:
             tier = 'contextual'
 
+        raw_content = art.get('content') or ''
         story = {
             'title': art.get('title', 'Untitled'),
-            'summary': art.get('llm_insight') or art.get('content', '')[:500],
+            'summary': art.get('llm_insight') or raw_content[:500],
             'sources': [art.get('source_name', 'Unknown')],
             'tier': tier,
             'entities': [],
