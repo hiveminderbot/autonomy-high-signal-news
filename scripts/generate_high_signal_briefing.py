@@ -2,6 +2,9 @@
 """
 Generate high-signal newsletter with filtering and synthesis.
 
+Refactored to use the centralized briefing.renderer module for all output formats,
+eliminating duplicate ad-hoc HTML/JSON/Markdown generation code.
+
 Key improvements:
 1. Filters out sponsored content, "coming soon", placeholder posts
 2. Requires cross-source corroboration for themes (HN + Lobsters)
@@ -14,9 +17,18 @@ import argparse
 import sqlite3
 import re
 import json
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from collections import defaultdict
+
+# Add scripts/ to path so briefing package is importable
+_scripts_path = Path(__file__).parent
+if str(_scripts_path) not in sys.path:
+    sys.path.insert(0, str(_scripts_path))
+
+from briefing.generator import BriefingGenerator, BriefingResult, BriefingSection, BriefingItem, BriefingMetadata
+from briefing.renderer import MarkdownRenderer, HTMLRenderer, TextRenderer
 
 DB_PATH = Path(__file__).parent.parent / "news.db"
 OUTPUT_PATH = Path(__file__).parent.parent / "output"
@@ -193,39 +205,154 @@ def group_by_domain(articles: list) -> dict:
     return dict(by_domain)
 
 
-def generate_synthesis(articles: list) -> str:
-    """Generate synthesis paragraph from articles."""
-    if not articles:
+def articles_to_stories(articles: list) -> list[dict]:
+    """Convert raw article dicts into story dicts for the BriefingGenerator."""
+    stories = []
+    for art in articles:
+        # Map domain to BriefingGenerator domain classification
+        domain = art.get('domain', 'general')
+        # Determine tier based on quality_score if available
+        quality_score = art.get('quality_score', 0)
+        if quality_score >= 90:
+            tier = 'must_read'
+        elif quality_score >= 70:
+            tier = 'important'
+        else:
+            tier = 'contextual'
+
+        story = {
+            'title': art.get('title', 'Untitled'),
+            'summary': art.get('llm_insight') or art.get('content', '')[:500],
+            'sources': [art.get('source_name', 'Unknown')],
+            'tier': tier,
+            'entities': [],
+            'urgency': 'normal',
+            'url': art.get('url'),
+            'published': art.get('published_at'),
+            'domain': domain,
+        }
+        stories.append(story)
+    return stories
+
+
+def generate_cross_source_themes_markdown(articles: list) -> str:
+    """Generate cross-source themes as markdown for the newsletter header."""
+    themes = detect_cross_source_themes(articles)
+    if not themes:
         return ""
 
-    # Count by source type
-    source_counts = defaultdict(int)
-    for a in articles:
-        source_counts[a.get('source_name', 'Unknown')] += 1
-
-    # Get top themes
-    themes = detect_cross_source_themes(articles)
-
-    lines = []
-
-    # Cross-source themes
-    if themes:
-        lines.append("### 🔥 Cross-Source Themes")
+    lines = ["### 🔥 Cross-Source Themes", ""]
+    for theme in themes[:3]:
+        lines.append(f"**{theme['topic'].title()}** — mentioned across {', '.join(theme['sources'])}")
+        for art in theme['articles'][:2]:
+            lines.append(f"  - [{art['title'][:70]}]({art['url']})")
         lines.append("")
-        for theme in themes[:3]:
-            lines.append(f"**{theme['topic'].title()}** — mentioned across {', '.join(theme['sources'])}")
-            for art in theme['articles'][:2]:
-                lines.append(f"  - [{art['title'][:70]}]({art['url']})")
-            lines.append("")
 
     return '\n'.join(lines)
 
 
-def generate_newsletter(articles: list) -> str:
-    """Generate the full newsletter."""
-    today = datetime.now().strftime('%Y-%m-%d')
+def build_briefing_result(articles: list) -> BriefingResult:
+    """Build a BriefingResult from raw articles using the centralized generator."""
+    stories = articles_to_stories(articles)
+    generator = BriefingGenerator(
+        max_items_per_section=10,
+        max_must_read_total=5,
+        max_important_total=10,
+        target_reading_time=10,
+    )
+    # Override domain classification to use article domains instead of keyword matching
+    # We manually build sections based on article domains
+    by_domain = group_by_domain(articles)
 
-    lines = [
+    # Priority order for domains
+    priority = [
+        'ai_research',
+        'ai_labs',
+        'software',
+        'research',
+        'investment',
+        'community',
+    ]
+
+    sections = []
+    all_items = []
+
+    domain_emoji = {
+        'ai_research': '🧠',
+        'ai_labs': '🤖',
+        'software': '💻',
+        'research': '📄',
+        'investment': '💰',
+        'community': '👥',
+        'general': '📰',
+    }
+
+    for domain in priority:
+        if domain not in by_domain:
+            continue
+        domain_articles = by_domain[domain]
+        if not domain_articles:
+            continue
+
+        # Convert to BriefingItems
+        domain_stories = articles_to_stories(domain_articles)
+        domain_items = []
+        for story in domain_stories[:10]:  # max 10 per section
+            item = BriefingItem(
+                title=story['title'],
+                summary=story['summary'],
+                sources=story['sources'],
+                tier=story['tier'],
+                entities=story['entities'],
+                urgency=story['urgency'],
+                url=story['url'],
+                published=story['published'],
+            )
+            domain_items.append(item)
+            all_items.append(item)
+
+        if domain_items:
+            sections.append(BriefingSection(
+                name=domain.replace('_', ' ').title(),
+                emoji=domain_emoji.get(domain, '📰'),
+                stories=[i.to_dict() for i in domain_items]
+            ))
+
+    # Calculate metadata
+    must_read_count = sum(1 for i in all_items if i.tier == 'must_read')
+    important_count = sum(1 for i in all_items if i.tier == 'important')
+    contextual_count = sum(1 for i in all_items if i.tier == 'contextual')
+
+    total_words = sum(
+        len(i.title.split()) + len(i.summary.split())
+        for i in all_items
+    )
+    reading_time = max(1, total_words // 200)
+
+    metadata = BriefingMetadata(
+        generated_at=datetime.now().isoformat(),
+        total_stories=len(all_items),
+        must_read_count=must_read_count,
+        important_count=important_count,
+        contextual_count=contextual_count,
+        sources_used=len(set(
+            source for i in all_items for source in i.sources
+        )),
+        reading_time_minutes=min(reading_time, 10),
+    )
+
+    return BriefingResult(metadata=metadata, sections=sections)
+
+
+def generate_newsletter_markdown(articles: list) -> str:
+    """Generate markdown newsletter using the centralized renderer."""
+    result = build_briefing_result(articles)
+    renderer = MarkdownRenderer()
+    rendered = renderer.render(result)
+
+    # Prepend custom header with cross-source themes
+    today = datetime.now().strftime('%Y-%m-%d')
+    header_lines = [
         f"# High-Signal Briefing — {today}",
         "",
         f"*{len(articles)} high-signal stories from the past week*",
@@ -236,243 +363,53 @@ def generate_newsletter(articles: list) -> str:
         "",
     ]
 
-    # Cross-source synthesis first
-    synthesis = generate_synthesis(articles)
+    synthesis = generate_cross_source_themes_markdown(articles)
     if synthesis:
-        lines.append(synthesis)
-        lines.append("---")
-        lines.append("")
+        header_lines.append(synthesis)
+        header_lines.append("---")
+        header_lines.append("")
 
-    # Group by domain
-    by_domain = group_by_domain(articles)
+    # Replace the renderer's default header with our custom header
+    # The renderer produces: # 📰 Morning Briefing - <date>
+    # We want to keep the rest but replace the header section
+    rendered_lines = rendered.split('\n')
+    # Find where the first section starts (## line)
+    section_start = 0
+    for i, line in enumerate(rendered_lines):
+        if line.startswith('## '):
+            section_start = i
+            break
 
-    # Priority order
-    priority = [
-        'ai_research',
-        'ai_labs',
-        'software',
-        'research',
-        'investment',
-        'community',
-    ]
+    # Combine custom header + rendered sections + footer
+    output_lines = header_lines + rendered_lines[section_start:]
 
-    for domain in priority:
-        if domain not in by_domain:
-            continue
-
-        domain_articles = by_domain[domain]
-        if not domain_articles:
-            continue
-
-        # Domain emoji mapping
-        emojis = {
-            'ai_research': '🧠',
-            'ai_labs': '🤖',
-            'software': '💻',
-            'research': '📄',
-            'investment': '💰',
-            'community': '👥',
-        }
-
-        emoji = emojis.get(domain, '📰')
-        lines.append(f"## {emoji} {domain.replace('_', ' ').title()}")
-        lines.append("")
-
-        for art in domain_articles[:5]:  # Top 5 per domain
-            title = art['title']
-            url = art['url']
-            source = art.get('source_name', 'Unknown')
-
-            lines.append(f"**{title}** — *{source}*")
-
-            # Add LLM insight if available
-            insight = art.get('llm_insight')
-            if insight:
-                lines.append(f"> {insight[:150]}...")
-
-            lines.append(f"[Read more]({url})")
-            lines.append("")
-
-    # Footer
-    lines.append("---")
-    lines.append("")
-    lines.append(f"*Generated: {datetime.now().isoformat()}*")
-    lines.append("*Sources: Tier-1 only (distinguished engineers, top researchers, high-signal publications)*")
-
-    return '\n'.join(lines)
+    return '\n'.join(output_lines)
 
 
 def generate_newsletter_html(articles: list) -> str:
-    """Generate the newsletter as HTML."""
-    today = datetime.now().strftime('%Y-%m-%d')
-    generated_at = datetime.now().isoformat()
-
-    # CSS styling
-    css = """
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; }
-        h1 { border-bottom: 2px solid #2563eb; padding-bottom: 10px; color: #1e40af; }
-        h2 { color: #374151; margin-top: 30px; border-left: 4px solid #2563eb; padding-left: 12px; }
-        .meta { color: #6b7280; font-size: 0.9em; margin-bottom: 20px; }
-        .source-note { background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px; margin: 15px 0; border-radius: 4px; }
-        .article { margin: 18px 0; padding: 12px; background: #f9fafb; border-radius: 6px; }
-        .article-title { font-weight: 600; font-size: 1.05em; margin-bottom: 4px; }
-        .article-source { color: #6b7280; font-size: 0.85em; font-style: italic; }
-        .article-insight { color: #4b5563; font-size: 0.9em; margin: 8px 0; padding-left: 12px; border-left: 3px solid #d1d5db; }
-        .article-link a { color: #2563eb; text-decoration: none; }
-        .article-link a:hover { text-decoration: underline; }
-        .themes { background: #fef3c7; border-radius: 6px; padding: 12px; margin: 15px 0; }
-        .theme-item { margin: 6px 0; }
-        .footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 0.8em; }
-    </style>
-    """
-
-    lines = [
-        "<!DOCTYPE html>",
-        "<html lang='en'>",
-        "<head>",
-        "<meta charset='UTF-8'>",
-        f"<title>High-Signal Briefing — {today}</title>",
-        css,
-        "</head>",
-        "<body>",
-        f"<h1>High-Signal Briefing — {today}</h1>",
-        f"<div class='meta'>{len(articles)} high-signal stories from the past week</div>",
-        "<div class='source-note'><strong>Tier-1 Sources Only</strong>: Distinguished engineers, top researchers, and high-signal publications</div>",
-    ]
-
-    # Cross-source synthesis
-    synthesis = generate_synthesis(articles)
-    if synthesis:
-        # Convert markdown synthesis to HTML
-        lines.append("<div class='themes'>")
-        lines.append("<h3>🔥 Cross-Source Themes</h3>")
-        for line in synthesis.split('\n'):
-            line = line.strip()
-            if not line:
-                continue
-            if line.startswith('###'):
-                continue
-            if line.startswith('**') and line.endswith('**'):
-                lines.append(f"<div class='theme-item'><strong>{line.strip('*')}</strong></div>")
-            elif line.startswith('- '):
-                lines.append(f"<div class='theme-item'>{line[2:]}</div>")
-            else:
-                lines.append(f"<div class='theme-item'>{line}</div>")
-        lines.append("</div>")
-
-    # Group by domain
-    by_domain = group_by_domain(articles)
-    priority = ['ai_research', 'ai_labs', 'software', 'research', 'investment', 'community']
-    emojis = {
-        'ai_research': '🧠',
-        'ai_labs': '🤖',
-        'software': '💻',
-        'research': '📄',
-        'investment': '💰',
-        'community': '👥',
-    }
-
-    for domain in priority:
-        if domain not in by_domain:
-            continue
-        domain_articles = by_domain[domain]
-        if not domain_articles:
-            continue
-        emoji = emojis.get(domain, '📰')
-        lines.append(f"<h2>{emoji} {domain.replace('_', ' ').title()}</h2>")
-        for art in domain_articles[:5]:
-            title = art['title']
-            url = art['url']
-            source = art.get('source_name', 'Unknown')
-            insight = art.get('llm_insight')
-            lines.append("<div class='article'>")
-            lines.append(f"<div class='article-title'>{title}</div>")
-            lines.append(f"<div class='article-source'>{source}</div>")
-            if insight:
-                lines.append(f"<div class='article-insight'>{insight[:150]}...</div>")
-            lines.append(f"<div class='article-link'><a href='{url}'>Read more →</a></div>")
-            lines.append("</div>")
-
-    lines.append("<div class='footer'>")
-    lines.append(f"<p>Generated: {generated_at}</p>")
-    lines.append("<p>Sources: Tier-1 only (distinguished engineers, top researchers, high-signal publications)</p>")
-    lines.append("</div>")
-    lines.append("</body>")
-    lines.append("</html>")
-
-    return '\n'.join(lines)
+    """Generate HTML newsletter using the centralized renderer."""
+    result = build_briefing_result(articles)
+    renderer = HTMLRenderer()
+    return renderer.render(result)
 
 
 def generate_newsletter_json(articles: list) -> str:
-    """Generate the newsletter as structured JSON."""
-    today = datetime.now().strftime('%Y-%m-%d')
-    generated_at = datetime.now().isoformat()
+    """Generate JSON newsletter using the centralized generator."""
+    result = build_briefing_result(articles)
+    return json.dumps(result.to_dict(), indent=2, ensure_ascii=False)
 
-    # Group by domain
-    by_domain = group_by_domain(articles)
 
-    # Build articles list with full metadata
-    articles_out = []
-    for art in articles:
-        articles_out.append({
-            'id': art.get('id'),
-            'title': art.get('title'),
-            'url': art.get('url'),
-            'source': art.get('source_name', 'Unknown'),
-            'domain': art.get('domain', 'general'),
-            'tier': art.get('tier'),
-            'quality_score': art.get('quality_score'),
-            'published_at': art.get('published_at'),
-            'insight': art.get('llm_insight'),
-        })
-
-    # Cross-source themes
-    themes = detect_cross_source_themes(articles)
-    themes_out = [
-        {
-            'topic': t['topic'],
-            'sources': t['sources'],
-            'mention_count': t['mention_count'],
-            'article_titles': [a['title'] for a in t['articles']],
-        }
-        for t in themes
-    ]
-
-    payload = {
-        'meta': {
-            'generated_at': generated_at,
-            'date': today,
-            'total_articles': len(articles),
-            'format_version': '1.0',
-        },
-        'sources_summary': {
-            'tier': 1,
-            'criteria': 'distinguished engineers, top researchers, high-signal publications',
-        },
-        'themes': themes_out,
-        'articles_by_domain': {
-            domain.replace('_', ' ').title(): [
-                {
-                    'title': a.get('title'),
-                    'url': a.get('url'),
-                    'source': a.get('source_name', 'Unknown'),
-                    'insight': a.get('llm_insight'),
-                }
-                for a in arts[:5]
-            ]
-            for domain, arts in by_domain.items()
-        },
-        'articles': articles_out,
-    }
-
-    return json.dumps(payload, indent=2, ensure_ascii=False)
+def generate_newsletter_text(articles: list) -> str:
+    """Generate plain text newsletter using the centralized renderer."""
+    result = build_briefing_result(articles)
+    renderer = TextRenderer()
+    return renderer.render(result)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Generate high-signal briefing")
     parser.add_argument(
-        '--format', choices=['markdown', 'html', 'json', 'all'],
+        '--format', choices=['markdown', 'html', 'json', 'text', 'all'],
         default='all',
         help='Output format(s) to generate (default: all)'
     )
@@ -519,7 +456,7 @@ def main():
 
     for fmt in formats_to_generate:
         if fmt == 'markdown':
-            newsletter = generate_newsletter(filtered)
+            newsletter = generate_newsletter_markdown(filtered)
             output_file = args.output_dir / f"briefing-high-signal-{today}.md"
             with open(output_file, 'w') as f:
                 f.write(newsletter)
@@ -539,6 +476,13 @@ def main():
                 f.write(json_out)
             generated.append(output_file)
             print(f"Generated JSON: {output_file}")
+        elif fmt == 'text':
+            text = generate_newsletter_text(filtered)
+            output_file = args.output_dir / f"briefing-high-signal-{today}.txt"
+            with open(output_file, 'w') as f:
+                f.write(text)
+            generated.append(output_file)
+            print(f"Generated Text: {output_file}")
 
     print(f"\nTotal articles included: {len(filtered)}")
     print(f"Files generated: {len(generated)}")

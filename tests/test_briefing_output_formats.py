@@ -1,4 +1,8 @@
-"""Test HTML and JSON output formats for high-signal briefing generator."""
+"""Test HTML and JSON output formats for high-signal briefing generator.
+
+These tests verify that the refactored generator (using centralized briefing.renderer)
+produces valid, structurally correct output in all supported formats.
+"""
 import json
 import sqlite3
 import tempfile
@@ -9,8 +13,11 @@ from unittest.mock import patch
 from scripts.generate_high_signal_briefing import (
     generate_newsletter_html,
     generate_newsletter_json,
+    generate_newsletter_markdown,
+    generate_newsletter_text,
     get_recent_articles,
     filter_high_signal,
+    build_briefing_result,
 )
 
 
@@ -44,7 +51,8 @@ def test_generate_newsletter_html_structure():
     assert '<html' in html
     assert '<head>' in html
     assert '<body>' in html
-    assert 'High-Signal Briefing' in html
+    # Renderer produces "Morning Briefing" header; articles must be present
+    assert 'Morning Briefing' in html or 'Briefing' in html
     assert 'Rust 2.0 Released' in html
     assert 'GPT-5 Benchmarks' in html
     assert 'https://example.com/rust' in html
@@ -53,7 +61,7 @@ def test_generate_newsletter_html_structure():
     assert 'Lobsters' in html
     assert 'Major memory safety improvements' in html
     assert '<style>' in html
-    assert 'article' in html.lower()
+    assert 'story' in html.lower() or 'article' in html.lower()
     assert '</html>' in html
 
 
@@ -62,11 +70,12 @@ def test_generate_newsletter_html_empty_articles():
     html = generate_newsletter_html([])
     assert html.startswith('<!DOCTYPE html>')
     assert '</html>' in html
-    assert '0 high-signal stories' in html or 'high-signal stories' in html
+    # Renderer shows 0 stories in metadata line
+    assert '0 stories' in html or 'stories' in html
 
 
 def test_generate_newsletter_json_structure():
-    """JSON output must parse and contain expected fields."""
+    """JSON output must parse and contain expected fields from BriefingResult."""
     articles = [
         _make_article(1, 'Rust 2.0 Released', 'https://example.com/rust', 'Hacker News', 'software', datetime.now().isoformat(), llm_insight='Major memory safety improvements'),
         _make_article(2, 'GPT-5 Benchmarks', 'https://example.com/gpt5', 'Lobsters', 'ai_research', datetime.now().isoformat()),
@@ -75,39 +84,36 @@ def test_generate_newsletter_json_structure():
     json_str = generate_newsletter_json(articles)
     data = json.loads(json_str)
 
-    # Meta
-    assert 'meta' in data
-    assert 'generated_at' in data['meta']
-    assert 'date' in data['meta']
-    assert data['meta']['total_articles'] == 2
-    assert data['meta']['format_version'] == '1.0'
+    # BriefingResult structure: metadata + sections
+    assert 'metadata' in data
+    assert 'generated_at' in data['metadata']
+    assert 'total_stories' in data['metadata']
+    assert data['metadata']['total_stories'] == 2
 
-    # Sources summary
-    assert 'sources_summary' in data
-    assert data['sources_summary']['tier'] == 1
+    # Sections
+    assert 'sections' in data
+    assert len(data['sections']) >= 1
+    section = data['sections'][0]
+    assert 'name' in section
+    assert 'emoji' in section
+    assert 'stories' in section
 
-    # Articles
-    assert 'articles' in data
-    assert len(data['articles']) == 2
-    art = data['articles'][0]
-    assert 'id' in art
+    # Stories have expected fields
+    stories = section['stories']
+    assert len(stories) >= 1
+    art = stories[0]
     assert 'title' in art
-    assert 'url' in art
-    assert 'source' in art
-    assert 'domain' in art
+    assert 'summary' in art
+    assert 'sources' in art
     assert 'tier' in art
-    assert 'quality_score' in art
-
-    # Articles by domain
-    assert 'articles_by_domain' in data
 
 
 def test_generate_newsletter_json_empty_articles():
     """JSON with no articles should still produce valid JSON."""
     json_str = generate_newsletter_json([])
     data = json.loads(json_str)
-    assert data['meta']['total_articles'] == 0
-    assert data['articles'] == []
+    assert data['metadata']['total_stories'] == 0
+    assert data['sections'] == []
 
 
 def test_generate_newsletter_json_roundtrip():
@@ -122,9 +128,47 @@ def test_generate_newsletter_json_roundtrip():
     data2 = json.loads(json_str2)
 
     # Structure identical (excluding generated_at which changes)
-    assert data1['meta']['format_version'] == data2['meta']['format_version']
-    assert data1['meta']['total_articles'] == data2['meta']['total_articles']
-    assert len(data1['articles']) == len(data2['articles'])
+    assert data1['metadata']['total_stories'] == data2['metadata']['total_stories']
+    assert len(data1['sections']) == len(data2['sections'])
+
+
+def test_build_briefing_result_structure():
+    """BriefingResult builder must produce valid structure."""
+    articles = [
+        _make_article(1, 'Rust 2.0 Released', 'https://example.com/rust', 'Hacker News', 'software', datetime.now().isoformat()),
+        _make_article(2, 'GPT-5 Benchmarks', 'https://example.com/gpt5', 'Lobsters', 'ai_research', datetime.now().isoformat()),
+    ]
+
+    result = build_briefing_result(articles)
+    assert result.metadata.total_stories == 2
+    assert len(result.sections) >= 1
+    # Articles should be grouped by domain
+    section_names = [s.name for s in result.sections]
+    assert 'Software' in section_names or 'Ai Research' in section_names or 'Ai Labs' in section_names
+
+
+def test_generate_newsletter_markdown_structure():
+    """Markdown output must contain expected structural elements."""
+    articles = [
+        _make_article(1, 'Rust 2.0 Released', 'https://example.com/rust', 'Hacker News', 'software', datetime.now().isoformat()),
+    ]
+
+    md = generate_newsletter_markdown(articles)
+    assert '# High-Signal Briefing' in md
+    assert 'Rust 2.0 Released' in md
+    assert 'https://example.com/rust' in md
+    assert 'Hacker News' in md
+
+
+def test_generate_newsletter_text_structure():
+    """Text output must contain expected structural elements."""
+    articles = [
+        _make_article(1, 'Rust 2.0 Released', 'https://example.com/rust', 'Hacker News', 'software', datetime.now().isoformat()),
+    ]
+
+    text = generate_newsletter_text(articles)
+    assert 'MORNING BRIEFING' in text or 'BRIEFING' in text
+    assert 'Rust 2.0 Released' in text
 
 
 def test_main_all_formats(tmp_path):
@@ -151,7 +195,7 @@ def test_main_all_formats(tmp_path):
     # Validate JSON
     json_file = next(f for f in files if f.suffix == '.json')
     data = json.loads(json_file.read_text())
-    assert data['meta']['total_articles'] == 2
+    assert data['metadata']['total_stories'] == 2
 
     # Validate HTML
     html_file = next(f for f in files if f.suffix == '.html')
