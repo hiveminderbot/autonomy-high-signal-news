@@ -10,6 +10,7 @@ Key improvements:
 5. Excludes low-quality content patterns
 """
 
+import argparse
 import sqlite3
 import re
 import json
@@ -301,13 +302,197 @@ def generate_newsletter(articles: list) -> str:
     return '\n'.join(lines)
 
 
+def generate_newsletter_html(articles: list) -> str:
+    """Generate the newsletter as HTML."""
+    today = datetime.now().strftime('%Y-%m-%d')
+    generated_at = datetime.now().isoformat()
+
+    # CSS styling
+    css = """
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; }
+        h1 { border-bottom: 2px solid #2563eb; padding-bottom: 10px; color: #1e40af; }
+        h2 { color: #374151; margin-top: 30px; border-left: 4px solid #2563eb; padding-left: 12px; }
+        .meta { color: #6b7280; font-size: 0.9em; margin-bottom: 20px; }
+        .source-note { background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px; margin: 15px 0; border-radius: 4px; }
+        .article { margin: 18px 0; padding: 12px; background: #f9fafb; border-radius: 6px; }
+        .article-title { font-weight: 600; font-size: 1.05em; margin-bottom: 4px; }
+        .article-source { color: #6b7280; font-size: 0.85em; font-style: italic; }
+        .article-insight { color: #4b5563; font-size: 0.9em; margin: 8px 0; padding-left: 12px; border-left: 3px solid #d1d5db; }
+        .article-link a { color: #2563eb; text-decoration: none; }
+        .article-link a:hover { text-decoration: underline; }
+        .themes { background: #fef3c7; border-radius: 6px; padding: 12px; margin: 15px 0; }
+        .theme-item { margin: 6px 0; }
+        .footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 0.8em; }
+    </style>
+    """
+
+    lines = [
+        "<!DOCTYPE html>",
+        "<html lang='en'>",
+        "<head>",
+        "<meta charset='UTF-8'>",
+        f"<title>High-Signal Briefing — {today}</title>",
+        css,
+        "</head>",
+        "<body>",
+        f"<h1>High-Signal Briefing — {today}</h1>",
+        f"<div class='meta'>{len(articles)} high-signal stories from the past week</div>",
+        "<div class='source-note'><strong>Tier-1 Sources Only</strong>: Distinguished engineers, top researchers, and high-signal publications</div>",
+    ]
+
+    # Cross-source synthesis
+    synthesis = generate_synthesis(articles)
+    if synthesis:
+        # Convert markdown synthesis to HTML
+        lines.append("<div class='themes'>")
+        lines.append("<h3>🔥 Cross-Source Themes</h3>")
+        for line in synthesis.split('\n'):
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith('###'):
+                continue
+            if line.startswith('**') and line.endswith('**'):
+                lines.append(f"<div class='theme-item'><strong>{line.strip('*')}</strong></div>")
+            elif line.startswith('- '):
+                lines.append(f"<div class='theme-item'>{line[2:]}</div>")
+            else:
+                lines.append(f"<div class='theme-item'>{line}</div>")
+        lines.append("</div>")
+
+    # Group by domain
+    by_domain = group_by_domain(articles)
+    priority = ['ai_research', 'ai_labs', 'software', 'research', 'investment', 'community']
+    emojis = {
+        'ai_research': '🧠',
+        'ai_labs': '🤖',
+        'software': '💻',
+        'research': '📄',
+        'investment': '💰',
+        'community': '👥',
+    }
+
+    for domain in priority:
+        if domain not in by_domain:
+            continue
+        domain_articles = by_domain[domain]
+        if not domain_articles:
+            continue
+        emoji = emojis.get(domain, '📰')
+        lines.append(f"<h2>{emoji} {domain.replace('_', ' ').title()}</h2>")
+        for art in domain_articles[:5]:
+            title = art['title']
+            url = art['url']
+            source = art.get('source_name', 'Unknown')
+            insight = art.get('llm_insight')
+            lines.append("<div class='article'>")
+            lines.append(f"<div class='article-title'>{title}</div>")
+            lines.append(f"<div class='article-source'>{source}</div>")
+            if insight:
+                lines.append(f"<div class='article-insight'>{insight[:150]}...</div>")
+            lines.append(f"<div class='article-link'><a href='{url}'>Read more →</a></div>")
+            lines.append("</div>")
+
+    lines.append("<div class='footer'>")
+    lines.append(f"<p>Generated: {generated_at}</p>")
+    lines.append("<p>Sources: Tier-1 only (distinguished engineers, top researchers, high-signal publications)</p>")
+    lines.append("</div>")
+    lines.append("</body>")
+    lines.append("</html>")
+
+    return '\n'.join(lines)
+
+
+def generate_newsletter_json(articles: list) -> str:
+    """Generate the newsletter as structured JSON."""
+    today = datetime.now().strftime('%Y-%m-%d')
+    generated_at = datetime.now().isoformat()
+
+    # Group by domain
+    by_domain = group_by_domain(articles)
+
+    # Build articles list with full metadata
+    articles_out = []
+    for art in articles:
+        articles_out.append({
+            'id': art.get('id'),
+            'title': art.get('title'),
+            'url': art.get('url'),
+            'source': art.get('source_name', 'Unknown'),
+            'domain': art.get('domain', 'general'),
+            'tier': art.get('tier'),
+            'quality_score': art.get('quality_score'),
+            'published_at': art.get('published_at'),
+            'insight': art.get('llm_insight'),
+        })
+
+    # Cross-source themes
+    themes = detect_cross_source_themes(articles)
+    themes_out = [
+        {
+            'topic': t['topic'],
+            'sources': t['sources'],
+            'mention_count': t['mention_count'],
+            'article_titles': [a['title'] for a in t['articles']],
+        }
+        for t in themes
+    ]
+
+    payload = {
+        'meta': {
+            'generated_at': generated_at,
+            'date': today,
+            'total_articles': len(articles),
+            'format_version': '1.0',
+        },
+        'sources_summary': {
+            'tier': 1,
+            'criteria': 'distinguished engineers, top researchers, high-signal publications',
+        },
+        'themes': themes_out,
+        'articles_by_domain': {
+            domain.replace('_', ' ').title(): [
+                {
+                    'title': a.get('title'),
+                    'url': a.get('url'),
+                    'source': a.get('source_name', 'Unknown'),
+                    'insight': a.get('llm_insight'),
+                }
+                for a in arts[:5]
+            ]
+            for domain, arts in by_domain.items()
+        },
+        'articles': articles_out,
+    }
+
+    return json.dumps(payload, indent=2, ensure_ascii=False)
+
+
 def main():
+    parser = argparse.ArgumentParser(description="Generate high-signal briefing")
+    parser.add_argument(
+        '--format', choices=['markdown', 'html', 'json', 'all'],
+        default='all',
+        help='Output format(s) to generate (default: all)'
+    )
+    parser.add_argument(
+        '--days', type=int, default=7,
+        help='Number of days to look back (default: 7)'
+    )
+    parser.add_argument(
+        '--output-dir', type=Path, default=OUTPUT_PATH,
+        help='Output directory (default: output/)'
+    )
+    args = parser.parse_args()
+
     print("Generating high-signal briefing...")
+    print(f"Format: {args.format}")
     print()
 
     # Get recent articles
-    print("Fetching articles from last 7 days...")
-    articles = get_recent_articles(days=7)
+    print(f"Fetching articles from last {args.days} days...")
+    articles = get_recent_articles(days=args.days)
     print(f"Found: {len(articles)} articles")
     print()
 
@@ -317,18 +502,46 @@ def main():
     print(f"After filtering: {len(filtered)} articles")
     print()
 
-    # Generate newsletter
-    newsletter = generate_newsletter(filtered)
+    if not filtered:
+        print("No articles passed filtering. Nothing to generate.")
+        return
 
     # Write output
-    OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
-    output_file = OUTPUT_PATH / f"briefing-high-signal-{datetime.now().strftime('%Y-%m-%d')}.md"
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    today = datetime.now().strftime('%Y-%m-%d')
+    generated = []
 
-    with open(output_file, 'w') as f:
-        f.write(newsletter)
+    formats_to_generate = []
+    if args.format == 'all':
+        formats_to_generate = ['markdown', 'html', 'json']
+    else:
+        formats_to_generate = [args.format]
 
-    print(f"Generated: {output_file}")
-    print(f"Total articles included: {len(filtered)}")
+    for fmt in formats_to_generate:
+        if fmt == 'markdown':
+            newsletter = generate_newsletter(filtered)
+            output_file = args.output_dir / f"briefing-high-signal-{today}.md"
+            with open(output_file, 'w') as f:
+                f.write(newsletter)
+            generated.append(output_file)
+            print(f"Generated Markdown: {output_file}")
+        elif fmt == 'html':
+            html = generate_newsletter_html(filtered)
+            output_file = args.output_dir / f"briefing-high-signal-{today}.html"
+            with open(output_file, 'w') as f:
+                f.write(html)
+            generated.append(output_file)
+            print(f"Generated HTML: {output_file}")
+        elif fmt == 'json':
+            json_out = generate_newsletter_json(filtered)
+            output_file = args.output_dir / f"briefing-high-signal-{today}.json"
+            with open(output_file, 'w') as f:
+                f.write(json_out)
+            generated.append(output_file)
+            print(f"Generated JSON: {output_file}")
+
+    print(f"\nTotal articles included: {len(filtered)}")
+    print(f"Files generated: {len(generated)}")
 
 
 if __name__ == '__main__':
