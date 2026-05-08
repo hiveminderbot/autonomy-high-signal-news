@@ -5,7 +5,6 @@ import sqlite3
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
-import httpx
 from pathlib import Path
 
 
@@ -14,14 +13,21 @@ class RSSFetcher:
 
     def __init__(self, db_path: str = "news.db"):
         self.db_path = db_path
-        self.client = httpx.Client(
-            timeout=30.0,
-            follow_redirects=True,
-            headers={
-                "User-Agent": "HighSignalNews/1.0 (RSS Aggregator)"
-            }
-        )
+        self._client = None
         self.init_db()
+
+    @property
+    def client(self):
+        if self._client is None:
+            import httpx
+            self._client = httpx.Client(
+                timeout=30.0,
+                follow_redirects=True,
+                headers={
+                    "User-Agent": "HighSignalNews/1.0 (RSS Aggregator)"
+                }
+            )
+        return self._client
 
     def init_db(self):
         """Initialize database with sources table."""
