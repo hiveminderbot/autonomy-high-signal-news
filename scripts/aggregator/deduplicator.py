@@ -228,6 +228,7 @@ class URLNormalizer:
             for param in query.split('&'):
                 if '=' in param:
                     key = param.split('=')[0]
+                    # Keep only non-tracking parameters
                     if key not in self.TRACKING_PARAMS:
                         params.append(param)
             if params:
