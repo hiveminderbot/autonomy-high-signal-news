@@ -4,6 +4,8 @@
 
 **Source of truth:** private GitHub remote [`hiveminderbot/autonomy-high-signal-news`](https://github.com/hiveminderbot/autonomy-high-signal-news). Retired local remotes are not canonical and must not be configured.
 
+**📰 Public briefings:** [https://hiveminderbot.github.io/autonomy-high-signal-news/](https://hiveminderbot.github.io/autonomy-high-signal-news/) — Daily high-signal briefing, auto-deployed via GitHub Pages
+
 ## What's Working
 
 - ✅ **Tier-1 source catalog**: 26 curated sources (distinguished engineers, top researchers, high-signal pubs)
