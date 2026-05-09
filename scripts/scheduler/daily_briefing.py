@@ -31,6 +31,7 @@ from briefing import (
     BriefingGenerator,
     BriefingFormat,
     MarkdownRenderer,
+    HTMLRenderer,
     MultiChannelDelivery,
     DeliveryResult
 )
@@ -224,36 +225,54 @@ class DailyBriefingScheduler:
             logger.exception("Briefing generation failed")
             return None
 
-    def render_briefing(self, briefing: dict) -> str:
-        """Render briefing to markdown format."""
+    def _wrap_briefing(self, briefing: dict):
+        """Convert dict back to BriefingResult-like structure."""
+        from briefing.generator import BriefingResult, BriefingMetadata, BriefingSection
+
+        metadata = BriefingMetadata(**briefing['metadata'])
+        sections = [BriefingSection(**s) for s in briefing['sections']]
+
+        class BriefingWrapper:
+            def __init__(self, metadata, sections):
+                self.metadata = metadata
+                self.sections = sections
+
+        return BriefingWrapper(metadata, sections)
+
+    def render_briefing(self, briefing: dict) -> dict:
+        """Render briefing to markdown and HTML formats."""
         logger.info("=" * 60)
         logger.info("Step 3/4: Rendering briefing")
         logger.info("=" * 60)
 
         try:
-            # Convert dict back to BriefingResult-like structure
-            from briefing.generator import BriefingResult, BriefingMetadata, BriefingSection
+            briefing_obj = self._wrap_briefing(briefing)
 
-            metadata = BriefingMetadata(**briefing['metadata'])
-            sections = [BriefingSection(**s) for s in briefing['sections']]
+            # Render markdown
+            md_renderer = MarkdownRenderer()
+            markdown = md_renderer.render(briefing_obj)
+            logger.info(f"Rendered markdown: {len(markdown)} characters")
 
-            # Create a simple wrapper object
-            class BriefingWrapper:
-                def __init__(self, metadata, sections):
-                    self.metadata = metadata
-                    self.sections = sections
+            # Render HTML
+            html_renderer = HTMLRenderer()
+            html = html_renderer.render(briefing_obj)
+            logger.info(f"Rendered HTML: {len(html)} characters")
 
-            briefing_obj = BriefingWrapper(metadata, sections)
-
-            rendered = self.renderer.render(briefing_obj)
-            logger.info(f"Rendered {len(rendered)} characters")
-
-            return rendered
+            return {
+                'markdown': markdown,
+                'html': html,
+                'success': True
+            }
 
         except Exception as e:
             logger.exception("Briefing rendering failed")
             # Fallback: simple markdown rendering
-            return self._fallback_render(briefing)
+            return {
+                'markdown': self._fallback_render(briefing),
+                'html': None,
+                'success': False,
+                'error': str(e)
+            }
 
     def _fallback_render(self, briefing: dict) -> str:
         """Simple fallback renderer if main renderer fails."""
@@ -287,7 +306,7 @@ class DailyBriefingScheduler:
 
         return "\n".join(lines)
 
-    def deliver_briefing(self, content: str, subject: str) -> list[dict]:
+    def deliver_briefing(self, markdown: str, html: Optional[str], subject: str) -> list[dict]:
         """Deliver briefing via configured channels."""
         logger.info("=" * 60)
         logger.info("Step 4/4: Delivering briefing")
@@ -302,7 +321,35 @@ class DailyBriefingScheduler:
             from briefing import FileDelivery
             self.delivery = MultiChannelDelivery([FileDelivery(output_dir=self.output_dir)])
 
-        results = self.delivery.deliver(content, subject)
+        # Deliver markdown via configured channels
+        results = self.delivery.deliver(markdown, subject)
+
+        # Also save HTML to file if rendered
+        if html:
+            date_str = datetime.now().strftime('%Y-%m-%d')
+            html_path = self.output_dir / f"briefing_{date_str}.html"
+            latest_html = self.output_dir / "latest.html"
+            try:
+                with open(html_path, 'w', encoding='utf-8') as f:
+                    f.write(html)
+                with open(latest_html, 'w', encoding='utf-8') as f:
+                    f.write(html)
+                logger.info(f"✓ HTML saved to {html_path} and {latest_html}")
+                results.append(DeliveryResult(
+                    success=True,
+                    channel='file_html',
+                    timestamp=datetime.now().isoformat(),
+                    message=f"HTML written to {html_path} and {latest_html}"
+                ))
+            except Exception as e:
+                logger.error(f"✗ Failed to save HTML: {e}")
+                results.append(DeliveryResult(
+                    success=False,
+                    channel='file_html',
+                    timestamp=datetime.now().isoformat(),
+                    message="HTML save failed",
+                    error=str(e)
+                ))
 
         for result in results:
             status = "✓" if result.success else "✗"
@@ -383,11 +430,19 @@ class DailyBriefingScheduler:
 
             # Step 3: Render
             rendered = self.render_briefing(briefing)
-            self.results['render'] = {'success': True, 'length': len(rendered)}
+            self.results['render'] = {
+                'success': rendered.get('success', False),
+                'markdown_length': len(rendered.get('markdown', '')),
+                'html_length': len(rendered.get('html', '')) if rendered.get('html') else 0
+            }
 
             # Step 4: Deliver
             subject = f"Daily Briefing - {datetime.now().strftime('%Y-%m-%d')}"
-            delivery_results = self.deliver_briefing(rendered, subject)
+            delivery_results = self.deliver_briefing(
+                rendered.get('markdown', ''),
+                rendered.get('html'),
+                subject
+            )
 
             self.results['delivery'] = {
                 'success': any(r['success'] for r in delivery_results),
