@@ -1,0 +1,24 @@
+2026-05-09 13:02:01,075 - daily_aggregation - INFO - Starting daily aggregation run: 20260509_130201
+2026-05-09 13:02:01,076 - daily_aggregation - INFO - Domain filter: all
+2026-05-09 13:02:01,076 - daily_aggregation - INFO - Feed limit: 4
+2026-05-09 13:02:01,076 - daily_aggregation - INFO - Newsletter limit: unlimited
+2026-05-09 13:02:01,076 - daily_aggregation - INFO - Initializing databases...
+2026-05-09 13:02:01,078 - daily_aggregation - INFO - Loading feed sources from sources/sources-ai.json...
+2026-05-09 13:02:01,078 - daily_aggregation - INFO - Loaded 14 feed sources
+2026-05-09 13:02:01,078 - daily_aggregation - INFO - Loading newsletter sources from sources/newsletter_catalog.json...
+2026-05-09 13:02:01,079 - daily_aggregation - INFO - Loaded 27 newsletter sources
+2026-05-09 13:02:01,079 - daily_aggregation - INFO - Initializing aggregation pipeline...
+2026-05-09 13:02:01,079 - daily_aggregation - INFO - Running aggregation pipeline...
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Results saved to output/test-run/aggregation_results_20260509_130201.json
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - ==================================================
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - DAILY AGGREGATION COMPLETE
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - ==================================================
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Duration: 16.3s
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Feed sources processed: 4
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Feed entries fetched: 530
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Feed entries stored: 530
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Newsletter sources processed: 25
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Newsletter entries fetched: 259
+2026-05-09 13:02:17,424 - daily_aggregation - INFO - Newsletter entries stored: 237
+2026-05-09 13:02:17,425 - daily_aggregation - INFO - Total entries stored: 767
+2026-05-09 13:02:17,425 - daily_aggregation - INFO - Errors: 0
