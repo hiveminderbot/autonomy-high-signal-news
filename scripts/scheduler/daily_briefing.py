@@ -100,17 +100,21 @@ class DailyBriefingScheduler:
         logger.info("=" * 60)
 
         try:
-            from aggregator.pipeline import run_pipeline
+            from aggregator.daily_pipeline import run_pipeline
 
             pipeline_result = run_pipeline(
-                full_run=True,
-                output_dir='./data'
+                db_path=Path('./data/news.db'),
+                catalog_path=Path('./sources/sources-ai.json'),
+                output_dir=Path('./output'),
+                extract_content=True,
+                verbose=True
             )
 
-            logger.info(f"Pipeline completed: {pipeline_result.get('total_stored', 0)} entries stored")
+            total_stored = pipeline_result.get('total_stored', 0)
+            logger.info(f"Pipeline completed: {total_stored} entries stored")
             return {
                 'success': True,
-                'entries_stored': pipeline_result.get('total_stored', 0),
+                'entries_stored': total_stored,
                 'duration_seconds': pipeline_result.get('duration_seconds', 0)
             }
 
@@ -148,19 +152,51 @@ class DailyBriefingScheduler:
                 except Exception as e:
                     logger.warning(f"Failed to load from {source}: {e}")
 
-        # Fallback: query database directly
+        # Fallback 1: query ArticleStorage (articles table)
         try:
-            from aggregator.storage import AggregatorStorage
+            from aggregator.storage import ArticleStorage
 
-            storage = AggregatorStorage()
-            stories = storage.get_recent_stories(hours=24, limit=100)
+            storage = ArticleStorage(Path('./data/news.db'))
+            articles = storage.get_recent_articles(hours=24, limit=100)
+            stories = [a.__dict__ if hasattr(a, '__dict__') else a for a in articles]
 
-            logger.info(f"Loaded {len(stories)} stories from database")
-            return stories
+            if stories:
+                logger.info(f"Loaded {len(stories)} stories from ArticleStorage")
+                return stories
 
         except Exception as e:
-            logger.warning(f"Failed to load from database: {e}")
-            return []
+            logger.warning(f"Failed to load from ArticleStorage: {e}")
+
+        # Fallback 2: query FeedCache (feed_entries table) — data is stored here by the pipeline
+        try:
+            from aggregator.feed_fetcher import FeedCache
+
+            cache = FeedCache(Path('./data/news.db'))
+            entries = cache.get_recent_entries(hours=24, limit=100)
+            stories = []
+            for entry in entries:
+                story = {
+                    'id': entry.id,
+                    'title': entry.title,
+                    'url': entry.url,
+                    'source_id': entry.source_id,
+                    'published_at': entry.published_at.isoformat() if entry.published_at else None,
+                    'summary': entry.summary,
+                    'author': entry.author,
+                    'content': entry.content,
+                    'fetched_at': entry.fetched_at.isoformat() if entry.fetched_at else None,
+                }
+                stories.append(story)
+
+            if stories:
+                logger.info(f"Loaded {len(stories)} stories from FeedCache")
+                return stories
+
+        except Exception as e:
+            logger.warning(f"Failed to load from FeedCache: {e}")
+
+        logger.error("No stories available from any source")
+        return []
 
     def generate_briefing(self, stories: list[dict]) -> Optional[dict]:
         """Generate briefing from stories."""

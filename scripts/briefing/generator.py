@@ -158,9 +158,12 @@ class BriefingGenerator:
         if isinstance(tier, str) and tier not in ['must_read', 'important', 'contextual']:
             tier = 'contextual'
 
+        content = story.get('content') or ''
+        summary = story.get('summary') or content[:500]
+
         return BriefingItem(
             title=story.get('title', 'Untitled'),
-            summary=story.get('summary', story.get('content', '')[:500]),
+            summary=summary,
             sources=story.get('sources', [story.get('source', 'Unknown')]),
             tier=tier,
             entities=story.get('entities', []),

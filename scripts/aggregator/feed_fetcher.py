@@ -268,6 +268,38 @@ class FeedCache:
                 except sqlite3.IntegrityError:
                     pass  # Duplicate entry, ignore
 
+    def get_recent_entries(self, hours: int = 24, limit: int = 100) -> list[FeedEntry]:
+        """Get recent entries from the cache within the specified hours."""
+        cutoff = (datetime.now() - timedelta(hours=hours)).isoformat()
+        entries = []
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.execute(
+                """SELECT * FROM feed_entries
+                   WHERE fetched_at > ?
+                   ORDER BY fetched_at DESC
+                   LIMIT ?""",
+                (cutoff, limit)
+            )
+            for row in cursor.fetchall():
+                entries.append(FeedEntry(
+                    id=row['id'],
+                    title=row['title'],
+                    url=row['url'],
+                    source_id=row['source_id'],
+                    published_at=datetime.fromisoformat(row['published_at']) if row['published_at'] else None,
+                    summary=row['summary'],
+                    author=row['author'],
+                    content=row['content'],
+                    fetched_at=datetime.fromisoformat(row['fetched_at']) if row['fetched_at'] else datetime.now(),
+                    cluster_id=row['cluster_id'],
+                    relevance_score=row['relevance_score'],
+                    relevance_tier=row['relevance_tier'],
+                    entities=row['entities'],
+                    generated_summary=row['generated_summary'],
+                ))
+        return entries
+
     def log_fetch(self, source_id: str, entries_count: int, success: bool,
                   error_message: Optional[str] = None, response_time_ms: int = 0):
         """Log a fetch operation."""

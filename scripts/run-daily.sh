@@ -108,6 +108,9 @@ fi
 
 PYTHON_CMD+=(--output "$OUTPUT_DIR" --log-dir "$LOG_DIR")
 
+# Note: --force is handled by this shell script (skips existing check)
+# The Python module does not accept --force directly
+
 # Run the scheduler
 printf -v PYTHON_CMD_LOG '%q ' "${PYTHON_CMD[@]}"
 log "Running: ${PYTHON_CMD_LOG% }"

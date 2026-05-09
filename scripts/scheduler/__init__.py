@@ -8,7 +8,7 @@ Handles automated scheduling and orchestration of daily briefings:
 - Configuration management
 """
 
-from scheduler.daily_briefing import DailyBriefingScheduler, run_daily_briefing
+from .daily_briefing import DailyBriefingScheduler, run_daily_briefing
 
 __all__ = [
     'DailyBriefingScheduler',
