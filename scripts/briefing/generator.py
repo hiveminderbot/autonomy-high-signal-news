@@ -127,9 +127,9 @@ class BriefingGenerator:
 
     def __init__(
         self,
-        max_items_per_section: int = 10,
+        max_items_per_section: int = 20,
         max_must_read_total: int = 5,
-        max_important_total: int = 10,
+        max_important_total: int = 15,
         target_reading_time: int = 10,  # minutes
     ):
         self.max_items_per_section = max_items_per_section

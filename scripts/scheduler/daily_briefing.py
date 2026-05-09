@@ -169,17 +169,18 @@ class DailyBriefingScheduler:
             logger.warning(f"Failed to load from ArticleStorage: {e}")
 
         # Fallback 2: query FeedCache (feed_entries table) — data is stored here by the pipeline
+        feed_stories = []
         try:
             from aggregator.feed_fetcher import FeedCache
 
             cache = FeedCache(Path('./data/news.db'))
             entries = cache.get_recent_entries(hours=24, limit=100)
-            stories = []
             for entry in entries:
                 story = {
                     'id': entry.id,
                     'title': entry.title,
                     'url': entry.url,
+                    'source': entry.source_id,
                     'source_id': entry.source_id,
                     'published_at': entry.published_at.isoformat() if entry.published_at else None,
                     'summary': entry.summary,
@@ -187,14 +188,54 @@ class DailyBriefingScheduler:
                     'content': entry.content,
                     'fetched_at': entry.fetched_at.isoformat() if entry.fetched_at else None,
                 }
-                stories.append(story)
+                feed_stories.append(story)
 
-            if stories:
-                logger.info(f"Loaded {len(stories)} stories from FeedCache")
-                return stories
+            if feed_stories:
+                logger.info(f"Loaded {len(feed_stories)} stories from FeedCache")
 
         except Exception as e:
             logger.warning(f"Failed to load from FeedCache: {e}")
+
+        # Fallback 3: query newsletter_entries from newsletters.db
+        newsletter_stories = []
+        try:
+            import sqlite3
+
+            nl_db = Path('./newsletters.db')
+            if nl_db.exists():
+                conn = sqlite3.connect(str(nl_db))
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                cursor.execute(
+                    "SELECT * FROM newsletter_entries WHERE fetched_at > datetime('now', '-24 hours') ORDER BY published_at DESC LIMIT 100"
+                )
+                rows = cursor.fetchall()
+                for row in rows:
+                    story = {
+                        'id': row['id'],
+                        'title': row['title'],
+                        'url': row['url'],
+                        'source': row['newsletter_id'],
+                        'source_id': row['newsletter_id'],
+                        'published_at': row['published_at'],
+                        'summary': row['content_text'][:500] if row['content_text'] else '',
+                        'author': row['author'],
+                        'content': row['content_text'],
+                        'fetched_at': row['fetched_at'],
+                    }
+                    newsletter_stories.append(story)
+                conn.close()
+
+                if newsletter_stories:
+                    logger.info(f"Loaded {len(newsletter_stories)} stories from newsletters.db")
+
+        except Exception as e:
+            logger.warning(f"Failed to load from newsletters.db: {e}")
+
+        all_stories = feed_stories + newsletter_stories
+        if all_stories:
+            logger.info(f"Loaded {len(all_stories)} total stories ({len(feed_stories)} feeds + {len(newsletter_stories)} newsletters)")
+            return all_stories
 
         logger.error("No stories available from any source")
         return []
