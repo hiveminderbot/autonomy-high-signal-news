@@ -1,0 +1,14 @@
+{
+  "started_at": "2026-05-09T13:02:01.079580",
+  "completed_at": "2026-05-09T13:02:17.423689",
+  "duration_seconds": 16.344109,
+  "sources_processed": 4,
+  "entries_fetched": 530,
+  "entries_extracted": 0,
+  "entries_deduplicated": 22,
+  "entries_stored": 530,
+  "errors": [],
+  "newsletter_sources_processed": 25,
+  "newsletter_entries_fetched": 259,
+  "newsletter_entries_stored": 237
+}
