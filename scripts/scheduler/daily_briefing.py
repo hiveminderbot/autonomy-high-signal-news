@@ -369,18 +369,22 @@ class DailyBriefingScheduler:
         if html:
             date_str = datetime.now().strftime('%Y-%m-%d')
             html_path = self.output_dir / f"briefing_{date_str}.html"
+            # Also write the high-signal naming convention used by GitHub Pages workflow
+            high_signal_html_path = self.output_dir / f"briefing-high-signal-{date_str}.html"
             latest_html = self.output_dir / "latest.html"
             try:
                 with open(html_path, 'w', encoding='utf-8') as f:
                     f.write(html)
+                with open(high_signal_html_path, 'w', encoding='utf-8') as f:
+                    f.write(html)
                 with open(latest_html, 'w', encoding='utf-8') as f:
                     f.write(html)
-                logger.info(f"✓ HTML saved to {html_path} and {latest_html}")
+                logger.info(f"✓ HTML saved to {html_path}, {high_signal_html_path}, and {latest_html}")
                 results.append(DeliveryResult(
                     success=True,
                     channel='file_html',
                     timestamp=datetime.now().isoformat(),
-                    message=f"HTML written to {html_path} and {latest_html}"
+                    message=f"HTML written to {html_path}, {high_signal_html_path}, and {latest_html}"
                 ))
             except Exception as e:
                 logger.error(f"✗ Failed to save HTML: {e}")
