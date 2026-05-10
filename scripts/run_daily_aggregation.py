@@ -235,8 +235,19 @@ def main():
         extract_content=not args.no_extract,
     )
 
-    # Exit with error if there were errors
-    sys.exit(0 if not result.errors else 1)
+    # Exit with error only for pipeline-level failures, not per-source errors
+    # Per-source errors (429 rate limits, missing scraper modules) are non-fatal
+    fatal_error = False
+    if result.errors:
+        # Check if any error indicates a pipeline-level failure
+        for err in result.errors:
+            err_lower = err.lower()
+            if any(fatal in err_lower for fatal in ['database', 'disk full', 'permission denied', 'pipeline', 'uncaught exception', 'zero entries']):
+                fatal_error = True
+                break
+        if not fatal_error:
+            logger.warning(f"Non-fatal source errors ({len(result.errors)}), treating as success for systemd")
+    sys.exit(1 if fatal_error else 0)
 
 
 if __name__ == "__main__":
