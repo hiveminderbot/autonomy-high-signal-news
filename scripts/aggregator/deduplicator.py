@@ -81,8 +81,8 @@ class SimHash:
 
         # Count matching bits
         xor = hash1 ^ hash2
-        matching_bits = self.hashbits - bin(xor).count('1')
-        return matching_bits / self.hashbits
+        matching_bits = bin(xor).count('1')
+        return (self.hashbits - matching_bits) / self.hashbits
 
 
 class Deduplicator:
