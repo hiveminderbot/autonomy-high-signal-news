@@ -30,7 +30,8 @@ jobs:
         run: |
           mkdir -p docs
           # Copy the latest briefing HTML as the main index
-          LATEST_BRIEFING=$(ls -1 output/briefing_*.html 2>/dev/null | sort -V | tail -1)
+          # Support both naming conventions: briefing_YYYY-MM-DD.html and briefing-high-signal-YYYY-MM-DD.html
+          LATEST_BRIEFING=$(ls -1 output/briefing*.html 2>/dev/null | sort -V | tail -1)
           if [ -n "$LATEST_BRIEFING" ]; then
             cp "$LATEST_BRIEFING" docs/index.html
             echo "Deployed: $LATEST_BRIEFING -> docs/index.html"
@@ -39,7 +40,7 @@ jobs:
             echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>High-Signal News</title></head><body><h1>High-Signal News Briefings</h1><p>No briefing available yet. Check back tomorrow.</p></body></html>' > docs/index.html
           fi
           # Also copy all historical briefings for archive
-          cp output/briefing_*.html docs/ 2>/dev/null || true
+          cp output/briefing*.html docs/ 2>/dev/null || true
           # Copy latest.html as a stable URL
           cp output/latest.html docs/latest.html 2>/dev/null || true
           ls -la docs/
