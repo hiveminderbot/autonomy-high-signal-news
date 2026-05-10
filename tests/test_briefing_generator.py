@@ -137,9 +137,9 @@ class TestBriefingGenerator:
         ]
 
     def test_init_default(self, generator):
-        assert generator.max_items_per_section == 10
+        assert generator.max_items_per_section == 20
         assert generator.max_must_read_total == 5
-        assert generator.max_important_total == 10
+        assert generator.max_important_total == 15
         assert generator.target_reading_time == 10
 
     def test_init_custom(self):

@@ -246,7 +246,7 @@ def main():
                 fatal_error = True
                 break
         if not fatal_error:
-            logger.warning(f"Non-fatal source errors ({len(result.errors)}), treating as success for systemd")
+            print(f"WARNING: Non-fatal source errors ({len(result.errors)}), treating as success for systemd", file=sys.stderr)
     sys.exit(1 if fatal_error else 0)
 
 
