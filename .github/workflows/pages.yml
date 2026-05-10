@@ -49,6 +49,14 @@ jobs:
           cp output/briefing-high-signal-*.html docs/ 2>/dev/null || true
           # Copy latest.html as a stable URL
           cp output/latest.html docs/latest.html 2>/dev/null || true
+          # Generate dark-themed dashboard from latest markdown briefing
+          LATEST_MD=$(ls -1 output/briefing_*.md 2>/dev/null | sort -V | tail -1)
+          if [ -n "$LATEST_MD" ] && [ -s "$LATEST_MD" ] && [ "$(wc -c < "$LATEST_MD" | tr -d ' ')" -gt 10 ]; then
+            python3 scripts/generate_dashboard.py "$LATEST_MD" docs/
+            echo "Dashboard generated from $LATEST_MD"
+          else
+            echo "No valid markdown briefing for dashboard; skipping dashboard generation"
+          fi
           ls -la docs/
 
       - name: Upload artifact
