@@ -1,0 +1,46 @@
+name: CI — RSS Validator, E2E Test, and Unit Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      - name: Run CI test suite
+        run: |
+          python3 scripts/run_ci_tests.py
+
+      - name: Upload CI report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-test-report
+          path: test-output/ci_test_report.json
+
+      - name: Upload RSS validation report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rss-validation-report
+          path: test-output/rss_validation_report.json
