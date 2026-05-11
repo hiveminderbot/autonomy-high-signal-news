@@ -25,10 +25,15 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Copy dashboard to upload dir
+        run: |
+          mkdir -p _site
+          cp dashboard/index.html _site/index.html
+          ls -la _site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dashboard'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
