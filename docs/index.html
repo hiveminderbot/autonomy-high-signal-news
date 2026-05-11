@@ -1,569 +1,278 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morning Briefing - Sunday, May 10, 2026</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-        }
-        .header {
-            border-bottom: 3px solid #2563eb;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            margin: 0 0 10px 0;
-            color: #1e40af;
-        }
-        .metadata {
-            color: #6b7280;
-            font-size: 14px;
-        }
-        .section {
-            margin: 30px 0;
-        }
-        .section h2 {
-            color: #1e40af;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 8px;
-        }
-        .story {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f9fafb;
-            border-radius: 8px;
-            border-left: 4px solid #d1d5db;
-        }
-        .story.must_read { border-left-color: #dc2626; }
-        .story.important { border-left-color: #f59e0b; }
-        .story h3 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-        }
-        .story h3 a {
-            color: #1e40af;
-            text-decoration: none;
-        }
-        .story h3 a:hover {
-            text-decoration: underline;
-        }
-        .tier-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-left: 8px;
-        }
-        .tier-badge.must_read { background: #fee2e2; color: #dc2626; }
-        .tier-badge.important { background: #fef3c7; color: #f59e0b; }
-        .tier-badge.contextual { background: #d1fae5; color: #059669; }
-        .urgency { color: #dc2626; font-weight: bold; }
-        .summary {
-            margin: 10px 0;
-            color: #4b5563;
-        }
-        .meta {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 10px;
-        }
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
-            color: #9ca3af;
-            font-size: 12px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Briefing - 2026-05-09</title>
+<style>
+:root { --bg:#0d1117; --fg:#c9d1d9; --accent:#58a6ff; --muted:#8b949e; --card:#161b22; --border:#30363d; }
+body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg); max-width:900px; margin:0 auto; padding:2rem; line-height:1.6; }
+h1 { color:#f0f6fc; border-bottom:2px solid var(--accent); padding-bottom:.5rem; }
+h2 { color:var(--accent); margin-top:2rem; }
+h3 { color:#79c0ff; }
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+blockquote { border-left:4px solid var(--accent); padding-left:1rem; color:var(--muted); margin:1rem 0; }
+table { width:100%; border-collapse:collapse; margin:1rem 0; }
+th,td { padding:.5rem; border:1px solid var(--border); text-align:left; }
+th { background:var(--card); color:#f0f6fc; }
+ul { padding-left:1.5rem; }
+li { margin:.3rem 0; }
+hr { border:none; border-top:1px solid var(--border); margin:2rem 0; }
+.meta { color:var(--muted); font-size:.85rem; margin-top:2rem; border-top:1px solid var(--border); padding-top:1rem; }
+.story-count { background:var(--card); padding:.5rem 1rem; border-radius:6px; display:inline-block; margin-bottom:1rem; border:1px solid var(--border); }
+</style>
 </head>
 <body>
-    <div class="header">
-        <h1>📰 Morning Briefing</h1>
-        <div class="metadata">
-            Sunday, May 10, 2026 • 66 stories from 11 sources
-            • ~9 min read
-        </div>
-    </div>
-
-    
-    <div class="section">
-        <h2>🤖 AI</h2>
-        
-        <div class="story contextual">
-            <h3><a href="https://github.com/AndyShaman/premortem">AndyShaman/premortem</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Premortem skill for Claude Code — finds the concrete ways a plan could fail before commitment. Multi-agent silent scan, mitigation triplets, history snapshots, reverse-premortem. Klein 2007 + Kahneman outside view.
-
-⭐ 9 stars | 🍴 0 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/Magerko/TelegramHelper">Magerko/TelegramHelper</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Персональный AI-ассистент для Telegram: userbot + control bot с агентом, понимающим голос и свободный текст. SQLite FTS5, Qdrant, Whisper, OpenAI/Gemini.
-
-⭐ 16 stars | 🍴 1 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/LYiHub/OpenClaw-AWD-Arena">LYiHub/OpenClaw-AWD-Arena</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">An automated Attack-with-Defense platform where LLM-powered agents compete in real-time.
-
-⭐ 29 stars | 🍴 9 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/gemini-2-0-is-now-available-to-everyone/">Gemini 2.0 is now available to everyone</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We’re announcing new updates to Gemini 2.0 Flash, plus introducing Gemini 2.0 Flash-Lite and Gemini 2.0 Pro Experimental.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/start-building-with-gemini-20-flash-and-flash-lite/">Start building with Gemini 2.0 Flash and Flash-Lite</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Gemini 2.0 Flash-Lite is now generally available in the Gemini API for production use in Google AI Studio and for enterprise customers on Vertex AI</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/introducing-gemma-3/">Introducing Gemma 3</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">The most capable model you can run on a single GPU or TPU.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/experiment-with-gemini-20-flash-native-image-generation/">Experiment with Gemini 2.0 Flash native image generation</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Native image output is available in Gemini 2.0 Flash for developers to experiment with in Google AI Studio and the Gemini API.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/gemini-robotics-brings-ai-into-the-physical-world/">Gemini Robotics brings AI into the physical world</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Introducing Gemini Robotics and Gemini Robotics-ER, AI models designed for robots to understand, act and react to the physical world.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/gemini-2-5-our-most-intelligent-ai-model/">Gemini 2.5: Our most intelligent AI model</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Gemini 2.5 is our most intelligent AI model, now with thinking built in.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/taking-a-responsible-path-to-agi/">Taking a responsible path to AGI</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We’re exploring the frontiers of AGI, prioritizing technical safety, proactive risk assessment, and collaboration with the AI community.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/dolphingemma-how-google-ai-is-helping-decode-dolphin-communication/">DolphinGemma: How Google AI is helping decode dolphin communication</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">DolphinGemma, a large language model developed by Google, is helping scientists study how dolphins communicate — and hopefully find out what they're saying, too.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/generate-videos-in-gemini-and-whisk-with-veo-2/">Generate videos in Gemini and Whisk with Veo 2</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Transform text-based prompts into high-resolution eight-second videos in Gemini Advanced and use Whisk Animate to turn images into eight-second animated clips.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/introducing-gemini-2-5-flash/">Introducing Gemini 2.5 Flash</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Gemini 2.5 Flash is our first fully hybrid reasoning model, giving developers the ability to turn thinking on or off.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/music-ai-sandbox-now-with-new-features-and-broader-access/">Music AI Sandbox, now with new features and broader access</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Helping music professionals explore the potential of generative AI</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/">AlphaEvolve: A Gemini-powered coding agent for designing advanced algorithms</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">New AI agent evolves algorithms for math and practical applications in computing by combining the creativity of large language models with automated evaluators</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/announcing-gemma-3n-preview-powerful-efficient-mobile-first-ai/">Announcing Gemma 3n preview: Powerful, efficient, mobile-first AI</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Gemma 3n is a cutting-edge open model designed for fast, multimodal AI on devices, featuring optimized performance, unique flexibility with a 2-in-1 model, and expanded multimodal understanding with audio, empowering developers to build live, interactive applications and sophisticated audio-centric experiences.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/our-vision-for-building-a-universal-ai-assistant/">Our vision for building a universal AI assistant</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We’re extending Gemini to become a world model that can make plans and imagine new experiences by simulating aspects of the world.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/advancing-geminis-security-safeguards/">Advancing Gemini's security safeguards</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We’ve made Gemini 2.5 our most secure model family to date.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/fuel-your-creativity-with-new-generative-media-models-and-tools/">Fuel your creativity with new generative media models and tools</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Introducing Veo 3 and Imagen 4, and a new tool for filmmaking called Flow.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/gemini-25-our-world-leading-model-is-getting-even-better/">Gemini 2.5: Our most intelligent models are getting even better</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Gemini 2.5 Pro continues to be loved by developers as the best model for coding, and 2.5 Flash is getting even better with a new update. We’re bringing new capabilities to our models, including Deep Think, an experimental enhanced reasoning mode for 2.5 Pro.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>💻 Software</h2>
-        
-        <div class="story contextual">
-            <h3><a href="https://github.com/josephmisiti/awesome-machine-learning">josephmisiti/awesome-machine-learning</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">A curated list of awesome Machine Learning frameworks, libraries and software.
-
-⭐ 72,426 stars | 🍴 15,449 forks | 📝 Python | 👁️ 72,426 watchers</div>
-            <div class="meta">📎 awesome-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/LiuYue-LYJUNE/ICASSP2026-OrthoVAD">LiuYue-LYJUNE/ICASSP2026-OrthoVAD</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Official PyTorch implementation of "OrthoVAD: Weakly Supervised Video Anomaly Detection via Prototype Orthogonality Learning".
-
-⭐ 12 stars | 🍴 0 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/Wengyifei/GNSS-Satellite-Soil-Moisture-Retrieval">Wengyifei/GNSS-Satellite-Soil-Moisture-Retrieval</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">An open-source platform for CYGNSS、SMAP soil moisture inversion based on GCN-UNet, providing 9km soil moisture maps.
-
-⭐ 14 stars | 🍴 0 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/6-robot/jie_3d_nav">6-robot/jie_3d_nav</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">一套基于 ROS 2 Humble 的 3D 导航系统，通过 Web 界面交互。本系统已在智元科技 D1 机器狗以及留形科技 Odin 1 空间定位模组上测试通过。
-
-⭐ 14 stars | 🍴 5 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/saileaxh/iida-mcp">saileaxh/iida-mcp</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Faster, with excellent architecture, stronger performance, and kernel access support — an ida-mcp tool
-
-⭐ 24 stars | 🍴 2 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/wangrujun2016/auto-resume">wangrujun2016/auto-resume</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">No description
-
-⭐ 38 stars | 🍴 6 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/dakshaymehta/cardputer-claude-os">dakshaymehta/cardputer-claude-os</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">DIY OS bundle for the M5Stack Cardputer: Claude Buddy (BLE), Push-to-Claude (voice + chat with memory via a Cloudflare Worker), and a flash-and-go installer skill for Claude Code. Forked from moremas/build-with-claude.
-
-⭐ 40 stars | 🍴 2 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/GALIAIS/k_i_r_o-register">GALIAIS/k_i_r_o-register</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">No description
-
-⭐ 111 stars | 🍴 63 forks | 📝 Python</div>
-            <div class="meta">📎 trending-python-ml</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/evaluating-potential-cybersecurity-threats-of-advanced-ai/">Evaluating potential cybersecurity threats of advanced AI</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Our framework enables cybersecurity experts to identify which defenses are necessary—and how to prioritize them</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/build-rich-interactive-web-apps-with-an-updated-gemini-25-pro/">Build rich, interactive web apps with an updated Gemini 2.5 Pro</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Our updated version of Gemini 2.5 Pro Preview has improved capabilities for coding.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/gemini-25-pro-preview-even-better-coding-performance/">Gemini 2.5 Pro Preview: even better coding performance</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We’ve seen developers doing amazing things with Gemini 2.5 Pro, so we decided to release an updated version a couple of weeks early to get into developers hands sooner.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/introducing-veo-31-and-advanced-creative-capabilities/">Introducing Veo 3.1 and advanced creative capabilities</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We’re rolling out significant updates to Veo that give people even more creative control.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/veo-3-1-ingredients-to-video-more-consistency-creativity-and-control/">Veo 3.1 Ingredients to Video: More consistency, creativity and control</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Our latest Veo update generates lively, dynamic clips that feel natural and engaging — and supports vertical video generation.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/measuring-progress-toward-agi-a-cognitive-framework/">Measuring progress toward AGI: A cognitive framework</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We’re introducing a framework to measure progress toward AGI, and launching a Kaggle hackathon to build the relevant evaluations.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://blog.bytebytego.com/p/container-design-patterns-for-distributed">Container Design Patterns for Distributed Systems</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p style="text-align: justify;">For most of their life, containers have been considered more as a deployment concern. Package your code with its dependencies, ship it as one unit, and run it the same way everywhere.</p><p style="text-align: justify;">That story was true, and it was also pretty useful, but it&#8217;s just one half of what containers were good for. The other half is what happens when we stop thinking of a container as a way to deliver one application and start thinking of it as a </div>
-            <div class="meta">📎 bytebytego</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://honker.dev/?ref=console.dev">Tool: honker</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p><strong>Description:</strong> Durable queues for SQLite.</p><p><strong>What we like:</strong> Adds pub/sub, task queue, and event streams to SQLite. No need for client polling or a broker. Shipped as a SQLite extension with bindings for Python, Node, Rust, Go, Ruby, etc. Allows an INSERT and enqueue as part of the same transaction (with rollback). Also supports cron.</p><p><strong>What we dislike:</strong> Polling is via a SELECT per millisecond per database, which should be lightweight, but </div>
-            <div class="meta">📎 console-dev</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://v2.alchemy.run?ref=console.dev">Beta: Alchemy</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Infrastructure as effects framework.</div>
-            <div class="meta">📎 console-dev</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://remix.run/blog/remix-3-beta-preview?ref=console.dev">Beta: Remix 3</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Web framework.</div>
-            <div class="meta">📎 console-dev</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://refactoring.fm/p/how-i-run-the-tolaria-project">How I Run the Tolaria Project</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>Hey, Luca here! As you probably know by now, two weeks ago I launched <a href="https://github.com/refactoringhq/tolaria">Tolaria</a>, a desktop app for Mac, Linux, and Windows, to manage markdown knowledge bases &#8212; for humans and AI.</p><p>I did that to solve my own problems and to get my hands dirty with AI coding. In other words, I wanted to <em>walk the talk</em>, and then write about it here on Refactoring.</p><p>Little did I know this would feel more like <em>speedrunning</em> the t</div>
-            <div class="meta">📎 refactoring</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://this-week-in-rust.org/blog/2026/05/06/this-week-in-rust-650/">This Week in Rust 650</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>Hello and welcome to another issue of <em>This Week in Rust</em>!
-<a href="https://www.rust-lang.org/">Rust</a> is a programming language empowering everyone to build reliable and efficient software.
-This is a weekly summary of its progress and community.
-Want something mentioned? Tag us at
-<a href="https://bsky.app/profile/thisweekinrust.bsky.social">@thisweekinrust.bsky.social</a> on Bluesky or
-<a href="https://mastodon.social/@thisweekinrust">@ThisWeekinRust</a> on mastodon.social, or
-<a h</div>
-            <div class="meta">📎 this-week-in-rust</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>💰 Investment</h2>
-        
-        <div class="story contextual">
-            <h3><a href="https://www.ai-supremacy.com/p/what-ai-infographics-say-about-the-future-of-ai-2026">What AI Infographics say about the future of AI?</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p></p><p>Hey All, </p><p>Welcome to another viewing of AI through the lens of infographics. This visual approach lets you take a leisurely viewing of AI&#8217;s rapid progress in the last few months. I include my field notes on more contemporary issues as well including curation from multiple sources. </p><p>This is part 3 in our series. </p><ul><li><p>Part I: <strong>Summary of the </strong><a href="https://www.ai-supremacy.com/p/summary-of-the-ai-index-report-2026-hai-stanford">AI Index Repor</div>
-            <div class="meta">📎 ai-supremacy</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.ai-supremacy.com/p/the-landowners-of-ai">The Landowners of AI</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><div class="captioned-image-container"><figure><a class="image-link image2 is-viewable-img" href="https://substackcdn.com/image/fetch/$s_!Cta1!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fffd14f59-650b-4517-bd06-ed1a5edb7904_2400x1585.jpeg" target="_blank"><div class="image2-inset"><source type="image/webp" /><img alt="How Democrats sent Big Tech billionaires into Trump's arms | Vox" class="sizing-normal" height="962" src="https:</div>
-            <div class="meta">📎 ai-supremacy</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://stratechery.com/2026/intel-earnings-intels-differentiation-whither-terafab/">Intel Earnings, Intel’s Differentiation?, Whither Terafab</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>Intel's earnings were very impressive, but the chief driver was a structural shift in demand for CPUs for AI. Plus, what is going on with Terafab?</p></div>
-            <div class="meta">📎 stratechery</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://stratechery.com/2026/an-interview-with-openai-ceo-sam-altman-and-aws-ceo-matt-garman-about-bedrock-managed-agents/">An Interview with OpenAI CEO Sam Altman and AWS CEO Matt Garman About Bedrock Managed Agents</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><div class="wp-block-group has-border-color is-nowrap is-layout-flex wp-container-core-group-is-layout-77c2d4bd wp-block-group-is-layout-flex">
-<div class="wp-block-group wp-container-content-9cfa9a5a has-global-padding is-layout-constrained wp-block-group-is-layout-constrained">
-<p class="has-small-font-size"><strong>Listen to this post:</strong></p>
-
-
-
-<div class="wp-block-passport-podcast-player">
-
-
-<div class="wp-block-passport-podcast-player-logged-out-view"></div>
+<div class="story-count">📰 Stories: <strong>4</strong> | Generated: 2026-05-11 00:00 UTC</div>
+<h1>Daily Briefing - 2026-05-09</h1>
+<h1>📰 Morning Briefing - Saturday, May 09, 2026</h1>
+<p><strong>66 stories</strong> from 11 sources</p>
+<p>• 🔴 0 must-read</p>
+<p>• 🟡 0 important</p>
+<p>• 🟢 66 contextual</p>
+<p>• ⏱️ ~9 min read</p>
+<hr>
+<h2>🤖 AI</h2>
+<h3>🟢 [AndyShaman/premortem](https://github.com/AndyShaman/premortem)</h3>
+<p>Premortem skill for Claude Code — finds the concrete ways a plan could fail before commitment. Multi-agent silent scan, mitigation triplets, history snapshots, reverse-premortem. Klein 2007 + Kahneman outside view.</p>
+<p>⭐ 9 stars | 🍴 0 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [Magerko/TelegramHelper](https://github.com/Magerko/TelegramHelper)</h3>
+<p>Персональный AI-ассистент для Telegram: userbot + control bot с агентом, понимающим голос и свободный текст. SQLite FTS5, Qdrant, Whisper, OpenAI/Gemini.</p>
+<p>⭐ 16 stars | 🍴 1 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [LYiHub/OpenClaw-AWD-Arena](https://github.com/LYiHub/OpenClaw-AWD-Arena)</h3>
+<p>An automated Attack-with-Defense platform where LLM-powered agents compete in real-time.</p>
+<p>⭐ 29 stars | 🍴 9 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [Gemini 2.0 is now available to everyone](https://deepmind.google/blog/gemini-2-0-is-now-available-to-everyone/)</h3>
+<p>We’re announcing new updates to Gemini 2.0 Flash, plus introducing Gemini 2.0 Flash-Lite and Gemini 2.0 Pro Experimental.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Start building with Gemini 2.0 Flash and Flash-Lite](https://deepmind.google/blog/start-building-with-gemini-20-flash-and-flash-lite/)</h3>
+<p>Gemini 2.0 Flash-Lite is now generally available in the Gemini API for production use in Google AI Studio and for enterprise customers on Vertex AI</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Introducing Gemma 3](https://deepmind.google/blog/introducing-gemma-3/)</h3>
+<p>The most capable model you can run on a single GPU or TPU.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Experiment with Gemini 2.0 Flash native image generation](https://deepmind.google/blog/experiment-with-gemini-20-flash-native-image-generation/)</h3>
+<p>Native image output is available in Gemini 2.0 Flash for developers to experiment with in Google AI Studio and the Gemini API.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Gemini Robotics brings AI into the physical world](https://deepmind.google/blog/gemini-robotics-brings-ai-into-the-physical-world/)</h3>
+<p>Introducing Gemini Robotics and Gemini Robotics-ER, AI models designed for robots to understand, act and react to the physical world.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Gemini 2.5: Our most intelligent AI model](https://deepmind.google/blog/gemini-2-5-our-most-intelligent-ai-model/)</h3>
+<p>Gemini 2.5 is our most intelligent AI model, now with thinking built in.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Taking a responsible path to AGI](https://deepmind.google/blog/taking-a-responsible-path-to-agi/)</h3>
+<p>We’re exploring the frontiers of AGI, prioritizing technical safety, proactive risk assessment, and collaboration with the AI community.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [DolphinGemma: How Google AI is helping decode dolphin communication](https://deepmind.google/blog/dolphingemma-how-google-ai-is-helping-decode-dolphin-communication/)</h3>
+<p>DolphinGemma, a large language model developed by Google, is helping scientists study how dolphins communicate — and hopefully find out what they're saying, too.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Generate videos in Gemini and Whisk with Veo 2](https://deepmind.google/blog/generate-videos-in-gemini-and-whisk-with-veo-2/)</h3>
+<p>Transform text-based prompts into high-resolution eight-second videos in Gemini Advanced and use Whisk Animate to turn images into eight-second animated clips.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Introducing Gemini 2.5 Flash](https://deepmind.google/blog/introducing-gemini-2-5-flash/)</h3>
+<p>Gemini 2.5 Flash is our first fully hybrid reasoning model, giving developers the ability to turn thinking on or off.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Music AI Sandbox, now with new features and broader access](https://deepmind.google/blog/music-ai-sandbox-now-with-new-features-and-broader-access/)</h3>
+<p>Helping music professionals explore the potential of generative AI</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [AlphaEvolve: A Gemini-powered coding agent for designing advanced algorithms](https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/)</h3>
+<p>New AI agent evolves algorithms for math and practical applications in computing by combining the creativity of large language models with automated evaluators</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Announcing Gemma 3n preview: Powerful, efficient, mobile-first AI](https://deepmind.google/blog/announcing-gemma-3n-preview-powerful-efficient-mobile-first-ai/)</h3>
+<p>Gemma 3n is a cutting-edge open model designed for fast, multimodal AI on devices, featuring optimized performance, unique flexibility with a 2-in-1 model, and expanded multimodal understanding with audio, empowering developers to build live, interactive applications and sophisticated audio-centric experiences.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Our vision for building a universal AI assistant](https://deepmind.google/blog/our-vision-for-building-a-universal-ai-assistant/)</h3>
+<p>We’re extending Gemini to become a world model that can make plans and imagine new experiences by simulating aspects of the world.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Advancing Gemini's security safeguards](https://deepmind.google/blog/advancing-geminis-security-safeguards/)</h3>
+<p>We’ve made Gemini 2.5 our most secure model family to date.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Fuel your creativity with new generative media models and tools](https://deepmind.google/blog/fuel-your-creativity-with-new-generative-media-models-and-tools/)</h3>
+<p>Introducing Veo 3 and Imagen 4, and a new tool for filmmaking called Flow.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Gemini 2.5: Our most intelligent models are getting even better](https://deepmind.google/blog/gemini-25-our-world-leading-model-is-getting-even-better/)</h3>
+<p>Gemini 2.5 Pro continues to be loved by developers as the best model for coding, and 2.5 Flash is getting even better with a new update. We’re bringing new capabilities to our models, including Deep Think, an experimental enhanced reasoning mode for 2.5 Pro.</p>
+<p>📎 deepmind-blog</p>
+<h2>💻 Software</h2>
+<h3>🟢 [josephmisiti/awesome-machine-learning](https://github.com/josephmisiti/awesome-machine-learning)</h3>
+<p>A curated list of awesome Machine Learning frameworks, libraries and software.</p>
+<p>⭐ 72,426 stars | 🍴 15,449 forks | 📝 Python | 👁️ 72,426 watchers</p>
+<p>📎 awesome-ml</p>
+<h3>🟢 [LiuYue-LYJUNE/ICASSP2026-OrthoVAD](https://github.com/LiuYue-LYJUNE/ICASSP2026-OrthoVAD)</h3>
+<p>Official PyTorch implementation of "OrthoVAD: Weakly Supervised Video Anomaly Detection via Prototype Orthogonality Learning".</p>
+<p>⭐ 12 stars | 🍴 0 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [Wengyifei/GNSS-Satellite-Soil-Moisture-Retrieval](https://github.com/Wengyifei/GNSS-Satellite-Soil-Moisture-Retrieval)</h3>
+<p>An open-source platform for CYGNSS、SMAP soil moisture inversion based on GCN-UNet, providing 9km soil moisture maps.</p>
+<p>⭐ 14 stars | 🍴 0 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [6-robot/jie_3d_nav](https://github.com/6-robot/jie_3d_nav)</h3>
+<p>一套基于 ROS 2 Humble 的 3D 导航系统，通过 Web 界面交互。本系统已在智元科技 D1 机器狗以及留形科技 Odin 1 空间定位模组上测试通过。</p>
+<p>⭐ 14 stars | 🍴 5 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [saileaxh/iida-mcp](https://github.com/saileaxh/iida-mcp)</h3>
+<p>Faster, with excellent architecture, stronger performance, and kernel access support — an ida-mcp tool</p>
+<p>⭐ 24 stars | 🍴 2 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [wangrujun2016/auto-resume](https://github.com/wangrujun2016/auto-resume)</h3>
+<p>No description</p>
+<p>⭐ 38 stars | 🍴 6 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [dakshaymehta/cardputer-claude-os](https://github.com/dakshaymehta/cardputer-claude-os)</h3>
+<p>DIY OS bundle for the M5Stack Cardputer: Claude Buddy (BLE), Push-to-Claude (voice + chat with memory via a Cloudflare Worker), and a flash-and-go installer skill for Claude Code. Forked from moremas/build-with-claude.</p>
+<p>⭐ 40 stars | 🍴 2 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [GALIAIS/k_i_r_o-register](https://github.com/GALIAIS/k_i_r_o-register)</h3>
+<p>No description</p>
+<p>⭐ 111 stars | 🍴 63 forks | 📝 Python</p>
+<p>📎 trending-python-ml</p>
+<h3>🟢 [Evaluating potential cybersecurity threats of advanced AI](https://deepmind.google/blog/evaluating-potential-cybersecurity-threats-of-advanced-ai/)</h3>
+<p>Our framework enables cybersecurity experts to identify which defenses are necessary—and how to prioritize them</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Build rich, interactive web apps with an updated Gemini 2.5 Pro](https://deepmind.google/blog/build-rich-interactive-web-apps-with-an-updated-gemini-25-pro/)</h3>
+<p>Our updated version of Gemini 2.5 Pro Preview has improved capabilities for coding.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Gemini 2.5 Pro Preview: even better coding performance](https://deepmind.google/blog/gemini-25-pro-preview-even-better-coding-performance/)</h3>
+<p>We’ve seen developers doing amazing things with Gemini 2.5 Pro, so we decided to release an updated version a couple of weeks early to get into developers hands sooner.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Introducing Veo 3.1 and advanced creative capabilities](https://deepmind.google/blog/introducing-veo-31-and-advanced-creative-capabilities/)</h3>
+<p>We’re rolling out significant updates to Veo that give people even more creative control.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Veo 3.1 Ingredients to Video: More consistency, creativity and control](https://deepmind.google/blog/veo-3-1-ingredients-to-video-more-consistency-creativity-and-control/)</h3>
+<p>Our latest Veo update generates lively, dynamic clips that feel natural and engaging — and supports vertical video generation.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Measuring progress toward AGI: A cognitive framework](https://deepmind.google/blog/measuring-progress-toward-agi-a-cognitive-framework/)</h3>
+<p>We’re introducing a framework to measure progress toward AGI, and launching a Kaggle hackathon to build the relevant evaluations.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Container Design Patterns for Distributed Systems](https://blog.bytebytego.com/p/container-design-patterns-for-distributed)</h3>
+<p><p style="text-align: justify;">For most of their life, containers have been considered more as a deployment concern. Package your code with its dependencies, ship it as one unit, and run it the same way everywhere.</p><p style="text-align: justify;">That story was true, and it was also pretty useful, but it&#8217;s just one half of what containers were good for. The other half is what happens when we stop thinking of a container as a way to deliver one application and start thinking of it as a</p>
+<p>📎 bytebytego</p>
+<h3>🟢 [Tool: honker](https://honker.dev/?ref=console.dev)</h3>
+<p><p><strong>Description:</strong> Durable queues for SQLite.</p><p><strong>What we like:</strong> Adds pub/sub, task queue, and event streams to SQLite. No need for client polling or a broker. Shipped as a SQLite extension with bindings for Python, Node, Rust, Go, Ruby, etc. Allows an INSERT and enqueue as part of the same transaction (with rollback). Also supports cron.</p><p><strong>What we dislike:</strong> Polling is via a SELECT per millisecond per database, which should be lightweight, but</p>
+<p>📎 console-dev</p>
+<h3>🟢 [Beta: Alchemy](https://v2.alchemy.run?ref=console.dev)</h3>
+<p>Infrastructure as effects framework.</p>
+<p>📎 console-dev</p>
+<h3>🟢 [Beta: Remix 3](https://remix.run/blog/remix-3-beta-preview?ref=console.dev)</h3>
+<p>Web framework.</p>
+<p>📎 console-dev</p>
+<h3>🟢 [How I Run the Tolaria Project](https://refactoring.fm/p/how-i-run-the-tolaria-project)</h3>
+<p><p>Hey, Luca here! As you probably know by now, two weeks ago I launched <a href="https://github.com/refactoringhq/tolaria">Tolaria</a>, a desktop app for Mac, Linux, and Windows, to manage markdown knowledge bases &#8212; for humans and AI.</p><p>I did that to solve my own problems and to get my hands dirty with AI coding. In other words, I wanted to <em>walk the talk</em>, and then write about it here on Refactoring.</p><p>Little did I know this would feel more like <em>speedrunning</em> the t</p>
+<p>📎 refactoring</p>
+<h3>🟢 [This Week in Rust 650](https://this-week-in-rust.org/blog/2026/05/06/this-week-in-rust-650/)</h3>
+<p><p>Hello and welcome to another issue of <em>This Week in Rust</em>!</p>
+<p><a href="https://www.rust-lang.org/">Rust</a> is a programming language empowering everyone to build reliable and efficient software.</p>
+<p>This is a weekly summary of its progress and community.</p>
+<p>Want something mentioned? Tag us at</p>
+<p><a href="https://bsky.app/profile/thisweekinrust.bsky.social">@thisweekinrust.bsky.social</a> on Bluesky or</p>
+<p><a href="https://mastodon.social/@thisweekinrust">@ThisWeekinRust</a> on mastodon.social, or</p>
+<p><a h</p>
+<p>📎 this-week-in-rust</p>
+<h2>💰 Investment</h2>
+<h3>🟢 [What AI Infographics say about the future of AI?](https://www.ai-supremacy.com/p/what-ai-infographics-say-about-the-future-of-ai-2026)</h3>
+<p><p></p><p>Hey All, </p><p>Welcome to another viewing of AI through the lens of infographics. This visual approach lets you take a leisurely viewing of AI&#8217;s rapid progress in the last few months. I include my field notes on more contemporary issues as well including curation from multiple sources. </p><p>This is part 3 in our series. </p><ul><li><p>Part I: <strong>Summary of the </strong><a href="https://www.ai-supremacy.com/p/summary-of-the-ai-index-report-2026-hai-stanford">AI Index Repor</p>
+<p>📎 ai-supremacy</p>
+<h3>🟢 [The Landowners of AI](https://www.ai-supremacy.com/p/the-landowners-of-ai)</h3>
+<p><div class="captioned-image-container"><figure><a class="image-link image2 is-viewable-img" href="https://substackcdn.com/image/fetch/$s_!Cta1!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fffd14f59-650b-4517-bd06-ed1a5edb7904_2400x1585.jpeg" target="_blank"><div class="image2-inset"><source type="image/webp" /><img alt="How Democrats sent Big Tech billionaires into Trump's arms | Vox" class="sizing-normal" height="962" src="https:</p>
+<p>📎 ai-supremacy</p>
+<h3>🟢 [Intel Earnings, Intel’s Differentiation?, Whither Terafab](https://stratechery.com/2026/intel-earnings-intels-differentiation-whither-terafab/)</h3>
+<p><p>Intel's earnings were very impressive, but the chief driver was a structural shift in demand for CPUs for AI. Plus, what is going on with Terafab?</p></p>
+<p>📎 stratechery</p>
+<h3>🟢 [An Interview with OpenAI CEO Sam Altman and AWS CEO Matt Garman About Bedrock Managed Agents](https://stratechery.com/2026/an-interview-with-openai-ceo-sam-altman-and-aws-ceo-matt-garman-about-bedrock-managed-agents/)</h3>
+<p><div class="wp-block-group has-border-color is-nowrap is-layout-flex wp-container-core-group-is-layout-77c2d4bd wp-block-group-is-layout-flex"></p>
+<p><div class="wp-block-group wp-container-content-9cfa9a5a has-global-padding is-layout-constrained wp-block-group-is-layout-constrained"></p>
+<p><p class="has-small-font-size"><strong>Listen to this post:</strong></p></p>
+<p><div class="wp-block-passport-podcast-player"></p>
+<p><div class="wp-block-passport-podcast-player-logged-out-view"></div></p>
+<p></div></p>
+<p></div></p>
+<p></div></p>
+<p><</p>
+<p>📎 stratechery</p>
+<h3>🟢 [Summary of the AI Index Report 2026, Part II](https://www.ai-supremacy.com/p/summary-of-the-ai-index-report-2026)</h3>
+<p><div class="captioned-image-container"><figure><a class="image-link image2 is-viewable-img" href="https://www.ai-supremacy.com/subscribe" target="_blank"><div class="image2-inset"><source type="image/webp" /><img alt="" class="sizing-normal" height="477" src="https://substackcdn.com/image/fetch/$s_!Heob!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F651dfd01-67ab-4102-b1df-343fb38e2b64_998x477.png" width="998" /><div</p>
+<p>📎 ai-supremacy</p>
+<h3>🟢 [Snapchat CEO: Why distribution has become the most important moat | Evan Spiegel](https://www.lennysnewsletter.com/p/snapchat-ceo-why-distribution-is)</h3>
+<p><div class="captioned-image-container"><figure><a class="image-link image2 is-viewable-img" href="https://youtu.be/-7Yol5vX5xw" target="_blank"><div class="image2-inset"><source type="image/webp" /><img alt="" class="sizing-normal" height="819" src="https://substackcdn.com/image/fetch/$s_!TICc!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcc757a11-a9bd-4126-ad1c-37027e901d1f_1920x1080.png" width="1456" /><div class=</p>
+<p>📎 lenny-newsletter</p>
+<h2>📰 General</h2>
+<h3>🟢 [SynthID Detector — a new portal to help identify AI-generated content](https://deepmind.google/blog/synthid-detector--a-new-portal-to-help-identify-ai-generated-content/)</h3>
+<p>Learn about the new SynthID Detector portal we announced at I/O to help people understand how the content they see online was generated.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Behind “ANCESTRA”: combining Veo with live-action filmmaking](https://deepmind.google/blog/behind-ancestra-combining-veo-with-live-action-filmmaking/)</h3>
+<p>We partnered with Darren Aronofsky, Eliza McNitt and a team of more than 200 people to make a film using Veo and live-action filmmaking.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Introducing Gemma 3n: The developer guide](https://deepmind.google/blog/introducing-gemma-3n-the-developer-guide/)</h3>
+<p>Gemma 3n is designed for the developer community that helped shape Gemma.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Introducing Nano Banana Pro](https://deepmind.google/blog/introducing-nano-banana-pro/)</h3>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Revealing a key protein behind heart disease](https://deepmind.google/blog/revealing-a-key-protein-behind-heart-disease/)</h3>
+<p>AlphaFold has revealed the structure of a key protein behind heart disease</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [AlphaFold: Five years of impact](https://deepmind.google/blog/alphafold-five-years-of-impact/)</h3>
+<p>Explore how AlphaFold has accelerated science and fueled a global wave of biological discovery.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Engineering more resilient crops for a warming climate](https://deepmind.google/blog/engineering-more-resilient-crops-for-a-warming-climate/)</h3>
+<p>Scientists are using AlphaFold to strengthen a photosynthesis enzyme for resilient, heat-tolerant crops.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [From games to biology and beyond: 10 years of AlphaGo’s impact](https://deepmind.google/blog/10-years-of-alphago/)</h3>
+<p>Ten years since AlphaGo, we explore how it is catalyzing scientific discovery and paving a path to AGI.</p>
+<p>📎 deepmind-blog</p>
+<h3>🟢 [Caligra c100 Developer Terminal](https://www.pentagram.com/work/caligra-c100-developer-terminal)</h3>
+<p><p>Industrial design of computer hardware for professional environments—a case study.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [Wordamour](https://wordamour.com/)</h3>
+<p><p>Turn your cherished words into a beautiful, printed word search puzzle.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [Designing stable interfaces for streaming content](https://www.smashingmagazine.com/2026/05/designing-stable-interfaces-streaming-content/)</h3>
+<p><p>Streaming UIs are an easy concept on the surface, but are quite complicated in practice. </p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [The bottleneck was never the code](https://www.thetypicalset.com/blog/thoughts-on-coding-agents)</h3>
+<p><p>The other month I finally ran an experiment we had been postponing for over a year at .txt.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [Griddy icons](https://griddyicons.com/)</h3>
+<p><p>A free open-source icon family with a unique utilitarian vibe.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [The “passive income” trap ate a generation of entrepreneurs](https://www.joanwestenberg.com/the-passive-income-trap-ate-a-generation-of-entrepreneurs/)</h3>
+<p><p>How chasing passive income destroys the focus needed to build meaningful products.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [You are not immune to mode collapse](https://www.lesswrong.com/posts/vKtuRbo4e3ffixmee/you-are-not-immune-to-mode-collapse)</h3>
+<p><p>How to keep digital experiences feeling authentic and genuinely useful.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [Beta: dev3000](https://github.com/vercel-labs/dev3000?ref=console.dev)</h3>
+<p>Capture your full dev timeline.</p>
+<p>📎 console-dev</p>
+<h3>🟢 [Beta: Warp Terminal OSS](https://github.com/warpdotdev/warp?ref=console.dev)</h3>
+<p>Warp terminal open sourced.</p>
+<p>📎 console-dev</p>
+<h3>🟢 [Design from the inside](https://mattstromawn.com/writing/design-from-the-inside/)</h3>
+<p><p>There is no ‘source of truth’ when everything changes at every moment.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [Cognitive Biases](https://cognitivebiasindex.com/)</h3>
+<p><p>A tool for identifying and mitagating the systematic errors in thinking that affect the decisions and judgments that humans make.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<h3>🟢 [Flipbook](https://flipbook.page/)</h3>
+<p><p>An infinite visual browser generated entirely on demand in real time.</p></p>
+<p><br /><br /></p>
+<p>📎 sidebar</p>
+<hr>
+<p>*Generated by High-Signal News*</p>
+<div class="meta">
+<p>Dashboard auto-generated from <a href="https://github.com/hiveminderbot/autonomy-high-signal-news">high-signal-news</a> pipeline.</p>
 </div>
-</div>
-</div>
-
-
-
-<</div>
-            <div class="meta">📎 stratechery</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.ai-supremacy.com/p/summary-of-the-ai-index-report-2026">Summary of the AI Index Report 2026, Part II</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><div class="captioned-image-container"><figure><a class="image-link image2 is-viewable-img" href="https://www.ai-supremacy.com/subscribe" target="_blank"><div class="image2-inset"><source type="image/webp" /><img alt="" class="sizing-normal" height="477" src="https://substackcdn.com/image/fetch/$s_!Heob!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F651dfd01-67ab-4102-b1df-343fb38e2b64_998x477.png" width="998" /><div</div>
-            <div class="meta">📎 ai-supremacy</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.lennysnewsletter.com/p/snapchat-ceo-why-distribution-is">Snapchat CEO: Why distribution has become the most important moat | Evan Spiegel</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><div class="captioned-image-container"><figure><a class="image-link image2 is-viewable-img" href="https://youtu.be/-7Yol5vX5xw" target="_blank"><div class="image2-inset"><source type="image/webp" /><img alt="" class="sizing-normal" height="819" src="https://substackcdn.com/image/fetch/$s_!TICc!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcc757a11-a9bd-4126-ad1c-37027e901d1f_1920x1080.png" width="1456" /><div class=</div>
-            <div class="meta">📎 lenny-newsletter</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>📰 General</h2>
-        
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/synthid-detector--a-new-portal-to-help-identify-ai-generated-content/">SynthID Detector — a new portal to help identify AI-generated content</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Learn about the new SynthID Detector portal we announced at I/O to help people understand how the content they see online was generated.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/behind-ancestra-combining-veo-with-live-action-filmmaking/">Behind “ANCESTRA”: combining Veo with live-action filmmaking</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">We partnered with Darren Aronofsky, Eliza McNitt and a team of more than 200 people to make a film using Veo and live-action filmmaking.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/introducing-gemma-3n-the-developer-guide/">Introducing Gemma 3n: The developer guide</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Gemma 3n is designed for the developer community that helped shape Gemma.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/introducing-nano-banana-pro/">Introducing Nano Banana Pro</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"></div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/revealing-a-key-protein-behind-heart-disease/">Revealing a key protein behind heart disease</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">AlphaFold has revealed the structure of a key protein behind heart disease</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/alphafold-five-years-of-impact/">AlphaFold: Five years of impact</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Explore how AlphaFold has accelerated science and fueled a global wave of biological discovery.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/engineering-more-resilient-crops-for-a-warming-climate/">Engineering more resilient crops for a warming climate</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Scientists are using AlphaFold to strengthen a photosynthesis enzyme for resilient, heat-tolerant crops.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://deepmind.google/blog/10-years-of-alphago/">From games to biology and beyond: 10 years of AlphaGo’s impact</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Ten years since AlphaGo, we explore how it is catalyzing scientific discovery and paving a path to AGI.</div>
-            <div class="meta">📎 deepmind-blog</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.pentagram.com/work/caligra-c100-developer-terminal">Caligra c100 Developer Terminal</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>Industrial design of computer hardware for professional environments—a case study.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://wordamour.com/">Wordamour</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>Turn your cherished words into a beautiful, printed word search puzzle.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.smashingmagazine.com/2026/05/designing-stable-interfaces-streaming-content/">Designing stable interfaces for streaming content</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>Streaming UIs are an easy concept on the surface, but are quite complicated in practice. </p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.thetypicalset.com/blog/thoughts-on-coding-agents">The bottleneck was never the code</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>The other month I finally ran an experiment we had been postponing for over a year at .txt.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://griddyicons.com/">Griddy icons</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>A free open-source icon family with a unique utilitarian vibe.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.joanwestenberg.com/the-passive-income-trap-ate-a-generation-of-entrepreneurs/">The “passive income” trap ate a generation of entrepreneurs</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>How chasing passive income destroys the focus needed to build meaningful products.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.lesswrong.com/posts/vKtuRbo4e3ffixmee/you-are-not-immune-to-mode-collapse">You are not immune to mode collapse</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>How to keep digital experiences feeling authentic and genuinely useful.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/vercel-labs/dev3000?ref=console.dev">Beta: dev3000</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Capture your full dev timeline.</div>
-            <div class="meta">📎 console-dev</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/warpdotdev/warp?ref=console.dev">Beta: Warp Terminal OSS</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">Warp terminal open sourced.</div>
-            <div class="meta">📎 console-dev</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://mattstromawn.com/writing/design-from-the-inside/">Design from the inside</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>There is no ‘source of truth’ when everything changes at every moment.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://cognitivebiasindex.com/">Cognitive Biases</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>A tool for identifying and mitagating the systematic errors in thinking that affect the decisions and judgments that humans make.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://flipbook.page/">Flipbook</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><p>An infinite visual browser generated entirely on demand in real time.</p>
-<br /><br /></div>
-            <div class="meta">📎 sidebar</div>
-        </div>
-    </div>
-
-    <div class="footer">
-        Generated by High-Signal News • 2026-05-10T02:23:42
-    </div>
 </body>
 </html>
