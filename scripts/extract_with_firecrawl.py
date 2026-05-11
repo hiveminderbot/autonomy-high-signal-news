@@ -94,9 +94,9 @@ def get_articles_to_process(conn, retry_failed=False, source_filter=None):
         cursor = conn.execute('''
             SELECT id, title, url, source, content, extraction_status
             FROM articles
-            WHERE extraction_status LIKE 'failed%' 
+            WHERE extraction_status LIKE 'failed%'
                OR extraction_status = 'rss_only'
-            ORDER BY 
+            ORDER BY
                 CASE source
                     WHEN 'Distill.pub' THEN 1
                     WHEN 'Hugging Face Blog' THEN 2

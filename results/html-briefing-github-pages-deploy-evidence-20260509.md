@@ -1,7 +1,7 @@
 # Acceptance Evidence — HTML Briefing Generation + GitHub Pages Auto-Deploy
 
-**Bead:** autonomy-ewj9  
-**Date:** 2026-05-09  
+**Bead:** autonomy-ewj9
+**Date:** 2026-05-09
 **Status:** ✅ COMPLETE
 
 ---

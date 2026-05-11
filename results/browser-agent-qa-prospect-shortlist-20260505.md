@@ -90,4 +90,3 @@ Success gate: Run browser-agent/Playwright diagnostics against the top 3 reachab
 - Healthy targets: 7 / 5
 - Segments present: browser_agent_infra, collaboration_saas, developer_platform, developer_tools, product_analytics, scheduling_saas
 - Passed: True
-

@@ -56,4 +56,3 @@ Success gate: Adopt only if at least one report contains a reproducible external
 - Healthy sources: 4 / 4
 - Required roles present: agent_sdk, automation_surface, diagnostic_surface, model_capability
 - Passed: True
-

@@ -18,7 +18,7 @@ for r in report.results:
     print(f'{status_icon} {r.name}: {r.status.name}')
     if r.message:
         print(f'   {r.message}')
-    
+
     if r.status.name == 'PASS':
         passed += 1
     elif r.status.name == 'WARN':

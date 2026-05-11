@@ -1,8 +1,8 @@
 # High-Signal News Daily Cron 7-Run Burn-In Report
 
-**Date:** 2026-05-09  
-**Lab:** high-signal-news  
-**Bead:** autonomy-r804  
+**Date:** 2026-05-09
+**Lab:** high-signal-news
+**Bead:** autonomy-r804
 **Target:** Tier 2 demonstrated capability — validate daily production cron readiness
 
 ## Executive Summary

@@ -47,7 +47,7 @@ Articles: 164 | Sources: 8
 
 - **Stream-T1: Test-Time Scaling for Streaming Video Generation** (Hugging Face Papers)
   https://huggingface.co/papers/2605.04461
-  Papers arxiv:2605.04461 Copy markdown Stream-T1: Test-Time Scaling for Streaming Video Generation Published on May 6 · Submitted by Mengqi Huang on May 7 #2 Paper of the day · FrameX-AI Upvote 72 +64 
+  Papers arxiv:2605.04461 Copy markdown Stream-T1: Test-Time Scaling for Streaming Video Generation Published on May 6 · Submitted by Mengqi Huang on May 7 #2 Paper of the day · FrameX-AI Upvote 72 +64
 
 - **Stream-R1: Reliability-Perplexity Aware Reward Distillation for Streaming Video Generation** (Hugging Face Papers)
   https://huggingface.co/papers/2605.03849
@@ -59,33 +59,33 @@ Articles: 164 | Sources: 8
 
 - **Title:Free Energy-Driven Reinforcement Learning with Adaptive Advantage Shaping for Unsupervised Reasoning in LLMs** (arXiv cs.CL)
   https://arxiv.org/abs/2605.04065
-  arXiv:2605.04065v1 Announce Type: new 
+  arXiv:2605.04065v1 Announce Type: new
 Abstract: Unsupervised reinforcement learning (RL) has emerged as a promising paradigm for enabling self-improvement in large language models (LLMs). However, ex
 
 - **Title:Adapt to Thrive! Adaptive Power-Mean Policy Optimization for Improved LLM Reasoning** (arXiv cs.CL)
   https://arxiv.org/abs/2605.04066
-  arXiv:2605.04066v1 Announce Type: new 
+  arXiv:2605.04066v1 Announce Type: new
 Abstract: Reinforcement Learning with Verifiable Rewards (RLVR) is an essential paradigm that enhances the reasoning capabilities of Large Language Models (LLMs)
 
 - **Title:Connecting online criminal behavior with machine learning: Using authorship attribution to analyze and link potential online traffickers** (arXiv cs.CL)
   https://arxiv.org/abs/2605.04080
-  arXiv:2605.04080v1 Announce Type: new 
+  arXiv:2605.04080v1 Announce Type: new
 Abstract: This research investigated how online criminal activities can be better understood and connected using data-driven machine learning methods. Many illeg
 
 - **Title:FMI_SU_Yotkova_Kastreva at SemEval-2026 Task 13: Lightweight Detection of LLM-Generated Code via Stylometric Signals** (arXiv cs.CL)
   https://arxiv.org/abs/2605.04157
-  arXiv:2605.04157v1 Announce Type: new 
+  arXiv:2605.04157v1 Announce Type: new
 Abstract: SemEval-2026 Task 13 investigates machine-generated code detection across multiple programming languages and application scenarios, asking participatin
 
 - **Title:Not All That Is Fluent Is Factual: Investigating Hallucinations of Large Language Models in Academic Writing** (arXiv cs.CL)
   https://arxiv.org/abs/2605.04171
-  arXiv:2605.04171v1 Announce Type: new 
+  arXiv:2605.04171v1 Announce Type: new
 Abstract: Large Language models (LLMs) show extraordinary abilities, but they are still prone to hallucinations, especially when we use them for generating Acade
 
 - **Title:Are LLMs Ready for Conflict Monitoring? Empirical Evidence from West Africa** (arXiv cs.CL)
   https://arxiv.org/abs/2605.04177
-  arXiv:2605.04177v1 Announce Type: new 
-Abstract: As LLMs enter conflict monitoring, understanding systematic distortions in their outputs is critical for humanitarian accountability. We evaluate four 
+  arXiv:2605.04177v1 Announce Type: new
+Abstract: As LLMs enter conflict monitoring, understanding systematic distortions in their outputs is critical for humanitarian accountability. We evaluate four
 
 
 ## Product
@@ -104,4 +104,3 @@ Abstract: As LLMs enter conflict monitoring, understanding systematic distortion
 - **Microsoft Earnings, Apple Earnings** (Stratechery)
   https://stratechery.com/2026/microsoft-earnings-apple-earnings/
   Microsoft unveils its new agentic business model, and Apple confronts shortages in memory and chips even as the Mac benefits from AI.
-

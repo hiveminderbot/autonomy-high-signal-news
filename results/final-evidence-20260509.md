@@ -1,7 +1,7 @@
 # High-Signal News Daily Cron — Final Evidence Report
 
-**Bead:** autonomy-bhpq  
-**Date:** 2026-05-09  
+**Bead:** autonomy-bhpq
+**Date:** 2026-05-09
 **Status:** ✅ COMPLETE (with honest assessment)
 
 ---
