@@ -1,0 +1,54 @@
+{
+  "feeds": [
+    {
+      "name": "arXiv cs.AI + cs.SE Atom",
+      "url": "http://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.SE&sortBy=submittedDate&sortOrder=descending",
+      "type": "atom",
+      "added": "2026-05-10"
+    },
+    {
+      "name": "Claude Code Changelog (raw)",
+      "url": "https://code.claude.com/docs/en/changelog.md",
+      "type": "markdown",
+      "added": "2026-05-10"
+    },
+    {
+      "name": "HuggingFace Blog",
+      "url": "https://huggingface.co/blog",
+      "type": "html",
+      "added": "2026-05-10"
+    },
+    {
+      "name": "LangChain Blog",
+      "url": "https://blog.langchain.dev/",
+      "type": "html",
+      "added": "2026-05-10"
+    },
+    {
+      "name": "GitHub Trending",
+      "url": "https://github.com/trending?since=daily",
+      "type": "html",
+      "added": "2026-05-10"
+    },
+    {
+      "name": "GitHub Advisories API",
+      "url": "https://api.github.com/advisories",
+      "type": "api",
+      "added": "2026-05-10"
+    }
+  ],
+  "repos_to_watch": [
+    {
+      "repo": "HKUDS/AI-Trader",
+      "url": "https://github.com/HKUDS/AI-Trader",
+      "added": "2026-05-12",
+      "reason": "Agent-native trading platform trending"
+    },
+    {
+      "repo": "rohitg00/agentmemory",
+      "url": "https://github.com/rohitg00/agentmemory",
+      "added": "2026-05-12",
+      "reason": "Persistent memory for coding agents"
+    }
+  ]
+}
