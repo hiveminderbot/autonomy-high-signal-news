@@ -519,6 +519,42 @@ def test_pipeline_result_dataclass():
     print("✅ test_pipeline_result_dataclass passed")
 
 
+def test_pipeline_filters_provided_sources_by_domain_before_fetching():
+    """Domain-filtered cron runs should not fetch every provided catalog source."""
+    with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:
+        db_path = Path(f.name)
+
+    class RecordingFetcher:
+        def __init__(self):
+            self.fetched_source_ids = []
+
+        def fetch_source(self, source):
+            self.fetched_source_ids.append(source.id)
+            return []
+
+    try:
+        cache = FeedCache(db_path)
+        fetcher = RecordingFetcher()
+        pipeline = AggregationPipeline(cache, fetcher=fetcher, extract_content=False)
+        sources = [
+            FeedSource(
+                id='ai-source', name='AI Source', url='https://ai.example/feed',
+                format='RSS', category='News', domain='ai', signal_quality='High'
+            ),
+            FeedSource(
+                id='dev-source', name='Dev Source', url='https://dev.example/feed',
+                format='RSS', category='News', domain='software_development', signal_quality='High'
+            ),
+        ]
+
+        result = pipeline.run(sources=sources, domain_filter='software_development')
+
+        assert result.sources_processed == 1
+        assert fetcher.fetched_source_ids == ['dev-source']
+    finally:
+        db_path.unlink(missing_ok=True)
+
+
 def test_pipeline_run_empty_sources():
     """Test pipeline with no sources."""
     with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as f:

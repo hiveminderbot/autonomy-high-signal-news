@@ -29,14 +29,23 @@ jobs:
       - name: Prepare docs directory
         run: |
           mkdir -p docs
-          # Copy the latest briefing HTML as the main index
-          # Support both naming conventions: briefing_YYYY-MM-DD.html and briefing-high-signal-YYYY-MM-DD.html
-          # Prefer the full briefing_*.html (larger, more complete) over the high-signal variant
-          LATEST_BRIEFING=$(ls -1 output/briefing_*.html 2>/dev/null | sort -V | tail -1)
-          if [ -z "$LATEST_BRIEFING" ]; then
-            # Fallback to high-signal naming if no briefing_*.html exists
-            LATEST_BRIEFING=$(ls -1 output/briefing-high-signal-*.html 2>/dev/null | sort -V | tail -1)
-          fi
+          # Copy the latest briefing HTML as the main index.
+          # Support both naming conventions and choose the newest date across them;
+          # otherwise a stale briefing_YYYY-MM-DD file can hide a fresh high-signal
+          # briefing-high-signal-YYYY-MM-DD artifact.
+          LATEST_BRIEFING=$(python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          candidates = []
+          for path in Path('output').glob('briefing*.html'):
+              match = re.search(r'(\d{4}-\d{2}-\d{2})', path.name)
+              if match:
+                  candidates.append((match.group(1), path.name, path))
+          if candidates:
+              print(sorted(candidates)[-1][2])
+          PY
+          )
           if [ -n "$LATEST_BRIEFING" ]; then
             cp "$LATEST_BRIEFING" docs/index.html
             echo "Deployed: $LATEST_BRIEFING -> docs/index.html"
@@ -49,8 +58,20 @@ jobs:
           cp output/briefing-high-signal-*.html docs/ 2>/dev/null || true
           # Copy latest.html as a stable URL
           cp output/latest.html docs/latest.html 2>/dev/null || true
-          # Generate dark-themed dashboard from latest markdown briefing
-          LATEST_MD=$(ls -1 output/briefing_*.md 2>/dev/null | sort -V | tail -1)
+          # Generate dark-themed dashboard from the newest markdown briefing across both naming conventions.
+          LATEST_MD=$(python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          candidates = []
+          for path in Path('output').glob('briefing*.md'):
+              match = re.search(r'(\d{4}-\d{2}-\d{2})', path.name)
+              if match:
+                  candidates.append((match.group(1), path.name, path))
+          if candidates:
+              print(sorted(candidates)[-1][2])
+          PY
+          )
           if [ -n "$LATEST_MD" ] && [ -s "$LATEST_MD" ] && [ "$(wc -c < "$LATEST_MD" | tr -d ' ')" -gt 10 ]; then
             python3 scripts/generate_dashboard.py "$LATEST_MD" docs/
             echo "Dashboard generated from $LATEST_MD"

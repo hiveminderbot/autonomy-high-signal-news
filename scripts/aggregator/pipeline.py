@@ -121,6 +121,8 @@ class AggregationPipeline:
         # Load sources if not provided
         if sources is None:
             sources = self.cache.get_sources(domain=domain_filter, active_only=not include_disabled)
+        elif domain_filter:
+            sources = [source for source in sources if source.domain == domain_filter]
 
         if limit_sources:
             sources = sources[:limit_sources]

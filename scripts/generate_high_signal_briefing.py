@@ -22,6 +22,15 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from collections import defaultdict
 
+
+def write_text_without_trailing_whitespace(path: Path, text: str) -> None:
+    """Write generated artifacts without line-ending whitespace that breaks diff checks."""
+    cleaned = "\n".join(line.rstrip() for line in text.splitlines())
+    if text.endswith("\n"):
+        cleaned += "\n"
+    path.write_text(cleaned)
+
+
 # Add scripts/ to path so briefing package is importable
 _scripts_path = Path(__file__).parent
 if str(_scripts_path) not in sys.path:
@@ -101,15 +110,21 @@ def get_recent_articles(days: int = 3) -> list:
     cutoff = (datetime.now() - timedelta(days=days)).isoformat()
 
     cursor.execute("""
+        WITH source_quality AS (
+            SELECT name, MIN(tier) AS tier, MAX(quality_score) AS quality_score
+            FROM sources
+            GROUP BY name
+        )
         SELECT a.id, a.title, a.url, a.source, a.domain, a.published_at,
                a.full_content, a.content, a.llm_insight,
                s.name as source_name, s.tier, s.quality_score
         FROM articles a
-        JOIN sources s ON a.source = s.name
-        WHERE a.published_at > ?
+        JOIN source_quality s ON a.source = s.name
+        WHERE a.fetched_at > ?
           AND a.extraction_status = 'extracted'
           AND s.tier = 1
-        ORDER BY s.quality_score DESC, a.published_at DESC
+        ORDER BY s.quality_score DESC,
+                 COALESCE(datetime(a.published_at), datetime(a.fetched_at)) DESC
     """, (cutoff,))
 
     articles = [dict(row) for row in cursor.fetchall()]
@@ -267,20 +282,25 @@ def build_briefing_result(articles: list) -> BriefingResult:
 
     # Priority order for domains
     priority = [
+        'ai',
         'ai_research',
         'ai_labs',
+        'software_development',
         'software',
         'research',
         'investment',
         'community',
+        'general',
     ]
 
     sections = []
     all_items = []
 
     domain_emoji = {
+        'ai': '🤖',
         'ai_research': '🧠',
         'ai_labs': '🤖',
+        'software_development': '💻',
         'software': '💻',
         'research': '📄',
         'investment': '💰',
@@ -459,29 +479,29 @@ def main():
         if fmt == 'markdown':
             newsletter = generate_newsletter_markdown(filtered)
             output_file = args.output_dir / f"briefing-high-signal-{today}.md"
-            with open(output_file, 'w') as f:
-                f.write(newsletter)
+            write_text_without_trailing_whitespace(output_file, newsletter)
+            latest_file = args.output_dir / "latest.md"
+            write_text_without_trailing_whitespace(latest_file, newsletter)
             generated.append(output_file)
             print(f"Generated Markdown: {output_file}")
         elif fmt == 'html':
             html = generate_newsletter_html(filtered)
             output_file = args.output_dir / f"briefing-high-signal-{today}.html"
-            with open(output_file, 'w') as f:
-                f.write(html)
+            write_text_without_trailing_whitespace(output_file, html)
+            latest_file = args.output_dir / "latest.html"
+            write_text_without_trailing_whitespace(latest_file, html)
             generated.append(output_file)
             print(f"Generated HTML: {output_file}")
         elif fmt == 'json':
             json_out = generate_newsletter_json(filtered)
             output_file = args.output_dir / f"briefing-high-signal-{today}.json"
-            with open(output_file, 'w') as f:
-                f.write(json_out)
+            write_text_without_trailing_whitespace(output_file, json_out)
             generated.append(output_file)
             print(f"Generated JSON: {output_file}")
         elif fmt == 'text':
             text = generate_newsletter_text(filtered)
             output_file = args.output_dir / f"briefing-high-signal-{today}.txt"
-            with open(output_file, 'w') as f:
-                f.write(text)
+            write_text_without_trailing_whitespace(output_file, text)
             generated.append(output_file)
             print(f"Generated Text: {output_file}")
 

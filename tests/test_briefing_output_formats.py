@@ -208,6 +208,8 @@ def test_main_all_formats(tmp_path):
     md = md_file.read_text()
     assert 'Rust 2.0 Released' in md
     assert '# High-Signal Briefing' in md
+    assert (tmp_path / 'latest.md').read_text() == md
+    assert (tmp_path / 'latest.html').read_text() == html
 
 
 def test_main_single_format_json(tmp_path):
@@ -225,6 +227,15 @@ def test_main_single_format_json(tmp_path):
     files = list(tmp_path.glob('briefing-high-signal-*'))
     assert len(files) == 1
     assert files[0].suffix == '.json'
+
+
+def test_generated_artifact_writer_strips_trailing_whitespace(tmp_path):
+    from scripts.generate_high_signal_briefing import write_text_without_trailing_whitespace
+
+    output = tmp_path / 'artifact.html'
+    write_text_without_trailing_whitespace(output, 'line with spaces   \nclean\n')
+
+    assert output.read_text() == 'line with spaces\nclean\n'
 
 
 def test_main_single_format_html(tmp_path):
