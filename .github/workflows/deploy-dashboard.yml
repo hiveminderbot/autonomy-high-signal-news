@@ -1,8 +1,9 @@
 name: Deploy high-signal-news dashboard to GitHub Pages
 
+# This legacy dashboard deploy used to race the main pages.yml workflow and
+# overwrite the current-date briefing with dashboard/index.html. Keep it manual
+# only; pages.yml is the canonical GitHub Pages deploy path.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
