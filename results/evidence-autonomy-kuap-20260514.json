@@ -1,0 +1,250 @@
+{
+  "validated_at": "2026-05-14T04:23:17.006343",
+  "pages": {
+    "url": "https://hiveminderbot.github.io/autonomy-high-signal-news/",
+    "status": 200,
+    "bytes": 24250,
+    "final_url": "https://hiveminderbot.github.io/autonomy-high-signal-news/",
+    "error": null,
+    "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Daily Briefing - 20"
+  },
+  "briefing_json": "output/briefing-high-signal-2026-05-14.json",
+  "briefing_html": "output/briefing-high-signal-2026-05-14.html",
+  "metadata": {
+    "generated_at": "2026-05-14T04:05:19.385169",
+    "total_stories": 20,
+    "must_read_count": 0,
+    "important_count": 0,
+    "contextual_count": 20,
+    "sources_used": 2,
+    "reading_time_minutes": 4
+  },
+  "local_html_bytes": 15810,
+  "local_html_http_links": 30,
+  "source_url_count": 20,
+  "source_urls_passed_2xx_3xx": 20,
+  "source_urls_failed": 0,
+  "source_statuses": [
+    {
+      "url": "https://arxiv.org/abs/2605.08200",
+      "status": 200,
+      "bytes": 49360,
+      "final_url": "https://arxiv.org/abs/2605.08200",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08200] Where Reliability Lives in Vision-Language Models: A Mechanistic Study of Attention, Hidden States",
+      "title": "Where Reliability Lives in Vision-Language Models: A Mechanistic Study of Attention, Hidden States, and Causal Circuits",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08220",
+      "status": 200,
+      "bytes": 48930,
+      "final_url": "https://arxiv.org/abs/2605.08220",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08220] Spatial Priming Outperforms Semantic Prompting: A Grid-Based Approach to Improving LLM Accuracy on",
+      "title": "Spatial Priming Outperforms Semantic Prompting: A Grid-Based Approach to Improving LLM Accuracy on Chart Data Extraction",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08354",
+      "status": 200,
+      "bytes": 49013,
+      "final_url": "https://arxiv.org/abs/2605.08354",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08354] Auto-Rubric as Reward: From Implicit Preferences to Explicit Multimodal Generative Criteria</title",
+      "title": "Auto-Rubric as Reward: From Implicit Preferences to Explicit Multimodal Generative Criteria",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08360",
+      "status": 200,
+      "bytes": 46045,
+      "final_url": "https://arxiv.org/abs/2605.08360",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08360] Embeddings for Preferences, Not Semantics</title>   <meta name=\"viewport\" content=\"width=device-wi",
+      "title": "Embeddings for Preferences, Not Semantics",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08368",
+      "status": 200,
+      "bytes": 47129,
+      "final_url": "https://arxiv.org/abs/2605.08368",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08368] On Distinguishing Capability Elicitation from Capability Creation in Post-Training: A Free-Energy ",
+      "title": "On Distinguishing Capability Elicitation from Capability Creation in Post-Training: A Free-Energy Perspective",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08374",
+      "status": 200,
+      "bytes": 48303,
+      "final_url": "https://arxiv.org/abs/2605.08374",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08374] MemQ: Integrating Q-Learning into Self-Evolving Memory Agents over Provenance DAGs</title>   <meta",
+      "title": "MemQ: Integrating Q-Learning into Self-Evolving Memory Agents over Provenance DAGs",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08386",
+      "status": 200,
+      "bytes": 47008,
+      "final_url": "https://arxiv.org/abs/2605.08386",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08386] SkillLens: Adaptive Multi-Granularity Skill Reuse for Cost-Efficient LLM Agents</title>   <meta na",
+      "title": "SkillLens: Adaptive Multi-Granularity Skill Reuse for Cost-Efficient LLM Agents",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08388",
+      "status": 200,
+      "bytes": 45387,
+      "final_url": "https://arxiv.org/abs/2605.08388",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08388] PLACO: A Multi-Stage Framework for Cost-Effective Performance in Human-AI Teams</title>   <meta na",
+      "title": "PLACO: A Multi-Stage Framework for Cost-Effective Performance in Human-AI Teams",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08399",
+      "status": 200,
+      "bytes": 47420,
+      "final_url": "https://arxiv.org/abs/2605.08399",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08399] CoCoDA: Co-evolving Compositional DAG for Tool-Augmented Agents</title>   <meta name=\"viewport\" co",
+      "title": "CoCoDA: Co-evolving Compositional DAG for Tool-Augmented Agents",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.08405",
+      "status": 200,
+      "bytes": 46129,
+      "final_url": "https://arxiv.org/abs/2605.08405",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>  <title>[2605.08405] Belief or Circuitry? Causal Evidence for In-Context Graph Learning</title>   <meta name=\"viewport\"",
+      "title": "Belief or Circuitry? Causal Evidence for In-Context Graph Learning",
+      "published": "Wed, 13 May 2026 00:00:00 -0400",
+      "source": "arXiv cs.AI"
+    },
+    {
+      "url": "https://googlebook.google/",
+      "status": 200,
+      "bytes": 152065,
+      "final_url": "https://googlebook.google/",
+      "error": null,
+      "snippet": "<!doctype html> <html class=\"page\" dir=\"ltr\" lang=\"en\" locale=\"en_us\">   <head>     <meta charset=\"UTF-8\">     <meta property=\"og:title\" content=\"Googlebook: De",
+      "title": "Googlebook",
+      "published": "Tue, 12 May 2026 17:37:36 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://www.sciencedaily.com/releases/2026/05/260510030950.htm",
+      "status": 200,
+      "bytes": 54512,
+      "final_url": "https://www.sciencedaily.com/releases/2026/05/260510030950.htm",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <!--?xml encoding=\"UTF-8\"--><html lang=\"en\">   <head> \t<meta charset=\"utf-8\" /> \t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" /> \t<meta ",
+      "title": "New stainless steel can survive conditions for hydrogen production in seawater",
+      "published": "Mon, 11 May 2026 01:05:59 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://github.com/cactus-compute/needle",
+      "status": 200,
+      "bytes": 200000,
+      "final_url": "https://github.com/cactus-compute/needle",
+      "error": null,
+      "snippet": "      <!DOCTYPE html> <html   lang=\"en\"      data-color-mode=\"auto\" data-light-theme=\"light\" data-dark-theme=\"dark\"   data-a11y-animated-images=\"system\" data-a1",
+      "title": "Show HN: Needle: We Distilled Gemini Tool Calling into a 26M Model",
+      "published": "Tue, 12 May 2026 18:03:11 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://internetcleanup.foundation/2026/05/european-governments-3000-tracking-sites-1000-phpmyadmins-and-99pct-poorly-encrypted-email-introducing-securitybaseline-eu/",
+      "status": 200,
+      "bytes": 154318,
+      "final_url": "https://internetcleanup.foundation/2026/05/european-governments-3000-tracking-sites-1000-phpmyadmins-and-99pct-poorly-encrypted-email-introducing-securitybaseline-eu/",
+      "error": null,
+      "snippet": "<!doctype html> <html lang=\"nl-NL\" prefix=\"og: http://ogp.me/ns# article: http://ogp.me/ns/article#\"> <head> \t \t<meta charset=\"UTF-8\"> \t<meta name=\"viewport\" co",
+      "title": "SecurityBaseline.eu",
+      "published": "Wed, 13 May 2026 07:11:17 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://typesetinthefuture.com/2016/02/18/futuristic/",
+      "status": 200,
+      "bytes": 159023,
+      "final_url": "https://typesetinthefuture.com/2016/02/18/futuristic/",
+      "error": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <title>How To Make Your Text",
+      "title": "How to make your text look futuristic (2016)",
+      "published": "Tue, 12 May 2026 20:16:26 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://www.bbc.com/culture/article/20260511-kraftwerks-radical-1976-track-radioactivity-became-an-anti-nuclear-anthem",
+      "status": 200,
+      "bytes": 200000,
+      "final_url": "https://www.bbc.com/culture/article/20260511-kraftwerks-radical-1976-track-radioactivity-became-an-anti-nuclear-anthem",
+      "error": null,
+      "snippet": "<!DOCTYPE html><html lang=\"en-GB\"><head><meta charSet=\"utf-8\" data-next-head=\"\"/><meta name=\"viewport\" content=\"width=device-width\" data-next-head=\"\"/><title da",
+      "title": "Kraftwerk's radical 1976 track",
+      "published": "Tue, 12 May 2026 23:13:01 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://www.nair.sh/guides-and-opinions/communicating-your-expertise/why-senior-developers-fail-to-communicate-their-expertise",
+      "status": 200,
+      "bytes": 99992,
+      "final_url": "https://www.nair.sh/guides-and-opinions/communicating-your-expertise/why-senior-developers-fail-to-communicate-their-expertise",
+      "error": null,
+      "snippet": "<!DOCTYPE html><html data-dpl-id=\"dpl_CZhe51ErSMJNxyPtgz3AzsmDapwW\" lang=\"en\" class=\"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG_",
+      "title": "Why senior developers fail to communicate their expertise",
+      "published": "Tue, 12 May 2026 15:08:40 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q2/018471.html",
+      "status": 200,
+      "bytes": 5069,
+      "final_url": "https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q2/018471.html",
+      "error": null,
+      "snippet": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"> <HTML>  <HEAD>    <TITLE> [Dnsmasq-discuss] Security - IMPORTANT    </TITLE>    <LINK REL=\"Index",
+      "title": "CERT is releasing six CVEs for serious security vulnerabilities in dnsmasq",
+      "published": "Tue, 12 May 2026 18:12:28 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://github.com/tracewayapp/traceway",
+      "status": 200,
+      "bytes": 200000,
+      "final_url": "https://github.com/tracewayapp/traceway",
+      "error": null,
+      "snippet": "      <!DOCTYPE html> <html   lang=\"en\"      data-color-mode=\"auto\" data-light-theme=\"light\" data-dark-theme=\"dark\"   data-a11y-animated-images=\"system\" data-a1",
+      "title": "Traceway: MIT-licensed observability stack you can self-host in ~90s",
+      "published": "Mon, 11 May 2026 07:05:01 +0000",
+      "source": "Hacker News"
+    },
+    {
+      "url": "https://github.com/Genymobile/scrcpy/releases/tag/v4.0",
+      "status": 200,
+      "bytes": 200000,
+      "final_url": "https://github.com/Genymobile/scrcpy/releases/tag/v4.0",
+      "error": null,
+      "snippet": "       <!DOCTYPE html> <html   lang=\"en\"      data-color-mode=\"auto\" data-light-theme=\"light\" data-dark-theme=\"dark\"   data-a11y-animated-images=\"system\" data-a",
+      "title": "Scrcpy v4.0",
+      "published": "Tue, 12 May 2026 20:50:02 +0000",
+      "source": "Hacker News"
+    }
+  ],
+  "recommendation": "ADOPT as a useful public dashboard proof, with caveat: current briefing is arXiv-heavy and all stories are contextual; next experiment should add explicit high-signal ranking / must-read thresholds and run 7-day burn-in."
+}
