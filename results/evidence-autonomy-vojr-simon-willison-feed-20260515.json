@@ -1,0 +1,58 @@
+{
+  "validated_at": "2026-05-15T06:18:00+00:00",
+  "feed": {
+    "url": "https://simonwillison.net/atom/everything/",
+    "status": 200,
+    "final_url": "https://simonwillison.net/atom/everything/",
+    "content_type": "application/xml; charset=utf-8",
+    "bytes": 89309,
+    "sha256": "34a1484548a643b41bde86e270e4a5385eec480ba8c420504ddba817139c83b6",
+    "entry_count_sampled": 10,
+    "entries": [
+      {
+        "title": "Not so locked in any more",
+        "url": "https://simonwillison.net/2026/May/14/not-so-locked-in/#atom-everything",
+        "updated": "2026-05-14T22:53:49+00:00",
+        "summary_chars": 1484
+      },
+      {
+        "title": "Quoting Mitchell Hashimoto",
+        "url": "https://simonwillison.net/2026/May/14/mitchell-hashimoto/#atom-everything",
+        "updated": "2026-05-14T22:31:20+00:00",
+        "summary_chars": 1167
+      },
+      {
+        "title": "datasette-ip-rate-limit 0.1a0",
+        "url": "https://simonwillison.net/2026/May/14/datasette-ip-rate-limit/#atom-everything",
+        "updated": "2026-05-14T04:10:23+00:00",
+        "summary_chars": 1942
+      },
+      {
+        "title": "Welcome to the Datasette blog",
+        "url": "https://simonwillison.net/2026/May/13/welcome-to-the-datasette-blog/#atom-everything",
+        "updated": "2026-05-13T23:59:39+00:00",
+        "summary_chars": 992
+      },
+      {
+        "title": "Quoting Boris Mann",
+        "url": "https://simonwillison.net/2026/May/13/boris-mann/#atom-everything",
+        "updated": "2026-05-13T16:15:50+00:00",
+        "summary_chars": 574
+      }
+    ]
+  },
+  "sources_json": {
+    "valid_json": true,
+    "simon_willison_entries": 1,
+    "entry": {
+      "name": "Simon Willison Everything Feed",
+      "url": "https://simonwillison.net/atom/everything/",
+      "type": "atom",
+      "added": "2026-05-14",
+      "reason": "High-signal cross-lab source for agents, model behavior, evals, security footguns, and practical tooling",
+      "_section": "feeds"
+    }
+  },
+  "recommendation": "adopt",
+  "next_experiment": "Let the daily aggregation cron include this feed for 3 runs, then measure accepted item count and whether at least one item reaches the briefing under existing high-signal filters."
+}

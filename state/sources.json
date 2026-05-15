@@ -35,6 +35,13 @@
       "url": "https://api.github.com/advisories",
       "type": "api",
       "added": "2026-05-10"
+    },
+    {
+      "name": "Simon Willison Everything Feed",
+      "url": "https://simonwillison.net/atom/everything/",
+      "type": "atom",
+      "added": "2026-05-14",
+      "reason": "High-signal cross-lab source for agents, model behavior, evals, security footguns, and practical tooling"
     }
   ],
   "repos_to_watch": [
