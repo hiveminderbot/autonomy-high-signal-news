@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-05-17T06:23:37Z",
+  "checks": [
+    {
+      "path": "/docs/index.html",
+      "status": 200,
+      "bytes": 12658,
+      "markers": {
+        "High-Signal": true,
+        "arxiv.org": true
+      }
+    },
+    {
+      "path": "/docs/latest.html",
+      "status": 200,
+      "bytes": 15731,
+      "markers": {
+        "High-Signal": true,
+        "arxiv.org": true
+      }
+    },
+    {
+      "path": "/output/briefing-high-signal-2026-05-17.json",
+      "status": 200,
+      "bytes": 14484,
+      "markers": {
+        "\"total_stories\": 20": true,
+        "\"sources_used\": 2": true
+      }
+    },
+    {
+      "path": "/results/evidence-autonomy-968m-20260517.json",
+      "status": 200,
+      "bytes": 9057,
+      "markers": {
+        "\"validated_url_count\": 20": true,
+        "\"openviking_polymarket_touched\": false": true
+      }
+    }
+  ],
+  "failed": []
+}

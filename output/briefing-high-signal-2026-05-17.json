@@ -1,0 +1,265 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-17T06:21:54.930603",
+    "total_stories": 20,
+    "must_read_count": 0,
+    "important_count": 0,
+    "contextual_count": 20,
+    "sources_used": 2,
+    "reading_time_minutes": 4
+  },
+  "sections": [
+    {
+      "name": "Ai",
+      "emoji": "🤖",
+      "stories": [
+        {
+          "title": "Where Reliability Lives in Vision-Language Models: A Mechanistic Study of Attention, Hidden States, and Causal Circuits",
+          "summary": "arXiv:2605.08200v1 Announce Type: new \nAbstract: A pervasive intuition holds that vision-language models (VLMs) are most trustworthy when their attention maps look sharp: concentrated attention on the queried region should imply a confident, calibrated answer. We test this Attention-Confidence Assumption directly. We instrument three open-weight VLM families (LLaVA-1.5, PaliGemma, Qwen2-VL; 3-7B parameters) with a unified mechanistic pipeline -- the VLM Reliability Probe (VRP) -- that compares a",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08200",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "Spatial Priming Outperforms Semantic Prompting: A Grid-Based Approach to Improving LLM Accuracy on Chart Data Extraction",
+          "summary": "arXiv:2605.08220v1 Announce Type: new \nAbstract: The automated extraction of data from scientific charts is a critical task for large-scale literature analysis. While multimodal Large Language Models (LLMs) show promise, their accuracy on non-standardized charts remains a challenge. This raises a key research question: what is the most effective strategy to improve model performance (high-level semantic priming) or low-level spatial priming? This paper presents a comparative investigation into t",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08220",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "Auto-Rubric as Reward: From Implicit Preferences to Explicit Multimodal Generative Criteria",
+          "summary": "arXiv:2605.08354v1 Announce Type: new \nAbstract: Aligning multimodal generative models with human preferences demands reward signals that respect the compositional, multi-dimensional structure of human judgment. Prevailing RLHF approaches reduce this structure to scalar or pairwise labels, collapsing nuanced preferences into opaque parametric proxies and exposing vulnerabilities to reward hacking. While recent Rubrics-as-Reward (RaR) methods attempt to recover this structure through explicit cri",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08354",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "Embeddings for Preferences, Not Semantics",
+          "summary": "arXiv:2605.08360v1 Announce Type: new \nAbstract: Modern AI is opening the door to collective decision-making in which participants express their views as free-form text rather than voting on a fixed set of candidates. A natural idea is to embed these opinions in a vector space so that the substantial literature on facility location problems and fair clustering can be brought to bear. But standard text embeddings measure semantic similarity, whereas distances in facility location problems and fai",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08360",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "On Distinguishing Capability Elicitation from Capability Creation in Post-Training: A Free-Energy Perspective",
+          "summary": "arXiv:2605.08368v1 Announce Type: new \nAbstract: Debates about large language model post-training often treat supervised fine-tuning (SFT) as imitation and reinforcement learning (RL) as discovery. But this distinction is too coarse. What matters is whether a training procedure increases the probability of behaviors the pretrained model could already produce, or whether it changes what the model can practically reach. We argue that post-training research should distinguish between capability eli",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08368",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "MemQ: Integrating Q-Learning into Self-Evolving Memory Agents over Provenance DAGs",
+          "summary": "arXiv:2605.08374v2 Announce Type: new \nAbstract: Episodic memory allows LLM agents to accumulate and retrieve experience, but current methods treat each memory independently, i.e., evaluating retrieval quality in isolation without accounting for the dependency chains through which memories enable the creation of future memories. We introduce MemQ, which applies TD($\\lambda$) eligibility traces to memory Q-values, propagating credit backward through a provenance DAG that records which memories we",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08374",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "SkillLens: Adaptive Multi-Granularity Skill Reuse for Cost-Efficient LLM Agents",
+          "summary": "arXiv:2605.08386v1 Announce Type: new \nAbstract: Skill libraries have become a practical way for LLM agents to reuse procedural experience across tasks. However, existing systems typically treat skills as flat, single-resolution prompt blocks. This creates a tension between relevance and cost: injecting coarse skills can introduce irrelevant or misleading context, while rewriting entire skills is expensive and often unnecessary. We propose SkillLens, a hierarchical skill-evolution framework that",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08386",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "PLACO: A Multi-Stage Framework for Cost-Effective Performance in Human-AI Teams",
+          "summary": "arXiv:2605.08388v1 Announce Type: new \nAbstract: Human-AI teams play a pivotal role in improving overall system performance when neither the human nor the model can achieve such performance on their own. With the advent of powerful and accessible Generative AI models, several mundane tasks have morphed into Human-AI team tasks. From writing essays to developing advanced algorithms, humans have found that using AI assistance has led to an accelerated work pace like never before. In classification",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08388",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "CoCoDA: Co-evolving Compositional DAG for Tool-Augmented Agents",
+          "summary": "arXiv:2605.08399v1 Announce Type: new \nAbstract: Tool-augmented language models can extend small language models with external executable skills, but scaling the tool library creates a coupled challenge: the library must evolve with the planner as new reusable subroutines emerge, while retrieval from the growing library must remain within a fixed context budget. Existing tool-use and skill-library methods typically treat tools as flat or text-indexed memories, causing prompt cost to grow with li",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08399",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        },
+        {
+          "title": "Belief or Circuitry? Causal Evidence for In-Context Graph Learning",
+          "summary": "arXiv:2605.08405v1 Announce Type: new \nAbstract: How do LLMs learn in-context? Is it by pattern-matching recent tokens, or by inferring latent structure? We probe this question using a toy graph random-walk across two competing graph structures. This task's answer is, in principle, decidable: either the model tracks global topology, or it copies local transitions. We present two lines of evidence that neither account alone is sufficient. First, reconstructing the internal representation structur",
+          "sources": [
+            "arXiv cs.AI"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://arxiv.org/abs/2605.08405",
+          "published": "Wed, 13 May 2026 00:00:00 -0400"
+        }
+      ]
+    },
+    {
+      "name": "Software Development",
+      "emoji": "💻",
+      "stories": [
+        {
+          "title": "Googlebook",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48111545\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://googlebook.google/",
+          "published": "Tue, 12 May 2026 17:37:36 +0000"
+        },
+        {
+          "title": "New stainless steel can survive conditions for hydrogen production in seawater",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48089921\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://www.sciencedaily.com/releases/2026/05/260510030950.htm",
+          "published": "Mon, 11 May 2026 01:05:59 +0000"
+        },
+        {
+          "title": "Show HN: Needle: We Distilled Gemini Tool Calling into a 26M Model",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48111896\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://github.com/cactus-compute/needle",
+          "published": "Tue, 12 May 2026 18:03:11 +0000"
+        },
+        {
+          "title": "SecurityBaseline.eu",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48118763\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://internetcleanup.foundation/2026/05/european-governments-3000-tracking-sites-1000-phpmyadmins-and-99pct-poorly-encrypted-email-introducing-securitybaseline-eu/",
+          "published": "Wed, 13 May 2026 07:11:17 +0000"
+        },
+        {
+          "title": "How to make your text look futuristic (2016)",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48113895\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://typesetinthefuture.com/2016/02/18/futuristic/",
+          "published": "Tue, 12 May 2026 20:16:26 +0000"
+        },
+        {
+          "title": "Kraftwerk's radical 1976 track",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48115823\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://www.bbc.com/culture/article/20260511-kraftwerks-radical-1976-track-radioactivity-became-an-anti-nuclear-anthem",
+          "published": "Tue, 12 May 2026 23:13:01 +0000"
+        },
+        {
+          "title": "Why senior developers fail to communicate their expertise",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48109460\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://www.nair.sh/guides-and-opinions/communicating-your-expertise/why-senior-developers-fail-to-communicate-their-expertise",
+          "published": "Tue, 12 May 2026 15:08:40 +0000"
+        },
+        {
+          "title": "CERT is releasing six CVEs for serious security vulnerabilities in dnsmasq",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48112042\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q2/018471.html",
+          "published": "Tue, 12 May 2026 18:12:28 +0000"
+        },
+        {
+          "title": "Traceway: MIT-licensed observability stack you can self-host in ~90s",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48091898\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://github.com/tracewayapp/traceway",
+          "published": "Mon, 11 May 2026 07:05:01 +0000"
+        },
+        {
+          "title": "Scrcpy v4.0",
+          "summary": "<a href=\"https://news.ycombinator.com/item?id=48114356\">Comments</a>",
+          "sources": [
+            "Hacker News"
+          ],
+          "tier": "contextual",
+          "entities": [],
+          "urgency": "normal",
+          "url": "https://github.com/Genymobile/scrcpy/releases/tag/v4.0",
+          "published": "Tue, 12 May 2026 20:50:02 +0000"
+        }
+      ]
+    }
+  ]
+}
