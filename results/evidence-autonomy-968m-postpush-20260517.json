@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-05-17T06:25:27.551711+00:00",
+  "commit": "fd0c086",
+  "checks": [
+    {
+      "name": "raw_json",
+      "url": "https://raw.githubusercontent.com/hiveminderbot/autonomy-high-signal-news/main/output/briefing-high-signal-2026-05-17.json",
+      "status": 200,
+      "ok": true,
+      "markers": {
+        "\"total_stories\": 20": true,
+        "\"sources_used\": 2": true
+      },
+      "attempts": 1,
+      "bytes": 14484
+    },
+    {
+      "name": "raw_evidence",
+      "url": "https://raw.githubusercontent.com/hiveminderbot/autonomy-high-signal-news/main/results/evidence-autonomy-968m-20260517.json",
+      "status": 200,
+      "ok": true,
+      "markers": {
+        "\"validated_url_count\": 20": true,
+        "\"openviking_polymarket_touched\": false": true
+      },
+      "attempts": 1,
+      "bytes": 9057
+    },
+    {
+      "name": "pages_archive",
+      "url": "https://hiveminderbot.github.io/autonomy-high-signal-news/briefing-high-signal-2026-05-17.html",
+      "status": 200,
+      "ok": true,
+      "markers": {
+        "High-Signal": true,
+        "arxiv.org": true
+      },
+      "attempts": 1,
+      "bytes": 15731
+    },
+    {
+      "name": "pages_index",
+      "url": "https://hiveminderbot.github.io/autonomy-high-signal-news/",
+      "status": 200,
+      "ok": true,
+      "markers": {
+        "High-Signal": true,
+        "arxiv.org": true
+      },
+      "attempts": 1,
+      "bytes": 12658
+    }
+  ],
+  "failed": []
+}
