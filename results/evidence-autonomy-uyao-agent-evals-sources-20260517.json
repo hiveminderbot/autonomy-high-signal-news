@@ -1,0 +1,83 @@
+{
+  "bead_id": "autonomy-uyao",
+  "generated_at": "2026-05-17T06:59:00Z",
+  "decision": "ADOPT_FOR_CATALOG: METR and Epoch Substack RSS feeds replace invalid .org/.ai blog/rss.xml leads; HN Algolia remains watchlist/API source, not RSS catalog.",
+  "source_validation": [
+    {
+      "name": "METR original bad lead",
+      "url": "https://metr.org/blog/rss.xml",
+      "kind": "rss",
+      "accepted_for_catalog": false,
+      "error_type": "HTTPError",
+      "error": "HTTP Error 404: Not Found",
+      "http_status": 404
+    },
+    {
+      "name": "METR Updates",
+      "url": "https://metr.substack.com/feed",
+      "kind": "rss",
+      "accepted_for_catalog": true,
+      "http_status": 200,
+      "final_url": "https://metr.substack.com/feed",
+      "content_type": "application/xml; charset=utf-8",
+      "bytes_read": 1220080,
+      "feed_title": "METR",
+      "sample_titles": [
+        "Measuring the Self-Reported Impact of Early-2026 AI on Technical Worker Productivity",
+        "Review of the \u201cRisks from automated R&D\u201d section in the Anthropic Risk Report (February 2026)",
+        "Task Substitution and Uplift",
+        "Research note: Evidence on AI R&D Progress from NanoGPT",
+        "We are Changing our Developer Productivity Experiment Design"
+      ]
+    },
+    {
+      "name": "Epoch original bad lead",
+      "url": "https://epoch.ai/blog/rss.xml",
+      "kind": "rss",
+      "accepted_for_catalog": false,
+      "error_type": "HTTPError",
+      "error": "HTTP Error 404: Not Found",
+      "http_status": 404
+    },
+    {
+      "name": "Epoch AI Brief",
+      "url": "https://epochai.substack.com/feed",
+      "kind": "rss",
+      "accepted_for_catalog": true,
+      "http_status": 200,
+      "final_url": "https://epochai.substack.com/feed",
+      "content_type": "application/xml; charset=utf-8",
+      "bytes_read": 633659,
+      "feed_title": "Epoch AI",
+      "sample_titles": [
+        "The Epoch Brief - May 15, 2026",
+        "The economics of superstar AI researchers",
+        "The Epoch Brief - May 8, 2026",
+        "RIP Classic Reasoning Benchmarks. What\u2019s Next?",
+        "Are AI benchmarks doomed?"
+      ]
+    },
+    {
+      "name": "HN Algolia by-date API",
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=agent%20benchmark&tags=story&hitsPerPage=3",
+      "kind": "json",
+      "accepted_for_catalog": true,
+      "http_status": 200,
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=agent%20benchmark&tags=story&hitsPerPage=3",
+      "content_type": "application/json",
+      "bytes_read": 5377,
+      "sample_titles": [
+        "Show HN: Emergence World: World building as a way to evaluate LLMs",
+        "Systematically Auditing AI Agent Benchmarks with BenchJack",
+        "Benchmarks for AI Models and Agents on CAD Tasks"
+      ]
+    }
+  ],
+  "artifact_paths": [
+    "sources/sources-ai.json",
+    "tests/test_agent_evals_source_catalog.py",
+    "state/source_roster_agentic_briefing_additions.jsonl",
+    "state/agentic_sources_watchlist.jsonl"
+  ],
+  "next_experiment": "Run the daily aggregation with these sources in the next scheduled high-signal-news pass and measure whether METR/Epoch entries appear in briefing-high-signal output."
+}

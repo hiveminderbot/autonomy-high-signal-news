@@ -1,9 +1,9 @@
 {
   "metadata": {
     "version": "1.0.0",
-    "updated_at": "2026-03-21",
+    "updated_at": "2026-05-17",
     "domain": "artificial-intelligence",
-    "source_count": 13,
+    "source_count": 15,
     "quality_criteria": [
       "Regular publication schedule (at least weekly)",
       "Technical depth appropriate for practitioners",
@@ -118,6 +118,24 @@
       "quality_score": 9,
       "notes": "Research forum for AI alignment and safety. Rate limited - requires 60s delay between requests to avoid 429 errors.",
       "min_fetch_interval": 60
+    },
+    {
+      "name": "METR Updates",
+      "url": "https://metr.substack.com/feed",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "AI agent evaluation, autonomy measurement, and AI R&D productivity experiments",
+      "quality_score": 9,
+      "notes": "Primary METR updates feed. Replaces invalid https://metr.org/blog/rss.xml lead; validated 2026-05-17 with recent agent productivity and AI R&D risk posts."
+    },
+    {
+      "name": "Epoch AI Brief",
+      "url": "https://epochai.substack.com/feed",
+      "type": "rss",
+      "frequency": "weekly",
+      "focus": "AI capability forecasting, benchmark analysis, and automation economics",
+      "quality_score": 9,
+      "notes": "Primary Epoch AI Substack feed. Replaces invalid https://epoch.ai/blog/rss.xml lead; validated 2026-05-17 with recent benchmark and AI researcher economics posts."
     },
     {
       "name": "Microsoft Research AI",
