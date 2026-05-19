@@ -86,9 +86,10 @@ def generate_dashboard(input_md, output_dir):
     # Extract title from first h1
     title_match = re.search(r'<h1>(.*?)</h1>', body)
     title = title_match.group(1) if title_match else 'High-Signal News Dashboard'
-    # Count stories
-    story_count = len(re.findall(r'<h2>', body))
-    now = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')
+    # Count stories (h3 = individual articles, h2 = categories)
+    story_count = len(re.findall(r'<h3>', body))
+    category_count = len(re.findall(r'<h2>', body))
+    now = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,8 +100,8 @@ def generate_dashboard(input_md, output_dir):
 :root {{ --bg:#0d1117; --fg:#c9d1d9; --accent:#58a6ff; --muted:#8b949e; --card:#161b22; --border:#30363d; }}
 body {{ font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg); max-width:900px; margin:0 auto; padding:2rem; line-height:1.6; }}
 h1 {{ color:#f0f6fc; border-bottom:2px solid var(--accent); padding-bottom:.5rem; }}
-h2 {{ color:var(--accent); margin-top:2rem; }}
-h3 {{ color:#79c0ff; }}
+h2 {{ color:var(--accent); margin-top:2rem; border-bottom:1px solid var(--border); padding-bottom:.3rem; }}
+h3 {{ color:#79c0ff; margin-top:1.5rem; }}
 a {{ color:var(--accent); text-decoration:none; }}
 a:hover {{ text-decoration:underline; }}
 blockquote {{ border-left:4px solid var(--accent); padding-left:1rem; color:var(--muted); margin:1rem 0; }}
@@ -115,7 +116,7 @@ hr {{ border:none; border-top:1px solid var(--border); margin:2rem 0; }}
 </style>
 </head>
 <body>
-<div class="story-count">📰 Stories: <strong>{story_count}</strong> | Generated: {now}</div>
+<div class="story-count">📰 Stories: <strong>{story_count}</strong> | Categories: <strong>{category_count}</strong> | Generated: {now}</div>
 {body}
 <div class="meta">
 <p>Dashboard auto-generated from <a href="https://github.com/hiveminderbot/autonomy-high-signal-news">high-signal-news</a> pipeline.</p>
