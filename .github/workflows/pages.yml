@@ -58,7 +58,7 @@ jobs:
           cp output/briefing-high-signal-*.html docs/ 2>/dev/null || true
           # Copy latest.html as a stable URL
           cp output/latest.html docs/latest.html 2>/dev/null || true
-          # Generate dark-themed dashboard from the newest markdown briefing across both naming conventions.
+          # Generate dark-themed dashboard from the newest non-empty markdown briefing across both naming conventions.
           LATEST_MD=$(python3 - <<'PY'
           from pathlib import Path
           import re
@@ -67,12 +67,17 @@ jobs:
           for path in Path('output').glob('briefing*.md'):
               match = re.search(r'(\d{4}-\d{2}-\d{2})', path.name)
               if match:
-                  candidates.append((match.group(1), path.name, path))
+                  size = path.stat().st_size
+                  # Skip empty stub files (<= 10 bytes)
+                  if size > 10:
+                      candidates.append((match.group(1), path.name, path, size))
           if candidates:
-              print(sorted(candidates)[-1][2])
+              # Sort by date, pick the newest
+              selected = sorted(candidates)[-1][2]
+              print(selected)
           PY
           )
-          if [ -n "$LATEST_MD" ] && [ -s "$LATEST_MD" ] && [ "$(wc -c < "$LATEST_MD" | tr -d ' ')" -gt 10 ]; then
+          if [ -n "$LATEST_MD" ] && [ -s "$LATEST_MD" ]; then
             python3 scripts/generate_dashboard.py "$LATEST_MD" docs/
             echo "Dashboard generated from $LATEST_MD"
           else
