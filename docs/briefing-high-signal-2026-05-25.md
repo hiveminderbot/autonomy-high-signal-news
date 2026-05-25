@@ -8,11 +8,11 @@
 
 ### 🔥 Cross-Source Themes
 
-**Go** — mentioned across Lobsters, Hacker News
+**Go** — mentioned across Hacker News, Lobsters
   - [Googlebook](https://googlebook.google/)
   - [Tolaria, Rust, and Questions About What Makes a Mac App Feel Good to M](https://shapeof.com/archives/2026/4/tolaria_ai_and_rust.html)
 
-**Rust** — mentioned across Lobsters, Hacker News
+**Rust** — mentioned across Hacker News, Lobsters
   - [My graduation cap runs Rust](https://ericswpark.com/blog/2026/2026-05-12-my-graduation-cap-runs-rust/)
   - [Tolaria, Rust, and Questions About What Makes a Mac App Feel Good to M](https://shapeof.com/archives/2026/4/tolaria_ai_and_rust.html)
 
