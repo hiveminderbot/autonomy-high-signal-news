@@ -1,241 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morning Briefing - Sunday, May 17, 2026</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-        }
-        .header {
-            border-bottom: 3px solid #2563eb;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            margin: 0 0 10px 0;
-            color: #1e40af;
-        }
-        .metadata {
-            color: #6b7280;
-            font-size: 14px;
-        }
-        .section {
-            margin: 30px 0;
-        }
-        .section h2 {
-            color: #1e40af;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 8px;
-        }
-        .story {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f9fafb;
-            border-radius: 8px;
-            border-left: 4px solid #d1d5db;
-        }
-        .story.must_read { border-left-color: #dc2626; }
-        .story.important { border-left-color: #f59e0b; }
-        .story h3 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-        }
-        .story h3 a {
-            color: #1e40af;
-            text-decoration: none;
-        }
-        .story h3 a:hover {
-            text-decoration: underline;
-        }
-        .tier-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-left: 8px;
-        }
-        .tier-badge.must_read { background: #fee2e2; color: #dc2626; }
-        .tier-badge.important { background: #fef3c7; color: #f59e0b; }
-        .tier-badge.contextual { background: #d1fae5; color: #059669; }
-        .urgency { color: #dc2626; font-weight: bold; }
-        .summary {
-            margin: 10px 0;
-            color: #4b5563;
-        }
-        .meta {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 10px;
-        }
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
-            color: #9ca3af;
-            font-size: 12px;
-        }
-    </style>
+<script data-goatcounter="https://hiveminderbot-github.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>High-Signal Briefing — 2026-05-25</title>
+<!-- cache-bust: 2026-05-26T02:55Z -->
+<style>
+:root { --bg:#0d1117; --fg:#c9d1d9; --accent:#58a6ff; --muted:#8b949e; --card:#161b22; --border:#30363d; }
+body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg); max-width:900px; margin:0 auto; padding:2rem; line-height:1.6; }
+h1 { color:#f0f6fc; border-bottom:2px solid var(--accent); padding-bottom:.5rem; }
+h2 { color:var(--accent); margin-top:2rem; border-bottom:1px solid var(--border); padding-bottom:.3rem; }
+h3 { color:#79c0ff; margin-top:1.5rem; }
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+blockquote { border-left:4px solid var(--accent); padding-left:1rem; color:var(--muted); margin:1rem 0; }
+table { width:100%; border-collapse:collapse; margin:1rem 0; }
+th,td { padding:.5rem; border:1px solid var(--border); text-align:left; }
+th { background:var(--card); color:#f0f6fc; }
+ul { padding-left:1.5rem; }
+li { margin:.3rem 0; }
+hr { border:none; border-top:1px solid var(--border); margin:2rem 0; }
+.meta { color:var(--muted); font-size:.85rem; margin-top:2rem; border-top:1px solid var(--border); padding-top:1rem; }
+.story-count { background:var(--card); padding:.5rem 1rem; border-radius:6px; display:inline-block; margin-bottom:1rem; border:1px solid var(--border); }
+</style>
 </head>
 <body>
-    <div class="header">
-        <h1>📰 Morning Briefing</h1>
-        <div class="metadata">
-            Sunday, May 17, 2026 • 20 stories from 2 sources
-            • ~4 min read
-        </div>
-    </div>
-
-
-    <div class="section">
-        <h2>🤖 Ai</h2>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08200">Where Reliability Lives in Vision-Language Models: A Mechanistic Study of Attention, Hidden States, and Causal Circuits</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08200v1 Announce Type: new
-Abstract: A pervasive intuition holds that vision-language models (VLMs) are most trustworthy when their attention maps look sharp: concentrated attention on the queried region should imply a confident, calibrated answer. We test this Attention-Confidence Assumption directly. We instrument three open-weight VLM families (LLaVA-1.5, PaliGemma, Qwen2-VL; 3-7B parameters) with a unified mechanistic pipeline -- the VLM Reliability Probe (VRP) -- that compares a</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08220">Spatial Priming Outperforms Semantic Prompting: A Grid-Based Approach to Improving LLM Accuracy on Chart Data Extraction</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08220v1 Announce Type: new
-Abstract: The automated extraction of data from scientific charts is a critical task for large-scale literature analysis. While multimodal Large Language Models (LLMs) show promise, their accuracy on non-standardized charts remains a challenge. This raises a key research question: what is the most effective strategy to improve model performance (high-level semantic priming) or low-level spatial priming? This paper presents a comparative investigation into t</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08354">Auto-Rubric as Reward: From Implicit Preferences to Explicit Multimodal Generative Criteria</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08354v1 Announce Type: new
-Abstract: Aligning multimodal generative models with human preferences demands reward signals that respect the compositional, multi-dimensional structure of human judgment. Prevailing RLHF approaches reduce this structure to scalar or pairwise labels, collapsing nuanced preferences into opaque parametric proxies and exposing vulnerabilities to reward hacking. While recent Rubrics-as-Reward (RaR) methods attempt to recover this structure through explicit cri</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08360">Embeddings for Preferences, Not Semantics</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08360v1 Announce Type: new
-Abstract: Modern AI is opening the door to collective decision-making in which participants express their views as free-form text rather than voting on a fixed set of candidates. A natural idea is to embed these opinions in a vector space so that the substantial literature on facility location problems and fair clustering can be brought to bear. But standard text embeddings measure semantic similarity, whereas distances in facility location problems and fai</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08368">On Distinguishing Capability Elicitation from Capability Creation in Post-Training: A Free-Energy Perspective</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08368v1 Announce Type: new
-Abstract: Debates about large language model post-training often treat supervised fine-tuning (SFT) as imitation and reinforcement learning (RL) as discovery. But this distinction is too coarse. What matters is whether a training procedure increases the probability of behaviors the pretrained model could already produce, or whether it changes what the model can practically reach. We argue that post-training research should distinguish between capability eli</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08374">MemQ: Integrating Q-Learning into Self-Evolving Memory Agents over Provenance DAGs</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08374v2 Announce Type: new
-Abstract: Episodic memory allows LLM agents to accumulate and retrieve experience, but current methods treat each memory independently, i.e., evaluating retrieval quality in isolation without accounting for the dependency chains through which memories enable the creation of future memories. We introduce MemQ, which applies TD($\lambda$) eligibility traces to memory Q-values, propagating credit backward through a provenance DAG that records which memories we</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08386">SkillLens: Adaptive Multi-Granularity Skill Reuse for Cost-Efficient LLM Agents</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08386v1 Announce Type: new
-Abstract: Skill libraries have become a practical way for LLM agents to reuse procedural experience across tasks. However, existing systems typically treat skills as flat, single-resolution prompt blocks. This creates a tension between relevance and cost: injecting coarse skills can introduce irrelevant or misleading context, while rewriting entire skills is expensive and often unnecessary. We propose SkillLens, a hierarchical skill-evolution framework that</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08388">PLACO: A Multi-Stage Framework for Cost-Effective Performance in Human-AI Teams</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08388v1 Announce Type: new
-Abstract: Human-AI teams play a pivotal role in improving overall system performance when neither the human nor the model can achieve such performance on their own. With the advent of powerful and accessible Generative AI models, several mundane tasks have morphed into Human-AI team tasks. From writing essays to developing advanced algorithms, humans have found that using AI assistance has led to an accelerated work pace like never before. In classification</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08399">CoCoDA: Co-evolving Compositional DAG for Tool-Augmented Agents</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08399v1 Announce Type: new
-Abstract: Tool-augmented language models can extend small language models with external executable skills, but scaling the tool library creates a coupled challenge: the library must evolve with the planner as new reusable subroutines emerge, while retrieval from the growing library must remain within a fixed context budget. Existing tool-use and skill-library methods typically treat tools as flat or text-indexed memories, causing prompt cost to grow with li</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://arxiv.org/abs/2605.08405">Belief or Circuitry? Causal Evidence for In-Context Graph Learning</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary">arXiv:2605.08405v1 Announce Type: new
-Abstract: How do LLMs learn in-context? Is it by pattern-matching recent tokens, or by inferring latent structure? We probe this question using a toy graph random-walk across two competing graph structures. This task's answer is, in principle, decidable: either the model tracks global topology, or it copies local transitions. We present two lines of evidence that neither account alone is sufficient. First, reconstructing the internal representation structur</div>
-            <div class="meta">📎 arXiv cs.AI</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>💻 Software Development</h2>
-
-        <div class="story contextual">
-            <h3><a href="https://googlebook.google/">Googlebook</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48111545">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.sciencedaily.com/releases/2026/05/260510030950.htm">New stainless steel can survive conditions for hydrogen production in seawater</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48089921">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/cactus-compute/needle">Show HN: Needle: We Distilled Gemini Tool Calling into a 26M Model</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48111896">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://internetcleanup.foundation/2026/05/european-governments-3000-tracking-sites-1000-phpmyadmins-and-99pct-poorly-encrypted-email-introducing-securitybaseline-eu/">SecurityBaseline.eu</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48118763">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://typesetinthefuture.com/2016/02/18/futuristic/">How to make your text look futuristic (2016)</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48113895">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.bbc.com/culture/article/20260511-kraftwerks-radical-1976-track-radioactivity-became-an-anti-nuclear-anthem">Kraftwerk's radical 1976 track</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48115823">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://www.nair.sh/guides-and-opinions/communicating-your-expertise/why-senior-developers-fail-to-communicate-their-expertise">Why senior developers fail to communicate their expertise</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48109460">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q2/018471.html">CERT is releasing six CVEs for serious security vulnerabilities in dnsmasq</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48112042">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/tracewayapp/traceway">Traceway: MIT-licensed observability stack you can self-host in ~90s</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48091898">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-
-        <div class="story contextual">
-            <h3><a href="https://github.com/Genymobile/scrcpy/releases/tag/v4.0">Scrcpy v4.0</a><span class="tier-badge contextual">contextual</span></h3>
-            <div class="summary"><a href="https://news.ycombinator.com/item?id=48114356">Comments</a></div>
-            <div class="meta">📎 Hacker News</div>
-        </div>
-    </div>
-
-    <div class="footer">
-        Generated by High-Signal News • 2026-05-17T06:21:54
-    </div>
+<div class="story-count">📰 Stories: <strong>21</strong> | Categories: <strong>2</strong> | Generated: 2026-05-26 01:18 UTC</div>
+<h1>High-Signal Briefing — 2026-05-25</h1>
+<p>*1028 high-signal stories from the past week*</p>
+<p><strong>Tier-1 Sources Only</strong>: Distinguished engineers (Karpathy, Raschka, Huyen, Willison), top researchers (Weng, Lambert), distinguished engineers (Fowler, Luu, Ronacher), and high-signal publications (Distill, arXiv, Papers with Code)</p>
+<hr>
+<h3>🔥 Cross-Source Themes</h3>
+<p><strong>Go</strong> — mentioned across Hacker News, Lobsters</p>
+<ul>
+<li><a href="https://googlebook.google/" target="_blank">Googlebook</a></li>
+<li><a href="https://shapeof.com/archives/2026/4/tolaria_ai_and_rust.html" target="_blank">Tolaria, Rust, and Questions About What Makes a Mac App Feel Good to M</a></li>
+</ul>
+<p><strong>Rust</strong> — mentioned across Hacker News, Lobsters</p>
+<ul>
+<li><a href="https://ericswpark.com/blog/2026/2026-05-12-my-graduation-cap-runs-rust/" target="_blank">My graduation cap runs Rust</a></li>
+<li><a href="https://shapeof.com/archives/2026/4/tolaria_ai_and_rust.html" target="_blank">Tolaria, Rust, and Questions About What Makes a Mac App Feel Good to M</a></li>
+</ul>
+<hr>
+<h2>🤖 Ai</h2>
+<h3>🟢 [Where Reliability Lives in Vision-Language Models: A Mechanistic Study of Attention, Hidden States, and Causal Circuits](https://arxiv.org/abs/2605.08200)</h3>
+<p>arXiv:2605.08200v1 Announce Type: new</p>
+<p>Abstract: A pervasive intuition holds that vision-language models (VLMs) are most trustworthy when their attention maps look sharp: concentrated attention on the queried region should imply a confident, calibrated answer. We test this Attention-Confidence Assumption directly. We instrument three open-weight VLM families (LLaVA-1.5, PaliGemma, Qwen2-VL; 3-7B parameters) with a unified mechanistic pipeline -- the VLM Reliability Probe (VRP) -- that compares a</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [Spatial Priming Outperforms Semantic Prompting: A Grid-Based Approach to Improving LLM Accuracy on Chart Data Extraction](https://arxiv.org/abs/2605.08220)</h3>
+<p>arXiv:2605.08220v1 Announce Type: new</p>
+<p>Abstract: The automated extraction of data from scientific charts is a critical task for large-scale literature analysis. While multimodal Large Language Models (LLMs) show promise, their accuracy on non-standardized charts remains a challenge. This raises a key research question: what is the most effective strategy to improve model performance (high-level semantic priming) or low-level spatial priming? This paper presents a comparative investigation into t</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [Auto-Rubric as Reward: From Implicit Preferences to Explicit Multimodal Generative Criteria](https://arxiv.org/abs/2605.08354)</h3>
+<p>arXiv:2605.08354v1 Announce Type: new</p>
+<p>Abstract: Aligning multimodal generative models with human preferences demands reward signals that respect the compositional, multi-dimensional structure of human judgment. Prevailing RLHF approaches reduce this structure to scalar or pairwise labels, collapsing nuanced preferences into opaque parametric proxies and exposing vulnerabilities to reward hacking. While recent Rubrics-as-Reward (RaR) methods attempt to recover this structure through explicit cri</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [Embeddings for Preferences, Not Semantics](https://arxiv.org/abs/2605.08360)</h3>
+<p>arXiv:2605.08360v1 Announce Type: new</p>
+<p>Abstract: Modern AI is opening the door to collective decision-making in which participants express their views as free-form text rather than voting on a fixed set of candidates. A natural idea is to embed these opinions in a vector space so that the substantial literature on facility location problems and fair clustering can be brought to bear. But standard text embeddings measure semantic similarity, whereas distances in facility location problems and fai</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [On Distinguishing Capability Elicitation from Capability Creation in Post-Training: A Free-Energy Perspective](https://arxiv.org/abs/2605.08368)</h3>
+<p>arXiv:2605.08368v1 Announce Type: new</p>
+<p>Abstract: Debates about large language model post-training often treat supervised fine-tuning (SFT) as imitation and reinforcement learning (RL) as discovery. But this distinction is too coarse. What matters is whether a training procedure increases the probability of behaviors the pretrained model could already produce, or whether it changes what the model can practically reach. We argue that post-training research should distinguish between capability eli</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [MemQ: Integrating Q-Learning into Self-Evolving Memory Agents over Provenance DAGs](https://arxiv.org/abs/2605.08374)</h3>
+<p>arXiv:2605.08374v2 Announce Type: new</p>
+<p>Abstract: Episodic memory allows LLM agents to accumulate and retrieve experience, but current methods treat each memory independently, i.e., evaluating retrieval quality in isolation without accounting for the dependency chains through which memories enable the creation of future memories. We introduce MemQ, which applies TD($\lambda$) eligibility traces to memory Q-values, propagating credit backward through a provenance DAG that records which memories we</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [SkillLens: Adaptive Multi-Granularity Skill Reuse for Cost-Efficient LLM Agents](https://arxiv.org/abs/2605.08386)</h3>
+<p>arXiv:2605.08386v1 Announce Type: new</p>
+<p>Abstract: Skill libraries have become a practical way for LLM agents to reuse procedural experience across tasks. However, existing systems typically treat skills as flat, single-resolution prompt blocks. This creates a tension between relevance and cost: injecting coarse skills can introduce irrelevant or misleading context, while rewriting entire skills is expensive and often unnecessary. We propose SkillLens, a hierarchical skill-evolution framework that</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [PLACO: A Multi-Stage Framework for Cost-Effective Performance in Human-AI Teams](https://arxiv.org/abs/2605.08388)</h3>
+<p>arXiv:2605.08388v1 Announce Type: new</p>
+<p>Abstract: Human-AI teams play a pivotal role in improving overall system performance when neither the human nor the model can achieve such performance on their own. With the advent of powerful and accessible Generative AI models, several mundane tasks have morphed into Human-AI team tasks. From writing essays to developing advanced algorithms, humans have found that using AI assistance has led to an accelerated work pace like never before. In classification</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [CoCoDA: Co-evolving Compositional DAG for Tool-Augmented Agents](https://arxiv.org/abs/2605.08399)</h3>
+<p>arXiv:2605.08399v1 Announce Type: new</p>
+<p>Abstract: Tool-augmented language models can extend small language models with external executable skills, but scaling the tool library creates a coupled challenge: the library must evolve with the planner as new reusable subroutines emerge, while retrieval from the growing library must remain within a fixed context budget. Existing tool-use and skill-library methods typically treat tools as flat or text-indexed memories, causing prompt cost to grow with li</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h3>🟢 [Belief or Circuitry? Causal Evidence for In-Context Graph Learning](https://arxiv.org/abs/2605.08405)</h3>
+<p>arXiv:2605.08405v1 Announce Type: new</p>
+<p>Abstract: How do LLMs learn in-context? Is it by pattern-matching recent tokens, or by inferring latent structure? We probe this question using a toy graph random-walk across two competing graph structures. This task's answer is, in principle, decidable: either the model tracks global topology, or it copies local transitions. We present two lines of evidence that neither account alone is sufficient. First, reconstructing the internal representation structur</p>
+<p>📎 arXiv cs.AI | 🕐 Wed, 13 May 2026 00:00:00 -0400</p>
+<h2>💻 Software Development</h2>
+<h3>🟢 [Googlebook](https://googlebook.google/)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48111545">Comments</a></p>
+<p>📎 Hacker News | 🕐 Tue, 12 May 2026 17:37:36 +0000</p>
+<h3>🟢 [New stainless steel can survive conditions for hydrogen production in seawater](https://www.sciencedaily.com/releases/2026/05/260510030950.htm)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48089921">Comments</a></p>
+<p>📎 Hacker News | 🕐 Mon, 11 May 2026 01:05:59 +0000</p>
+<h3>🟢 [Show HN: Needle: We Distilled Gemini Tool Calling into a 26M Model](https://github.com/cactus-compute/needle)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48111896">Comments</a></p>
+<p>📎 Hacker News | 🕐 Tue, 12 May 2026 18:03:11 +0000</p>
+<h3>🟢 [SecurityBaseline.eu](https://internetcleanup.foundation/2026/05/european-governments-3000-tracking-sites-1000-phpmyadmins-and-99pct-poorly-encrypted-email-introducing-securitybaseline-eu/)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48118763">Comments</a></p>
+<p>📎 Hacker News | 🕐 Wed, 13 May 2026 07:11:17 +0000</p>
+<h3>🟢 [How to make your text look futuristic (2016)](https://typesetinthefuture.com/2016/02/18/futuristic/)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48113895">Comments</a></p>
+<p>📎 Hacker News | 🕐 Tue, 12 May 2026 20:16:26 +0000</p>
+<h3>🟢 [Kraftwerk's radical 1976 track](https://www.bbc.com/culture/article/20260511-kraftwerks-radical-1976-track-radioactivity-became-an-anti-nuclear-anthem)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48115823">Comments</a></p>
+<p>📎 Hacker News | 🕐 Tue, 12 May 2026 23:13:01 +0000</p>
+<h3>🟢 [Why senior developers fail to communicate their expertise](https://www.nair.sh/guides-and-opinions/communicating-your-expertise/why-senior-developers-fail-to-communicate-their-expertise)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48109460">Comments</a></p>
+<p>📎 Hacker News | 🕐 Tue, 12 May 2026 15:08:40 +0000</p>
+<h3>🟢 [CERT is releasing six CVEs for serious security vulnerabilities in dnsmasq](https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2026q2/018471.html)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48112042">Comments</a></p>
+<p>📎 Hacker News | 🕐 Tue, 12 May 2026 18:12:28 +0000</p>
+<h3>🟢 [Traceway: MIT-licensed observability stack you can self-host in ~90s](https://github.com/tracewayapp/traceway)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48091898">Comments</a></p>
+<p>📎 Hacker News | 🕐 Mon, 11 May 2026 07:05:01 +0000</p>
+<h3>🟢 [Scrcpy v4.0](https://github.com/Genymobile/scrcpy/releases/tag/v4.0)</h3>
+<p><a href="https://news.ycombinator.com/item?id=48114356">Comments</a></p>
+<p>📎 Hacker News | 🕐 Tue, 12 May 2026 20:50:02 +0000</p>
+<hr>
+<p>*Generated by High-Signal News*</p>
+<div class="meta">
+<p>Dashboard auto-generated from <a href="https://github.com/hiveminderbot/autonomy-high-signal-news">high-signal-news</a> pipeline.</p>
+</div>
 </body>
 </html>
