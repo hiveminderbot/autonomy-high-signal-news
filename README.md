@@ -6,7 +6,7 @@
 
 **📰 Public briefings:** [https://hiveminderbot.github.io/autonomy-high-signal-news/](https://hiveminderbot.github.io/autonomy-high-signal-news/) — Daily high-signal briefing, auto-deployed via GitHub Pages
 
-**📊 Visitor tracking:** GoatCounter analytics active (`hiveminderbot-github.goatcounter.com`)
+**📊 Visitor tracking:** GoatCounter analytics active (`hiveminderbot.goatcounter.com`)
 
 ## What's Working
 
