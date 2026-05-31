@@ -165,6 +165,35 @@ def run_daily_aggregation(
             for error in result.errors[:10]:  # Show first 10
                 logger.warning(f"  - {error}")
 
+        # Convert fresh aggregation state into public briefing artifacts.  This
+        # keeps output/latest.md coupled to the live state/*.db caches instead of
+        # allowing a stale placeholder to survive a successful ingestion run.
+        try:
+            from generate_high_signal_briefing import (
+                filter_high_signal,
+                generate_briefing_files,
+                get_recent_articles,
+            )
+
+            articles = get_recent_articles(days=7)
+            filtered_articles = filter_high_signal(articles)
+            if filtered_articles:
+                generated_files = generate_briefing_files(
+                    filtered_articles,
+                    output_dir,
+                    ["markdown", "html", "json"],
+                )
+                logger.info(
+                    "Briefing generation complete: %s files, %s articles",
+                    len(generated_files),
+                    len(filtered_articles),
+                )
+            else:
+                logger.warning("Briefing generation skipped: no articles passed filtering")
+        except Exception as briefing_error:
+            logger.error("Briefing generation failed after aggregation: %s", briefing_error, exc_info=True)
+            raise
+
         return result
 
     except Exception as e:

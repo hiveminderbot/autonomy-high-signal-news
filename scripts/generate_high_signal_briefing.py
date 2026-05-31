@@ -40,7 +40,11 @@ from briefing.generator import BriefingGenerator, BriefingResult, BriefingSectio
 from briefing.renderer import MarkdownRenderer, HTMLRenderer, TextRenderer
 
 DB_PATH = Path(__file__).parent.parent / "news.db"
+STATE_FEED_DB_PATH = Path(__file__).parent.parent / "state" / "aggregation.db"
+STATE_NEWSLETTER_DB_PATH = Path(__file__).parent.parent / "state" / "newsletters.db"
 OUTPUT_PATH = Path(__file__).parent.parent / "output"
+MIN_BRIEFING_BYTES = 1024
+PLACEHOLDER_BRIEFING_TEXTS = {"test", "todo", "placeholder", "no briefing available yet"}
 
 # Content patterns to exclude (low signal)
 EXCLUDE_PATTERNS = [
@@ -103,6 +107,9 @@ def should_exclude(article: dict) -> tuple[bool, str]:
 
 def get_recent_articles(days: int = 3) -> list:
     """Get articles from last N days."""
+    if not DB_PATH.exists():
+        return get_recent_state_entries(days=days)
+
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -130,7 +137,165 @@ def get_recent_articles(days: int = 3) -> list:
     articles = [dict(row) for row in cursor.fetchall()]
     conn.close()
 
-    return articles
+    if articles:
+        return articles
+
+    # The daily aggregation cron writes fresh RSS/newsletter rows to state/*.db.
+    # When the legacy article store is stale or empty, generate from that live
+    # cache instead of silently leaving latest.md as a placeholder.
+    return get_recent_state_entries(days=days)
+
+
+def get_recent_state_entries(days: int = 7, limit: int = 250) -> list:
+    """Get recent entries from the live aggregation/newsletter state databases."""
+    articles = []
+
+    if STATE_FEED_DB_PATH.exists():
+        conn = sqlite3.connect(STATE_FEED_DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT id, title, url, source_id, published_at, summary, author,
+                   content, fetched_at, relevance_score, relevance_tier
+            FROM feed_entries
+            WHERE datetime(fetched_at) > datetime('now', ?)
+            ORDER BY
+                COALESCE(relevance_score, 0) DESC,
+                length(COALESCE(content, summary, '')) DESC,
+                datetime(fetched_at) DESC
+            LIMIT ?
+            """,
+            (f"-{days} days", limit),
+        )
+        for row in cursor.fetchall():
+            text = row["content"] or row["summary"] or ""
+            articles.append({
+                "id": row["id"],
+                "title": row["title"],
+                "url": row["url"],
+                "source": row["source_id"],
+                "source_name": row["source_id"],
+                "domain": infer_domain(row["source_id"], row["title"], text),
+                "published_at": row["published_at"],
+                "fetched_at": row["fetched_at"],
+                "full_content": text,
+                "content": text,
+                "llm_insight": row["summary"],
+                "tier": 1,
+                "quality_score": row["relevance_score"] or 0.5,
+            })
+        conn.close()
+
+    if STATE_NEWSLETTER_DB_PATH.exists():
+        conn = sqlite3.connect(STATE_NEWSLETTER_DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT id, title, url, newsletter_id, published_at, author,
+                   content_text, fetched_at
+            FROM newsletter_entries
+            WHERE datetime(fetched_at) > datetime('now', ?)
+            ORDER BY length(COALESCE(content_text, '')) DESC, datetime(fetched_at) DESC
+            LIMIT ?
+            """,
+            (f"-{days} days", limit),
+        )
+        for row in cursor.fetchall():
+            text = row["content_text"] or ""
+            articles.append({
+                "id": row["id"],
+                "title": row["title"],
+                "url": row["url"],
+                "source": row["newsletter_id"],
+                "source_name": row["newsletter_id"],
+                "domain": infer_domain(row["newsletter_id"], row["title"], text),
+                "published_at": row["published_at"],
+                "fetched_at": row["fetched_at"],
+                "full_content": text,
+                "content": text,
+                "llm_insight": text[:500],
+                "tier": 1,
+                "quality_score": 0.7,
+            })
+        conn.close()
+
+    articles.sort(
+        key=lambda article: (
+            article.get("quality_score") or 0,
+            len(article.get("full_content") or article.get("content") or ""),
+        ),
+        reverse=True,
+    )
+    return articles[:limit]
+
+
+def infer_domain(source: str, title: str, content: str) -> str:
+    """Infer a coarse briefing domain from source/title/content."""
+    haystack = f"{source} {title} {content[:1000]}".lower()
+    if any(term in haystack for term in ["kalshi", "trading", "market", "revenue", "funding", "valuation", "investment"]):
+        return "investment"
+    if any(term in haystack for term in ["llm", "agent", "openai", "anthropic", "model", "eval", "inference", "ai "]):
+        return "ai"
+    if any(term in haystack for term in ["python", "rust", "typescript", "database", "github", "security", "kubernetes"]):
+        return "software_development"
+    if any(term in haystack for term in ["paper", "arxiv", "research"]):
+        return "research"
+    return "general"
+
+
+def validate_generated_briefing(content: str) -> None:
+    """Fail fast on placeholder or undersized briefing artifacts."""
+    stripped = content.strip()
+    if stripped.lower() in PLACEHOLDER_BRIEFING_TEXTS:
+        raise ValueError(f"Refusing to write placeholder briefing: {stripped!r}")
+    size = len(content.encode("utf-8"))
+    if size < MIN_BRIEFING_BYTES:
+        raise ValueError(f"Refusing to write undersized briefing ({size} < {MIN_BRIEFING_BYTES} bytes)")
+
+
+def generate_briefing_files(articles: list, output_dir: Path, formats_to_generate: list[str]) -> list[Path]:
+    """Generate briefing artifacts and validate non-placeholder output."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    today = datetime.now().strftime('%Y-%m-%d')
+    generated = []
+
+    for fmt in formats_to_generate:
+        if fmt == 'markdown':
+            newsletter = generate_newsletter_markdown(articles)
+            validate_generated_briefing(newsletter)
+            output_file = output_dir / f"briefing-high-signal-{today}.md"
+            write_text_without_trailing_whitespace(output_file, newsletter)
+            latest_file = output_dir / "latest.md"
+            write_text_without_trailing_whitespace(latest_file, newsletter)
+            generated.append(output_file)
+            print(f"Generated Markdown: {output_file}")
+        elif fmt == 'html':
+            html = generate_newsletter_html(articles)
+            validate_generated_briefing(html)
+            output_file = output_dir / f"briefing-high-signal-{today}.html"
+            write_text_without_trailing_whitespace(output_file, html)
+            latest_file = output_dir / "latest.html"
+            write_text_without_trailing_whitespace(latest_file, html)
+            generated.append(output_file)
+            print(f"Generated HTML: {output_file}")
+        elif fmt == 'json':
+            json_out = generate_newsletter_json(articles)
+            validate_generated_briefing(json_out)
+            output_file = output_dir / f"briefing-high-signal-{today}.json"
+            write_text_without_trailing_whitespace(output_file, json_out)
+            generated.append(output_file)
+            print(f"Generated JSON: {output_file}")
+        elif fmt == 'text':
+            text = generate_newsletter_text(articles)
+            validate_generated_briefing(text)
+            output_file = output_dir / f"briefing-high-signal-{today}.txt"
+            write_text_without_trailing_whitespace(output_file, text)
+            generated.append(output_file)
+            print(f"Generated Text: {output_file}")
+
+    return generated
 
 
 def filter_high_signal(articles: list) -> list:
@@ -465,45 +630,12 @@ def main():
         return
 
     # Write output
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    today = datetime.now().strftime('%Y-%m-%d')
-    generated = []
-
-    formats_to_generate = []
     if args.format == 'all':
         formats_to_generate = ['markdown', 'html', 'json']
     else:
         formats_to_generate = [args.format]
 
-    for fmt in formats_to_generate:
-        if fmt == 'markdown':
-            newsletter = generate_newsletter_markdown(filtered)
-            output_file = args.output_dir / f"briefing-high-signal-{today}.md"
-            write_text_without_trailing_whitespace(output_file, newsletter)
-            latest_file = args.output_dir / "latest.md"
-            write_text_without_trailing_whitespace(latest_file, newsletter)
-            generated.append(output_file)
-            print(f"Generated Markdown: {output_file}")
-        elif fmt == 'html':
-            html = generate_newsletter_html(filtered)
-            output_file = args.output_dir / f"briefing-high-signal-{today}.html"
-            write_text_without_trailing_whitespace(output_file, html)
-            latest_file = args.output_dir / "latest.html"
-            write_text_without_trailing_whitespace(latest_file, html)
-            generated.append(output_file)
-            print(f"Generated HTML: {output_file}")
-        elif fmt == 'json':
-            json_out = generate_newsletter_json(filtered)
-            output_file = args.output_dir / f"briefing-high-signal-{today}.json"
-            write_text_without_trailing_whitespace(output_file, json_out)
-            generated.append(output_file)
-            print(f"Generated JSON: {output_file}")
-        elif fmt == 'text':
-            text = generate_newsletter_text(filtered)
-            output_file = args.output_dir / f"briefing-high-signal-{today}.txt"
-            write_text_without_trailing_whitespace(output_file, text)
-            generated.append(output_file)
-            print(f"Generated Text: {output_file}")
+    generated = generate_briefing_files(filtered, args.output_dir, formats_to_generate)
 
     print(f"\nTotal articles included: {len(filtered)}")
     print(f"Files generated: {len(generated)}")
