@@ -1,79 +1,113 @@
 {
-  "generated": "2026-05-24",
-  "artifact": "/home/exedev/Documents/Obsidian/Hermes/Research/Daily-Research-Source-Roster.md",
-  "basis": {
-    "briefings_inspected": [
-      "Agentic-Intelligence-Briefing-2026-05-23.md",
-      "Agentic-Intelligence-Briefing-2026-05-22.md",
-      "Agentic-Intelligence-Briefing-2026-05-19.md",
-      "Agentic-Intelligence-Briefing-2026-05-18.md",
-      "Agentic-Intelligence-Briefing-2026-05-16.md",
-      "Agentic-Intelligence-Briefing-2026-05-15.md",
-      "Agentic-Intelligence-Briefing-2026-05-14.md"
+  "updated": "2026-05-31",
+  "briefings_inspected": [
+    "Agentic-Intelligence-Briefing-2026-05-31.md",
+    "Agentic-Intelligence-Briefing-2026-05-28.md",
+    "Agentic-Intelligence-Briefing-2026-05-26.md",
+    "Agentic-Intelligence-Briefing-2026-05-25.md",
+    "Agentic-Intelligence-Briefing-2026-05-24.md",
+    "Agentic-Intelligence-Briefing-2026-05-23.md",
+    "Agentic-Intelligence-Briefing-2026-05-22.md"
+  ],
+  "balance": {
+    "overrepresented": [
+      "agentic/coding-agent package and release churn",
+      "generic PyPI/npm/GitHub version bumps",
+      "arXiv agent papers without benchmark/artifact conversion",
+      "generic security advisories detached from active agent-tooling dependencies"
     ],
-    "url_count": 224,
-    "overrepresented": ["github_releases", "pypi", "npm", "arxiv_agent_papers", "coding_agent_package_bumps", "mcp_security"],
-    "underfed": ["autonomous_business_resource_flywheel", "nix_devops_automation", "model_inference_economics", "evals_benchmarks", "broad_trading_quant"]
+    "underfed": [
+      "autonomous business/resource flywheel",
+      "evals/benchmarks",
+      "structured model/inference economics",
+      "Nix/devops automation floor",
+      "broad paper/backtest-only trading/quant"
+    ],
+    "domain_counts_top": {
+      "github.com": 43,
+      "pypi.org": 34,
+      "arxiv.org+export.arxiv.org": 32,
+      "npmjs.com+registry.npmjs.org": 21,
+      "openrouter.ai": 10,
+      "nvd.nist.gov+services.nvd.nist.gov": 9,
+      "huggingface.co": 6,
+      "artificialanalysis.ai": 4,
+      "news.ycombinator.com": 4
+    },
+    "lane_term_counts": {
+      "agentic_coding_agents": 295,
+      "research_papers": 141,
+      "model_inference_economics": 138,
+      "security_supply_chain": 120,
+      "nix_devops_automation": 105,
+      "broad_trading_quant": 86,
+      "evals_benchmarks": 58,
+      "autonomous_business_resource_flywheel": 19
+    }
   },
   "scoring_fields": ["provenance", "freshness", "breadth_contribution", "signal_to_noise", "conversion_likelihood"],
   "core_sources": [
-    {"name":"GitHub Releases/Search API","lane":"agent_tooling_releases","feed":"api_or_atom","url":"https://api.github.com","scores":{"provenance":5,"freshness":5,"breadth_contribution":4,"signal_to_noise":4,"conversion_likelihood":5},"total_score":23,"cap":"promote only with local smoke-test/bakeoff path"},
-    {"name":"PyPI JSON API","lane":"python_agent_eval_security_tooling","feed":"rest_json","url":"https://pypi.org/pypi/{package}/json","scores":{"provenance":5,"freshness":5,"breadth_contribution":3,"signal_to_noise":4,"conversion_likelihood":4},"total_score":21,"cap":"avoid low-actionability version churn"},
-    {"name":"npm Registry","lane":"js_ts_agent_tooling","feed":"rest_json","url":"https://registry.npmjs.org/{package}","scores":{"provenance":5,"freshness":5,"breadth_contribution":3,"signal_to_noise":4,"conversion_likelihood":4},"total_score":21,"cap":"avoid low-actionability version churn"},
-    {"name":"arXiv Atom API","lane":"research_papers","feed":"atom_api","url":"https://export.arxiv.org/api/query","scores":{"provenance":5,"freshness":5,"breadth_contribution":5,"signal_to_noise":3,"conversion_likelihood":4},"total_score":22,"cap":"paced calls; require benchmark/artifact conversion"},
-    {"name":"OpenRouter Models API","lane":"model_inference_economics","feed":"json_api","url":"https://openrouter.ai/api/v1/models","scores":{"provenance":5,"freshness":5,"breadth_contribution":4,"signal_to_noise":4,"conversion_likelihood":5},"total_score":23,"validated_status":200},
-    {"name":"OSV.dev API + GitHub Advisory Database","lane":"security_supply_chain_agent_tooling","feed":"json_api_html_search","url":"https://api.osv.dev","scores":{"provenance":5,"freshness":5,"breadth_contribution":4,"signal_to_noise":4,"conversion_likelihood":5},"total_score":23},
-    {"name":"Simon Willison Atom","lane":"practical_ai_source_of_sources","feed":"atom","url":"https://simonwillison.net/atom/everything/","scores":{"provenance":4,"freshness":5,"breadth_contribution":4,"signal_to_noise":5,"conversion_likelihood":4},"total_score":22,"validated_status":200},
-    {"name":"METR feed","lane":"evals_benchmarks","feed":"rss","url":"https://metr.org/feed.xml","scores":{"provenance":5,"freshness":4,"breadth_contribution":3,"signal_to_noise":5,"conversion_likelihood":5},"total_score":22,"validated_status":200},
-    {"name":"Determinate Systems feed","lane":"nix_devops_automation","feed":"rss","url":"https://determinate.systems/rss.xml","scores":{"provenance":4,"freshness":4,"breadth_contribution":3,"signal_to_noise":5,"conversion_likelihood":5},"total_score":21,"validated_status":200}
+    {"name":"GitHub Releases/Search API","lane":"agent tooling/releases/source repos","url":"https://api.github.com","scores":[5,5,4,4,5],"total":23},
+    {"name":"PyPI JSON API","lane":"Python agent/eval/security tooling","url":"https://pypi.org/pypi/{package}/json","scores":[5,5,3,4,4],"total":21},
+    {"name":"npm Registry","lane":"JS/TS agent tooling","url":"https://registry.npmjs.org/{package}","scores":[5,5,3,4,4],"total":21},
+    {"name":"arXiv Atom API","lane":"research papers","url":"https://export.arxiv.org/api/query","scores":[5,5,5,3,4],"total":22},
+    {"name":"OpenRouter Models API","lane":"model/inference economics","url":"https://openrouter.ai/api/v1/models","scores":[5,5,4,4,5],"total":23},
+    {"name":"LiteLLM model pricing table","lane":"model/inference economics","url":"https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json","scores":[4,5,5,5,5],"total":24,"validated":"HTTP 200 JSON/text 2026-05-31"},
+    {"name":"OSV.dev API + GitHub Advisory Database","lane":"security/supply chain","url":"https://api.osv.dev","scores":[5,5,4,4,5],"total":23},
+    {"name":"Simon Willison Atom","lane":"source-of-sources/practical AI","url":"https://simonwillison.net/atom/everything/","scores":[4,5,4,5,4],"total":22},
+    {"name":"METR feed","lane":"evals/benchmarks","url":"https://metr.org/feed.xml","scores":[5,4,3,5,5],"total":22},
+    {"name":"Determinate Systems feed","lane":"Nix/devops automation","url":"https://determinate.systems/rss.xml","scores":[4,4,3,5,5],"total":21}
   ],
   "rotating_sources": [
-    {"name":"Latent Space / AI News","lane":"agent_infrastructure","feed":"rss","url":"https://www.latent.space/feed","total_score":21,"trigger":"agent_clouds_sandboxing_inference_business_infrastructure"},
-    {"name":"OpenRouter Changelog","lane":"model_inference_economics","feed":"html_changelog","url":"https://openrouter.ai/changelog","total_score":22,"trigger":"provider_pricing_model_routing_changes"},
-    {"name":"Artificial Analysis","lane":"model_inference_economics","feed":"web","url":"https://artificialanalysis.ai/","total_score":22,"trigger":"cost_latency_model_comparison"},
-    {"name":"Epoch AI","lane":"model_inference_economics","feed":"sitemap_html","url":"https://epoch.ai/blog","sitemap":"https://epoch.ai/sitemap-index.xml","total_score":20,"trigger":"compute_scaling_cost_context"},
-    {"name":"SWE-bench","lane":"evals_benchmarks","feed":"leaderboard_html","url":"https://www.swebench.com/","total_score":22,"trigger":"coding_agent_eval_updates"},
-    {"name":"LiveBench","lane":"evals_benchmarks","feed":"leaderboard_html","url":"https://livebench.ai/","total_score":20,"trigger":"general_model_eval_updates"},
-    {"name":"LMArena blog","lane":"evals_benchmarks","feed":"blog_html","url":"https://lmarena.ai/blog/","total_score":19,"trigger":"leaderboard_methodology_updates"},
-    {"name":"QuantConnect Blog","lane":"broad_trading_quant","feed":"blog_html","url":"https://www.quantconnect.com/blog/","total_score":19,"trigger":"backtestable_infrastructure_methodology"},
-    {"name":"Quantpedia Blog","lane":"broad_trading_quant","feed":"blog_html","url":"https://quantpedia.com/blog/","total_score":20,"trigger":"strategy_candidates_for_paper_backtest"},
-    {"name":"Trail of Bits Blog","lane":"security_supply_chain_agent_tooling","feed":"rss","url":"https://blog.trailofbits.com/feed/","total_score":20,"trigger":"toolchain_sandbox_dependency_risk"},
-    {"name":"Invariant Labs Blog","lane":"security_supply_chain_agent_tooling","feed":"rss","url":"https://invariantlabs.ai/blog/rss.xml","total_score":21,"trigger":"agent_tool_mcp_threat_patterns"},
-    {"name":"NixOS/nixpkgs releases","lane":"nix_devops_automation","feed":"atom","url":"https://github.com/NixOS/nixpkgs/releases.atom","total_score":20,"trigger":"nix_release_security_migration_events"},
-    {"name":"NixOS Discourse announcements","lane":"nix_devops_automation","feed":"rss","url":"https://discourse.nixos.org/c/announcements/8.rss","total_score":19,"trigger":"ecosystem_announcements"},
-    {"name":"Tailscale Blog","lane":"nix_devops_automation","feed":"rss","url":"https://tailscale.com/blog/index.xml","total_score":18,"trigger":"agent_sandbox_remote_node_networking"}
+    {"name":"Latent Space / AI News","lane":"agent infrastructure/source-of-sources","url":"https://www.latent.space/feed","scores":[3,5,5,4,4],"total":21},
+    {"name":"Anthropic Claude Code release notes","lane":"coding agents","url":"https://docs.anthropic.com/en/release-notes/claude-code","scores":[5,5,3,4,5],"total":22,"validated":"HTTP 200 2026-05-31"},
+    {"name":"GitHub Copilot changelog","lane":"coding agents/IDE agents","url":"https://github.blog/changelog/label/copilot/feed/","scores":[5,5,3,4,4],"total":21,"validated":"HTTP 200 RSS 2026-05-31"},
+    {"name":"Cursor changelog","lane":"coding agents/IDE agents","url":"https://www.cursor.com/changelog","scores":[4,5,3,4,4],"total":20,"validated":"HTTP 200 2026-05-31"},
+    {"name":"Sourcegraph Blog","lane":"coding-agent infrastructure/code search","url":"https://sourcegraph.com/blog/rss.xml","scores":[4,4,3,4,4],"total":19,"validated":"HTTP 200 RSS 2026-05-31"},
+    {"name":"vLLM releases","lane":"inference serving","url":"https://github.com/vllm-project/vllm/releases.atom","scores":[5,5,3,4,5],"total":22,"validated":"HTTP 200 Atom 2026-05-31"},
+    {"name":"llama.cpp releases","lane":"local inference/quantization","url":"https://github.com/ggml-org/llama.cpp/releases.atom","scores":[5,5,3,4,4],"total":21,"validated":"HTTP 200 Atom 2026-05-31"},
+    {"name":"SGLang releases","lane":"inference serving/structured generation","url":"https://github.com/sgl-project/sglang/releases.atom","scores":[5,5,4,4,4],"total":22,"validated":"HTTP 200 Atom 2026-05-31"},
+    {"name":"Aider leaderboards + history","lane":"coding-agent evals","url":"https://aider.chat/docs/leaderboards/","secondary_url":"https://aider.chat/HISTORY.html","scores":[4,4,5,5,5],"total":23,"validated":"HTTP 200 both pages 2026-05-31"},
+    {"name":"QuantConnect Lean releases","lane":"broad quant/trading infrastructure","url":"https://github.com/QuantConnect/Lean/releases.atom","scores":[5,5,4,4,4],"total":22,"validated":"HTTP 200 Atom 2026-05-31"},
+    {"name":"Alpha Architect feed","lane":"broad quant research/factor investing","url":"https://alphaarchitect.com/feed/","scores":[4,4,4,4,3],"total":19,"validated":"HTTP 200 RSS 2026-05-31"},
+    {"name":"GitHub Security Lab","lane":"security/supply chain","url":"https://github.blog/security/vulnerability-research/feed/","scores":[5,5,4,5,5],"total":24,"validated":"HTTP 200 RSS 2026-05-31"},
+    {"name":"OpenSSF feed","lane":"security/supply chain","url":"https://openssf.org/feed/","scores":[5,4,4,4,5],"total":22,"validated":"HTTP 200 RSS 2026-05-31"},
+    {"name":"CISA KEV JSON","lane":"security/supply chain","url":"https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json","scores":[5,5,3,4,4],"total":21,"validated":"HTTP 200 JSON 2026-05-31"},
+    {"name":"devenv releases","lane":"Nix/devops automation","url":"https://github.com/cachix/devenv/releases.atom","scores":[5,5,4,4,5],"total":23,"validated":"HTTP 200 Atom 2026-05-31"}
   ],
   "experimental_sources": [
-    {"name":"HN Algolia filtered queries","lane":"autonomous_business_resource_flywheel","feed":"json_api","url":"https://hn.algolia.com/api/v1/search_by_date","total_score":19,"promotion_test":"primary repos/products or revenue experiments"},
-    {"name":"Y Combinator Launches","lane":"autonomous_business_resource_flywheel","feed":"html","url":"https://www.ycombinator.com/launches","total_score":20,"promotion_test":"market-wedge discovery with competitor/prospect artifacts"},
-    {"name":"Open Source Builders","lane":"autonomous_business_resource_flywheel","feed":"web","url":"https://opensource.builders/","total_score":17,"promotion_test":"OSS alternative discovery that yields artifacts"},
-    {"name":"Indie Hackers","lane":"autonomous_business_resource_flywheel","feed":"rss","url":"https://www.indiehackers.com/feed.xml","total_score":17,"penalty":"502 on 2026-05-24; use only via filtered search/specific threads"},
-    {"name":"QuantInsti Blog","lane":"broad_trading_quant","feed":"blog","url":"https://blog.quantinsti.com/","total_score":17,"promotion_test":"reproducible backtest with realistic costs"},
-    {"name":"arXiv LLM/trading query","lane":"broad_trading_quant","feed":"atom_api","url":"https://export.arxiv.org/api/query?search_query=LLM+agent+trading+market+portfolio+backtest","total_score":20,"penalty":"429 during validation; pace calls and keep paper-only"}
+    {"name":"HN Algolia filtered queries","lane":"autonomous business/opportunity radar","url":"https://hn.algolia.com/api/v1/search_by_date","scores":[3,5,5,2,4],"total":19,"validated":"HTTP 200 JSON for show_hn AI-agent query 2026-05-31"},
+    {"name":"Product Hunt feed","lane":"autonomous business/product opportunities","url":"https://www.producthunt.com/feed","scores":[4,5,5,2,4],"total":20,"validated":"HTTP 200 Atom 2026-05-31"},
+    {"name":"Y Combinator Launches","lane":"autonomous business/product opportunities","url":"https://www.ycombinator.com/launches","scores":[4,5,4,3,4],"total":20},
+    {"name":"arXiv LLM/trading query","lane":"broad trading/quant research","url":"https://export.arxiv.org/api/query","scores":[5,5,4,3,3],"total":20},
+    {"name":"OpenAI changelog","lane":"model/API changes","url":"https://platform.openai.com/docs/changelog","scores":[5,5,3,4,5],"total":22,"validated":"HTTP 200 HTML 2026-05-31"}
   ],
   "avoid_or_penalize": [
-    {"class":"generic_ai_or_tech_news_aggregators","examples":["TechCrunch","VentureBeat","TheNextWeb"],"reason":"commentary-heavy delayed signal; use only for primary links"},
-    {"class":"one_off_retail_trading_articles","reason":"not repeatable or backtestable"},
-    {"class":"clob_openviking_polymarket_only_sources","reason":"out of scope unless broader market automation/risk"},
-    {"class":"social_only_without_api_archive","reason":"cron-fragile"},
-    {"class":"no_rss_api_changelog_sitemap_and_no_prior_signal","reason":"maintenance load without recurring leverage"}
+    {"source":"generic AI/tech news aggregators","reason":"delayed commentary and weak primary links"},
+    {"source":"unstructured retail trading articles","reason":"not repeatable or backtestable"},
+    {"source":"CLOB/OpenViking/Polymarket-only sources","reason":"out of scope unless broader market automation/risk infrastructure"},
+    {"source":"social-only feeds without stable archive/API/RSS","reason":"fragile for cron"},
+    {"source":"raw package-version firehoses","reason":"needs smoke test/eval/security/cost relevance"},
+    {"source":"https://socket.dev/blog/rss.xml","reason":"404 on 2026-05-31"},
+    {"source":"https://www.quantrocket.com/blog/feed.xml","reason":"404 on 2026-05-31"},
+    {"source":"https://huggingface.co/papers/rss","reason":"401 on 2026-05-31"},
+    {"source":"https://semgrep.dev/blog/rss.xml","reason":"returned HTML, not RSS, on 2026-05-31"}
   ],
   "topic_caps": {
-    "agentic_ai_coding_agents":{"max_pct":30},
-    "mcp_security_supply_chain":{"max_pct":20},
-    "model_inference_economics":{"target_min_pct":15,"target_max_pct":25},
-    "evals_benchmarks":{"target_min_pct":10,"target_max_pct":20},
-    "research_papers":{"max_pct":25},
-    "autonomous_business_resource_flywheel":{"min_pct":8},
-    "broad_trading_quant":{"min_pct":5,"max_pct":12,"capital_ready":false},
-    "nix_devops_automation":{"min_pct":7}
+    "agentic_ai_coding_agents": "max 28%",
+    "mcp_security_supply_chain": "max 18%",
+    "model_inference_economics": "15-25% target",
+    "evals_benchmarks": "12-20% target",
+    "research_papers": "max 22%",
+    "autonomous_business_resource_flywheel": "min 10%",
+    "broad_trading_quant": "min 5%, max 10%",
+    "nix_devops_automation": "min 8%"
   },
-  "validation_summary": {
-    "hermes_web_search": "unauthorized_invalid_token",
-    "ddg_html_queries_attempted": 6,
-    "ddg_html_queries_http_200": 6,
-    "candidate_urls_validated": 27,
-    "candidate_urls_http_2xx_3xx": 21,
-    "notable_corrections": ["METR feed is https://metr.org/feed.xml, not /blog/rss.xml", "Determinate Systems feed is https://determinate.systems/rss.xml, not /posts/index.xml", "Epoch exposes sitemap-index.xml; no RSS discovered", "arXiv broad queries hit 429; require pacing/fallback"]
-  }
+  "top_5_additions": [
+    "LiteLLM model pricing table",
+    "Aider leaderboards + history",
+    "GitHub Security Lab feed",
+    "devenv releases",
+    "Product Hunt feed with strict AI-agent/devtool filter"
+  ]
 }
